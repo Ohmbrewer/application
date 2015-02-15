@@ -1,2 +1,2 @@
-# application
-the main application repository. 
+# Ohmbrewer
+The web application for a happy brew day.
