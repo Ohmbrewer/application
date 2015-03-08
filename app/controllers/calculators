@@ -1,0 +1,23 @@
+class Calc
+  def strike_temp(temp_current, temp_target, lbs_grain, vol_add)
+    #specify vol type
+    temp = ((.2/(vol_add/lbs_grain))*(temp_target-temp_current)+temp_target)
+    return temp
+    #update volume in mash tun
+  end
+
+  def mash_temp(temp_current, temp_target, lbs_grain, vol_add, vol_current )
+    #specify vol type
+    temp = ((temp_target-temp_current)*(.2*lbs_grain+vol_current)/vol_add)+temp_target
+    return temp
+    #update volume in mash tun
+  end
+
+  def ibu(percent_aa, oz_add, sg_batch, time_boil, vol_batch )
+    #volume....gallons?
+    ibu = (((percent_aa*oz_add)*(1.65*(.000125**(sg_batch-1.0)))*((1-Math.E**(-.04*time_boil))/4.15)*75)/vol_batch)
+    return ibu
+    #Update beer  
+  end
+
+end
