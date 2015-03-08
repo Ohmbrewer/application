@@ -1,0 +1,12 @@
+/* notifications.css
+ * Provides a uniform notification styling.
+ */
+
+/* Imports */
+@import "notifications.css";
+
+/* General */
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:13px;
+}

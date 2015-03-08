@@ -1,0 +1,63 @@
+/* recipes.css
+ * Stylesheet for common elements in the Recipes section.
+ */
+@import "master.css";
+
+/* Recipe form elements */
+#recipe_form { }
+#recipe_name { }
+#creation_date { }
+#ingredients { }
+.ingredient_line { }
+
+/* Grain section */
+#grain { }
+#add_grain { }
+.grain_line { }
+.grain_type { }
+.grain_amount { }
+.grain_units { }
+.grain_stage { }
+
+/* Hop section */
+#hops { }
+#add_hop { }
+.hop_line { }
+.hop_type { }
+.hop_amount { }
+.hop_units { }
+.hop_stage { }
+.hop_timing { }
+
+/* Adjunct section */
+#adjuncts { }
+#add_adjunct { }
+.adjunct_line { }
+.adjunct_type { }
+.adjunct_amount { }
+.adjunct_units { }
+.adjunct_stage { }
+.adjunct_timing { }
+
+/* Yeast section */
+#yeast { }
+#add_yeast { }
+.yeast_line { }
+.yeast_strain { }
+.yeast_stage { }
+
+/* Water section */
+#water { }
+#water_profile { }
+#mash_volume { }
+#preboil_volume { }
+#final_volume { }
+
+/* Notes section */
+#notes { }
+#notes_textarea { }
+
+/* Form buttons */
+#available_actions { }
+#save_recipe { }
+#cancel_recipe { }
