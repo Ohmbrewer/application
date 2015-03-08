@@ -1,0 +1,20 @@
+body,
+html {
+    width: 90%;
+    margin: auto;
+}
+#welcomemessage{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+#selection{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+#destination{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}

@@ -1,0 +1,30 @@
+
+#still {
+    width:90%;
+    margin:0 auto;
+}
+
+#controls {
+    float:left;
+    width:55%;
+}
+#controlbox{
+    border: 2px solid black;
+    width: 75%;
+    height: 300px;
+}
+#graph {
+    float:left;
+    width:45%;
+}
+#tempgraph {
+    border: 2px solid black;
+    width: 90%;
+    height: 300px;
+
+}
+#stillpot{
+    border: 2px solid black;
+    width: 90%;
+    height: 300px;
+}
