@@ -1,0 +1,18 @@
+<% provide(:title, 'Home') %>
+<div class="center jumbotron">
+
+  <!-- It'd be great if we had a logo with a transparent background... -->
+  <%= image_tag('ohmbrewer.png', width: '200px', height: '200px', alt: 'Ohmbrewer logo') %>
+  <h2>
+    Please select one of the options below:
+  </h2>
+
+  <div class="btn-group btn-group-justified" role="group" aria-label="mainmenu">
+    <%= button_to 'Recipes', '#', class: 'btn btn-lg btn-primary btn-block' %>
+    <%= button_to 'Brewing', '#', class: 'btn btn-lg btn-primary btn-block' %>
+    <%= button_to 'Distilling', '#', class: 'btn btn-lg btn-primary btn-block' %>
+    <%= button_to 'Fermenting', '#', class: 'btn btn-lg btn-primary btn-block' %>
+    <%= button_to 'Configuration', '#', class: 'btn btn-lg btn-primary btn-block' %>
+  </div>
+
+</div>
