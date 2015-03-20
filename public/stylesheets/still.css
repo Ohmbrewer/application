@@ -1,0 +1,38 @@
+
+#still {
+    width:90%;
+    margin: auto;
+}
+#controltype {
+
+
+}
+#controls {
+    float:left;
+    width:55%;
+    background-color: red;
+    height: inherit;
+}
+#controlbox {
+    float: left;
+    border: 2px solid black;
+    width: 75%;
+    height: 300px;
+}
+#graph {
+    float:left;
+    width:45%;
+    background-color: blue;
+    height: inherit;
+}
+#tempgraph {
+    border: 2px solid black;
+    width: 90%;
+    height: 300px;
+
+}
+#stillpot{
+    border: 2px solid black;
+    width: 90%;
+    height: 300px;
+}

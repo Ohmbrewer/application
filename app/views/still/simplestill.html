@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../../../public/stylesheets/simplestill.css">
+</head>
+<body>
+    <div id="temperature guide">
+        <p>temperatures below are measured at the column head.</p>
+        <p>*note* you should still have the pot sensor attached</p>
+        <label for="units">Choose Units:</label>
+        <select id="units">
+            <option id="fahrenheit">Fahrenheit</option>
+            <option id="celsius">Celsius</option>
+        </select><br>
+        <label for="con_cont">Allow Program to Control Condenser:</label>
+        <select id="con_cont">
+            <option id="condenser_no">Disabled</option>
+            <option id="condenser_yes">Enabled</option>
+        </select><br>
+        <label for="hsa">Holy Shit ALARM:</label>
+        <select id="hsa">
+            <option id="shit_yes">Enabled</option>
+            <option id="shit_no">Disabled</option>
+        </select><br>
+
+        <form>
+            Starting Temp:<input type="text" name="inittemp"> </form><br>
+        <form>
+            Halt Program Temp:<input type="text" name="inittemp"><br>
+            *note* this is the upper bound for this program.<br>
+            system will shut down if this temperature is reached in column.
+        </form><br>
+            <!--Current Temp: <table id="currenttemp"><tr><td>180</td></tr>-->
+        <form>
+            First Stop Temperature:<input type="text" name="stopone"><br>
+            Desired Time @ Stage:<input type="text" name="lengthstopone"><br>
+            Time left at stage: XX
+         </form><br>
+        <form>
+            Second Stop Temperature:<input type="text" name="stoptwo"><br>
+            Desired Time @ Stage:<input type="text" name="lengthstoptwo"><br>
+            Time left at stage: XX
+        </form><br>
+        <form>
+            Third Stop Temperature:<input type="text" name="stopthree"><br>
+            Desired Time @ Stage:<input type="text" name="lengthstopthree"><br>
+            Time left at stage: XX
+        </form><br>
+
+
+    </div>
+
+</body>
+</html>
