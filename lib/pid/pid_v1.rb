@@ -13,7 +13,7 @@ class PidV1
   # double outMin, outMax
   # bool inAuto = false
 
-  attr_accessor :controllerDirection, :lastTime, :Input, :Output, :Setpoint, :lastInput, :Iterm, :kp, :ki, :kd, :SampleTime, :outMin, :outMax, :inAuto
+  attr_accessor :controllerDirection, :lastTime, :Input, :Output, :Set_point, :lastInput, :I_term, :kp, :ki, :kd, :SampleTime, :outMin, :outMax, :inAuto
 
   define MANUAL = 0
   define AUTOMATIC = 1
@@ -22,7 +22,7 @@ class PidV1
   define REVERSE = 1
   def initialize
     @controllerDirection = DIRECT
-    @lastTime, @Input, @Output, @Setpoint, @lastInput, @ITerm, @kp, @ki, @kd, @outMax, @outMin = 0
+    @lastTime, @Input, @Output, @Set_point, @lastInput, @I_Term, @kp, @ki, @kd, @outMax, @outMin = 0
     @inAuto = false
     @SampleTime = 1000 #1 second
 
@@ -34,26 +34,26 @@ class PidV1
           if(!@inAuto)
             return
           end
-              now = millis()
+              now = (Time.now.to_f * 1000).to_i
               timeChange = (now - @lastTime)
-          if(timeChange>=@SampleTime)
+          if timeChange>=@SampleTime
               # /*Compute all the working error variables*/
-              error = @Setpoint - @Input
-              @ITerm += (@ki * error)
+              error = @Set_point - @Input
+              @I_Term += (@ki * error)
           end
-          if(@ITerm > @outMax)
-              @ITerm = @outMax
+          if @I_Term > @outMax
+              @I_Term = @outMax
 
-          else if(@ITerm < @outMin)
-              @ITerm = @outMin
+          elsif @I_Term < @outMin
+              @I_Term = @outMin
 
               dInput = (@Input - @lastInput)
           end
           # /*Compute PID Output*/
           @Output = @kp * error + @ITerm- kd * dInput
-          if(@Output > @outMax)
+          if @Output > @outMax
               @Output = @outMax
-          else if(@Output < @outMin)
+          elsif @Output < @outMin
               @Output = @outMin
               # /*Remember some variables for next time*/
               @lastInput = @Input
@@ -67,12 +67,12 @@ class PidV1
             return
           end
 
-              sampleTimeInSec = (@SampleTime)/1000
-              @kp = k_p
-              @ki = k_i * sampleTimeInSec
-              @kd = k_d / sampleTimeInSec
-          end
-          if @controllerDirection ==REVERSE
+          sampleTimeInSec = (@SampleTime)/1000
+          @kp = k_p
+          @ki = k_i * sampleTimeInSec
+          @kd = k_d / sampleTimeInSec
+
+          if @controllerDirection == REVERSE
               @kp = (0 - @kp)
               @ki = (0 - @ki)
               @kd = (0 - @kd)
@@ -94,31 +94,26 @@ class PidV1
           if(min > max)
             return
           end
-              @outMin = min
-              @outMax = max
-          end
+          @outMin = min
+          @outMax = max
 
           if(@Output > @outMax)
               @Output = @outMax
-
-          else if(@Output < @outMin)
+          elsif(@Output < @outMin)
                  @Output = @outMin
-
           end
 
-          if(@ITerm > @outMax)
-              @ITerm= @outMax
-
-          else if(@ITerm < @outMin)
-              @ITerm= @outMin
-
-
+          if(@I_Term > @outMax)
+              @I_Term= @outMax
+          elsif(@I_Term < @outMin)
+              @I_Term = @outMin
           end
+      end
 
       def SetMode(mode)
 
-          newAuto = (mode == AUTOMATIC);
-          if(newAuto == !inAuto)
+          newAuto = (mode == AUTOMATIC)
+          if newAuto == !inAuto
               # /*we just went from manual to auto*/
               self.InitializeAuto
           end
@@ -128,13 +123,13 @@ class PidV1
       def InitializeAuto
 
           @lastInput = @Input
-          @ITerm = @Output
+          @I_Term = @Output
 
-          if(@ITerm > @outMax)
-              @ITerm= @outMax
+          if(@I_Term > @outMax)
+              @I_Term= @outMax
 
-          else if(@ITerm < @outMin)
-              @ITerm= @outMin
+          elsif(@I_Term < @outMin)
+              @I_Term= @outMin
 
           end
       end
