@@ -1,8 +1,6 @@
 class User < ActiveRecord::Base
 
-  # TODO: Fix this so it invalidates emails with consecutive dots in the URL
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   validates :name,  presence: true, length: { maximum: 50 }
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
@@ -12,7 +10,7 @@ class User < ActiveRecord::Base
   has_secure_password
 
   before_save do
-    self.email = email.downcase
+    email.downcase!
   end
 
 
