@@ -36,6 +36,10 @@ gem 'bcrypt', '~> 3.1.7'
 # Twitter Bootstrap
 gem 'bootstrap-sass', '3.3.3'
 
+# Adds pagination capabilities
+gem 'will_paginate',           '3.0.7'
+gem 'bootstrap-will_paginate', '0.0.10'
+
 group :development, :test do
   gem 'jdbc-sqlite3', '3.8.7'
   gem 'binding_of_caller', '0.7.3.pre1'
@@ -43,6 +47,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'cucumber-rails', :require => false
   gem 'test-factory', '~> 0.5.3'
+  gem 'faker', '1.4.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
