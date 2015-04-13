@@ -2,6 +2,7 @@ ohm:
   name: Georg Ohm
   email: gohm@example.com
   password_digest: <%= User.digest('password') %>
+  admin: true
 
 watt:
   name: James Watt
@@ -16,6 +17,11 @@ pasteur:
 palmer:
   name: John Palmer
   email: jpalmer@example.com
+  password_digest: <%= User.digest('password') %>
+
+tesla:
+  name: Nikola Tesla
+  email: ntesla@example.com
   password_digest: <%= User.digest('password') %>
 
 <% 30.times do |n| %>
