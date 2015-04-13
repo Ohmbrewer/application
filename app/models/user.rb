@@ -14,9 +14,7 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  before_save do
-    email.downcase!
-  end
+  before_save :downcase_email
 
   # Remembers a user
   def remember
@@ -51,5 +49,12 @@ class User < ActiveRecord::Base
     end
 
   end
+
+  private
+
+    # Converts email to all lower-case.
+    def downcase_email
+      self.email = email.downcase
+    end
 
 end
