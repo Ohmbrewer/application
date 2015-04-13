@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
   def new
+    redirect_to home_url if logged_in?
   end
 
   def create
@@ -8,7 +9,7 @@ class SessionsController < ApplicationController
     if @user && @user.authenticate(params[:session][:password])
       log_in @user
       params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
-      redirect_back_or @user
+      redirect_back_or home_url
     else
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
