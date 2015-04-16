@@ -1,5 +1,7 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
+ruby '2.0.0', :engine => 'jruby',
+              :engine_version => '1.7.19'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -23,7 +25,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -34,9 +36,18 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Twitter Bootstrap
 gem 'bootstrap-sass', '3.3.3'
 
+# Adds pagination capabilities
+gem 'will_paginate',           '3.0.7'
+gem 'bootstrap-will_paginate', '0.0.10'
+
 group :development, :test do
+  gem 'jdbc-sqlite3', '3.8.7'
+  gem 'binding_of_caller', '0.7.3.pre1'
+  #gem 'byebug',      '3.4.0'
+  gem 'web-console', '~> 2.0'
   gem 'cucumber-rails', :require => false
   gem 'test-factory', '~> 0.5.3'
+  gem 'faker', '1.4.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
