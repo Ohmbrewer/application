@@ -40,6 +40,10 @@ gem 'bootstrap-sass', '3.3.3'
 gem 'will_paginate',           '3.0.7'
 gem 'bootstrap-will_paginate', '0.0.10'
 
+# Jobs
+gem 'delayed_job_active_record'
+gem 'daemons'
+
 group :development, :test do
   gem 'jdbc-sqlite3', '3.8.7'
   gem 'binding_of_caller', '0.7.3.pre1'
