@@ -12,10 +12,8 @@
                   ping_new_job_path,
                   class: 'btn btn-lg btn-primary btn-block',
                   method: :get,
-                  params: {
-                    core_id: '#',
-                    access_token: '#'
-                  } %>
+                  params: Rails.application.config.x.rhizomes.values.first
+    %>
   </div>
 
 </div>
