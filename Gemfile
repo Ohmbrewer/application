@@ -42,6 +42,7 @@ gem 'bootstrap-will_paginate', '0.0.10'
 # Jobs
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'ruby_spark'
 
 group :development, :test do
   gem 'binding_of_caller', '0.7.3.pre1'
