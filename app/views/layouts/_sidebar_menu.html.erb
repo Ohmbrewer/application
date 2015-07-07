@@ -1,0 +1,43 @@
+<% if logged_in? %>
+<div id="mainmenu-sidebar" class="nav navbar-nav">
+  
+  <div class="list-group panel">
+    <%= link_to '#recipe-section',
+                class: 'list-group-item list-group-item-success',
+                'data-toggle' => 'collapse', 'data-parent' => 'mainmenu-sidebar', 'aria-expanded' => 'true' do %>
+      <span class="glyphicon glyphicon-book"></span> Recipe Book
+    <% end %>
+    <div class="collapse in" id="recipe-section">
+      <%= link_to 'Beer', '#', class: 'list-group-item'  %>
+      <%= link_to 'Cider, Mead, or Wine', '#', class: 'list-group-item'  %>
+      <%= link_to 'Distilling', '#', class: 'list-group-item'  %>
+    </div>
+
+    <%= link_to '#batches-section',
+                class: 'list-group-item list-group-item-success',
+                'data-toggle' => 'collapse', 'data-parent' => 'mainmenu-sidebar', 'aria-expanded' => 'true' do %>
+        <span class="glyphicon glyphicon-dashboard"></span> Batches
+    <% end %>
+    <div class="collapse in" id="batches-section">
+      <%= link_to 'Start a new batch', '#', class: 'list-group-item'  %>
+      <%= link_to 'What\'s Brewing?', '#', class: 'list-group-item'  %>
+      <%= link_to 'What\'s Distilling?', '#', class: 'list-group-item'  %>
+      <%= link_to 'What\'s Fermenting?', '#', class: 'list-group-item'  %>
+      <%= link_to 'What\'s Kegged?', '#', class: 'list-group-item'  %>
+    </div>
+
+    <%= link_to '#configuration-section',
+                class: 'list-group-item list-group-item-success',
+                'data-toggle' => 'collapse', 'data-parent' => 'mainmenu-sidebar', 'aria-expanded' => 'true' do %>
+        <span class="glyphicon glyphicon-list-alt"></span> Configuration
+    <% end %>
+    <div class="collapse in" id="configuration-section">
+      <%= link_to 'Manage Rhizomes', '#', class: 'list-group-item'  %>
+      <%= link_to 'Manage Brewhouses', '#', class: 'list-group-item'  %>
+      <%= link_to 'Manage Users', users_path, class: 'list-group-item' %>
+    </div>
+    
+  </div>
+  
+</div>
+<% end %>
