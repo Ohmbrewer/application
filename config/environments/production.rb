@@ -79,4 +79,12 @@ Rails.application.configure do
 
   # Adds the Rhizomes
   config.x.rhizomes = config_for(:rhizomes)
+
+  # Provide custom encryption keys
+  # TODO: PROVIDE THIS VIA ENVIRONMENT VARIABLES!!!
+  # config.keys = {
+  #     particle: {
+  #         access_token: ''
+  #     }
+  # }
 end

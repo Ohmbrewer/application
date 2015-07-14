@@ -28,6 +28,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+# Use attr_encrypted for things that need to be encrypted in the db, but can be displayed to the user
+gem 'attr_encrypted'
+
 # Use Puma as the app server
 gem 'puma'
 
