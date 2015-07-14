@@ -9,4 +9,9 @@ class Particle < ActiveRecord::Base
   validates :device_id, length: { minimum: 24, maximum: 24 }
   validates :access_token, length: { minimum: 40, maximum: 40 }
 
+  # Provides the interface for connecting to the Particle
+  def connection
+    RubySpark::Core.new(self.core_id, self.access_token)
+  end
+
 end
