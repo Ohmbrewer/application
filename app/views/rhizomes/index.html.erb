@@ -1,0 +1,12 @@
+<% provide(:title, 'Rhizomes') %>
+<h1>Rhizomes <%= link_to '+',
+                         new_rhizome_path,
+                         class: 'btn btn-sm btn-primary' %></h1>
+
+<%= will_paginate %>
+
+<ul class="rhizomes">
+  <%= render @rhizomes %>
+</ul>
+
+<%= will_paginate %>

@@ -1,0 +1,12 @@
+<% provide(:title, 'Edit Rhizome') %>
+<h1>Edit Rhizome</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@rhizome) do |f| %>
+        <%= render 'fields', f: f, object: @rhizome %>
+        <%= f.submit 'Save', class: 'btn btn-primary' %>
+        <%= button_to 'Cancel', rhizomes_path, class: 'btn btn-sm btn-primary' %>
+    <% end %>
+  </div>
+</div>

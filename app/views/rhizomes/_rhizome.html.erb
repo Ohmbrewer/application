@@ -1,0 +1,8 @@
+<li>
+  <%= link_to rhizome.name, rhizome %>
+  <!-- TODO: Make this more complex -->
+  <% if current_user.admin? %>
+      | <%= link_to 'delete', rhizome, method: :delete,
+                    data: { confirm: 'You sure?' } %>
+  <% end %>
+</li>

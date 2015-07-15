@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   get    'login'   => 'sessions#new'
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
+
+  resources :rhizomes
+
   resources :jobs, shallow: true do
     get 'ping', on: :new
   end

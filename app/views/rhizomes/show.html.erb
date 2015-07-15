@@ -1,0 +1,15 @@
+<% provide(:title, @rhizome.name) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="rhizome_info">
+      <h1>
+        <%= @rhizome.name %>
+      </h1>
+      <ul>
+        <li><span class="rhizome show_info">Name:</span> <%= @rhizome.name %></li>
+        <li><span class="rhizome show_info">Device ID:</span> <%= @rhizome.particle.device_id %></li>
+        <li><span class="rhizome show_info">Access Token:</span> <%= @rhizome.particle.access_token %></li>
+      </ul>
+    </section>
+  </aside>
+</div>

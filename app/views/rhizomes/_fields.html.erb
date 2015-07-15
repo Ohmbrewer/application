@@ -1,0 +1,12 @@
+<%= render 'shared/error_messages', object: f.object  %>
+
+<%= f.label :name %>
+<%= f.text_field :name, class: 'form-control' %>
+
+<%= f.fields_for :particle do |p| %>
+  <%= p.label :device_id %>
+  <%= p.text_field :device_id, class: 'form-control' %>
+
+  <%= p.label :access_token %>
+  <%= p.text_field :access_token, class: 'form-control' %>
+<% end %>
