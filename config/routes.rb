@@ -15,6 +15,11 @@ Rails.application.routes.draw do
   delete 'logout'  => 'sessions#destroy'
 
   resources :rhizomes
+  resources :rhizomes do
+    collection do
+      delete :destroy_multiple
+    end
+  end
 
   resources :jobs, shallow: true do
     get 'ping', on: :new

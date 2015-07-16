@@ -1,12 +1,41 @@
 <% provide(:title, 'Rhizomes') %>
-<h1>Rhizomes <%= link_to '+',
-                         new_rhizome_path,
-                         class: 'btn btn-sm btn-primary' %></h1>
+<h1>
+  Manage Your Rhizomes <%= link_to '+',
+                                   new_rhizome_path,
+                                   class: 'btn btn-sm btn-primary',
+                                   alt: 'Add a Rhizome',
+                                   title: 'Add a Rhizome' %>
+</h1>
 
-<%= will_paginate %>
+<%= form_for :rhizome,
+             url: destroy_multiple_rhizomes_path,
+             method: :delete,
+             data: { confirm: 'You sure you want to delete all of these?' },
+             id: 'bulk-delete bulk-delete-rhizomes-form' do %>
+<div class="table-responsive">
+    <%= will_paginate %>
 
-<ul class="rhizomes">
-  <%= render @rhizomes %>
-</ul>
+    <table class="rhizomes table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>
+            <%= button_tag '',
+                           type: :submit,
+                           id: 'bulk-delete-submit',
+                           class: 'btn btn-sm btn-primary glyphicon glyphicon-remove',
+                           alt: 'Delete Selected',
+                           title: 'Delete Selected' %>
+          </th>
+          <th>Name</th>
+          <th>Device ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      <%= render @rhizomes %>
+      </tbody>
+    </table>
 
-<%= will_paginate %>
+    <%= will_paginate %>
+</div>
+<% end %>

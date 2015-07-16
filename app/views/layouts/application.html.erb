@@ -13,7 +13,15 @@
 <%= render 'layouts/sidebar_menu' %>
   <div class="container">
     <% flash.each do |message_type, message| %>
-        <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
+        <%= content_tag(:div, class: "alert alert-#{message_type}") do %>
+            <%= case message_type
+                 when 'danger'
+                   content_tag(:span, '', class: 'glyphicon glyphicon-alert')
+                 when 'success'
+                   content_tag(:span, '', class: 'glyphicon glyphicon-info-sign')
+               end %>
+            <%= message %>
+        <% end %>
     <% end %>
     <%= yield %>
     <%= render 'layouts/footer' %>

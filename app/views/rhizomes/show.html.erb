@@ -11,5 +11,16 @@
         <li><span class="rhizome show_info">Access Token:</span> <%= @rhizome.particle.access_token %></li>
       </ul>
     </section>
+    <%= link_to 'Edit',
+                edit_rhizome_path,
+                id: @rhizome.id,
+                class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Delete',
+                @rhizome,
+                method: :delete,
+                data: { confirm: 'You sure?' },
+                class: 'btn btn-sm btn-primary',
+                alt: 'Delete',
+                title: 'Delete' %>
   </aside>
 </div>

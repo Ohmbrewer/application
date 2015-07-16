@@ -1,8 +1,25 @@
-<li>
-  <%= link_to rhizome.name, rhizome %>
-  <!-- TODO: Make this more complex -->
+<tr>
+  <td><%= check_box_tag 'rhizomes[]', rhizome.id, false %></td>
+  <td><%= link_to rhizome.name, rhizome %></td>
+  <td><%= rhizome.particle.device_id %></td>
+  <td>
   <% if current_user.admin? %>
-      | <%= link_to 'delete', rhizome, method: :delete,
-                    data: { confirm: 'You sure?' } %>
+      <!-- TODO: Rhizome copy button -->
+      <%= link_to '#',
+                  method: :get,
+                  class: 'btn btn-sm btn-primary',
+                  alt: 'Copy',
+                  title: 'Copy' do %>
+          <span class="glyphicon glyphicon-copy"></span>
+      <% end %>
+      <%= link_to rhizome,
+                  method: :delete,
+                  data: { confirm: 'You sure?' },
+                  class: 'btn btn-sm btn-primary',
+                  alt: 'Delete',
+                  title: 'Delete' do %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
   <% end %>
-</li>
+  </td>
+</tr>

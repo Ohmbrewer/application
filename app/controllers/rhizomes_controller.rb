@@ -27,7 +27,7 @@ class RhizomesController < ApplicationController
 
     if @rhizome.save
       flash[:success] = "Added #{@rhizome.name}!"
-      redirect_to @rhizome
+      redirect_to rhizomes_url
     else
       render 'new'
     end
@@ -43,15 +43,42 @@ class RhizomesController < ApplicationController
   end
 
   def destroy
-    @rhizome.destroy
-    flash[:success] = 'Rhizome deleted'
+    if params[:rhizomes].nil?
+
+      if @rhizome.nil?
+        flash[:danger] = 'No Rhizome selected'
+      else
+        @rhizome.destroy
+        flash[:success] = 'Rhizome deleted'
+      end
+
+      redirect_to rhizomes_url
+    else
+      destroy_multiple
+    end
+  end
+
+  def destroy_multiple
+    pre = Rhizome.where(id: params[:rhizomes])
+    Rhizome.destroy_all(id: params[:rhizomes])
+    post = pre.where(id: params[:rhizomes])
+
+    case post.length
+      when 0
+        flash[:success] = 'Rhizomes deleted'
+      when pre.length
+        flash[:danger] = 'Deletion failed!'
+      else
+        flash[:warning] = "Something strange happened... #{pre.length - post.length} Rhizomes weren't deleted."
+    end
+
     redirect_to rhizomes_url
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_rhizome
-      @rhizome = Rhizome.find(params[:id])
+      @rhizome = Rhizome.find(params[:id]) unless params[:id].to_i.zero?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
