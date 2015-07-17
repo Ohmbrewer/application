@@ -1,6 +1,9 @@
 <tr>
   <td><%= check_box_tag 'rhizomes[]', rhizome.id, false %></td>
-  <td><%= link_to rhizome.name, rhizome %></td>
+  <td>
+    <%= link_to rhizome.name, '', 'data-toggle' => 'modal', 'data-target' => "#rhizome-#{rhizome.id}-show" %>
+    <%= render 'rhizomes/modals/rhizomes_modal', rhizome: rhizome, action: 'show', title: rhizome.name %>
+  </td>
   <td><%= rhizome.particle.device_id %></td>
   <td>
   <% if current_user.admin? %>

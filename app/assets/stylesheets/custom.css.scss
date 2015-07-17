@@ -220,3 +220,12 @@ input {
     border-bottom: 1px solid $gray-lighter;
   }
 }
+
+/* Modals */
+div.modal-header button.glyphicon.glyphicon-remove {
+  float: right;
+}
+div.modal-header {
+  color: #fff;
+  font-weight: bold;
+}
