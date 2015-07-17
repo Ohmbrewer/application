@@ -26,7 +26,7 @@ class RhizomesController < ApplicationController
     @rhizome = Rhizome.new(rhizome_params)
 
     if @rhizome.save
-      flash[:success] = "Added #{@rhizome.name}!"
+      flash[:success] = "Added <strong>#{@rhizome.name.html_safe}</strong>!"
       redirect_to rhizomes_url
     else
       render 'new'
@@ -35,7 +35,7 @@ class RhizomesController < ApplicationController
 
   def update
     if @rhizome.update(rhizome_params)
-      flash[:success] = "Updated #{@rhizome.name}!"
+      flash[:success] = "Updated <strong>#{@rhizome.name.html_safe}</strong>!"
       redirect_to @rhizome
     else
       render 'edit'
@@ -46,10 +46,11 @@ class RhizomesController < ApplicationController
     if params[:rhizomes].nil?
 
       if @rhizome.nil?
-        flash[:danger] = 'No Rhizome selected'
+        flash[:danger] = 'No Rhizome selected!'
       else
+        name = @rhizome.name.html_safe
         @rhizome.destroy
-        flash[:success] = 'Rhizome deleted'
+        flash[:success] = "Deleted <strong>#{name}</strong>"
       end
 
       redirect_to rhizomes_url

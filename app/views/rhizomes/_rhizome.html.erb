@@ -4,20 +4,19 @@
   <td><%= rhizome.particle.device_id %></td>
   <td>
   <% if current_user.admin? %>
-      <!-- TODO: Rhizome copy button -->
-      <%= link_to '#',
+      <%= link_to ping_new_job_path(id: rhizome.particle.id),
                   method: :get,
                   class: 'btn btn-sm btn-primary',
-                  alt: 'Copy',
-                  title: 'Copy' do %>
-          <span class="glyphicon glyphicon-copy"></span>
+                  alt: "Ping #{rhizome.name}",
+                  title: "Ping #{rhizome.name}" do %>
+          <span class="glyphicon glyphicon-asterisk"></span>
       <% end %>
       <%= link_to rhizome,
                   method: :delete,
                   data: { confirm: 'You sure?' },
                   class: 'btn btn-sm btn-primary',
-                  alt: 'Delete',
-                  title: 'Delete' do %>
+                  alt: "Delete #{rhizome.name}",
+                  title: "Delete #{rhizome.name}" do %>
         <span class="glyphicon glyphicon-remove"></span>
       <% end %>
   <% end %>

@@ -14,7 +14,9 @@
     <%= link_to 'Edit',
                 edit_rhizome_path,
                 id: @rhizome.id,
-                class: 'btn btn-sm btn-primary' %>
+                class: 'btn btn-sm btn-primary',
+                alt: 'Edit',
+                title: 'Edit' %>
     <%= link_to 'Delete',
                 @rhizome,
                 method: :delete,
@@ -22,5 +24,10 @@
                 class: 'btn btn-sm btn-primary',
                 alt: 'Delete',
                 title: 'Delete' %>
+    <%= link_to 'Back',
+                rhizomes_path,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Back',
+                title: 'Back' %>
   </aside>
 </div>

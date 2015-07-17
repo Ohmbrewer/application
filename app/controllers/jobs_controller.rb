@@ -8,8 +8,15 @@ class JobsController < ApplicationController
   # == Routes ==
 
   def ping
-    flash[:success] = PingJob.new(*params).perform_now
-    redirect_to configuration_url
+    result = PingJob.new(*params).perform_now
+
+    if result['connected']
+      flash[:success] = "Pinged <strong>#{result['name']}</strong>!<br />Here's what I got:<br /><pre>#{JSON.pretty_generate(result)}</pre>"
+    else
+      flash[:danger] = "It appears that <strong>#{result['name']}</strong> is not connected...<br />Here's what I know:<br /><pre>#{JSON.pretty_generate(result)}</pre>"
+    end
+
+    redirect_to rhizomes_url
   end
 
   # private

@@ -4,7 +4,7 @@
 <%= f.text_field :name, class: 'form-control' %>
 
 <%= f.fields_for :particle do |p| %>
-  <%= p.label :device_id %>
+  <%= p.label :device_id, 'Device ID' %>
   <%= p.text_field :device_id, class: 'form-control' %>
 
   <%= p.label :access_token %>
