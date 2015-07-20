@@ -39,6 +39,10 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  # We don't really care too much about whether the app can render a console 
+  # from a specific network. So, this is basically a STFU to the app. 
+  # Probably don't want to do this in prod...
+  config.web_console.whiny_requests = false
 
   # ActionMailer configuration. Send all mail to mailcatcher (which must be up, btw)
   config.action_mailer.delivery_method = :smtp
