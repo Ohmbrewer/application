@@ -4,8 +4,7 @@ ruby '2.2.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
-# Use sqlite3 as the database for Active Record
-#gem 'sqlite3'
+# Use PostgreSQL as the database for Active Record
 gem 'pg'
 
 # Use SCSS for stylesheets
@@ -47,7 +46,7 @@ gem 'bootstrap-will_paginate', '0.0.10'
 # Jobs
 gem 'delayed_job_active_record'
 gem 'daemons'
-gem 'ruby_spark'
+gem 'particlerb'
 
 group :development, :test do
   gem 'binding_of_caller', '0.7.3.pre1'

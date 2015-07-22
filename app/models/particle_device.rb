@@ -1,6 +1,6 @@
-class Particle < ActiveRecord::Base
+class ParticleDevice < ActiveRecord::Base
 
-  belongs_to :rhizome, inverse_of: :particle
+  belongs_to :rhizome, inverse_of: :particle_device
 
   attr_encrypted :access_token, key: Rails.application.config.keys[:particle][:access_token]
 
@@ -12,9 +12,10 @@ class Particle < ActiveRecord::Base
                         length: { minimum: 24, maximum: 24 }
   validates :access_token, length: { minimum: 40, maximum: 40 }
 
-  # Provides the interface for connecting to the Particle
+  # Provides the interface for connecting to the ParticleDevice
   def connection
-    RubySpark::Core.new(self.core_id, self.access_token)
+    Particle::Client.new(access_token: self.access_token)
+                    .device(self.device_id)
   end
 
 end
