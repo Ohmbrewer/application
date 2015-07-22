@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150501031419) do
+ActiveRecord::Schema.define(version: 20150715025507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,26 @@ ActiveRecord::Schema.define(version: 20150501031419) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "particles", force: :cascade do |t|
+    t.string   "device_id",              null: false
+    t.string   "encrypted_access_token"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "rhizome_id"
+  end
+
+  add_index "particles", ["device_id"], name: "index_particles_on_device_id", unique: true, using: :btree
+  add_index "particles", ["rhizome_id"], name: "index_particles_on_rhizome_id", using: :btree
+
+  create_table "rhizomes", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "particle_id"
+  end
+
+  add_index "rhizomes", ["particle_id"], name: "index_rhizomes_on_particle_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "name",            limit: 255
     t.string   "email",           limit: 255
@@ -44,4 +64,6 @@ ActiveRecord::Schema.define(version: 20150501031419) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
+  add_foreign_key "particles", "rhizomes"
+  add_foreign_key "rhizomes", "particles"
 end

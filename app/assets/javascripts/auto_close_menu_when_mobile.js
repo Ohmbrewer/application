@@ -1,5 +1,5 @@
 $(window).bind('resize load',function(){
-    if( $(this).width() < 1024 )
+    if( $(this).width() < 768 )
     {
         $('.collapse').removeClass('in');
         $('.collapse').addClass('out');

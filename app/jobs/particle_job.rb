@@ -5,7 +5,16 @@ class ParticleJob < ActiveJob::Base
   def initialize(*arguments)
     super
     params = particle_params(*arguments)
-    @particle = RubySpark::Core.new(params[:core_id], params[:access_token])
+    # @particle = RubySpark::Core.new(params[:core_id], params[:access_token])
+    case
+      when !params[:core_id].nil? && !params[:access_token].nil?
+        @particle = RubySpark::Core.new(params[:core_id],
+                                        params[:access_token])
+      when !params[:id].nil?
+        @particle = Particle.find_by(id: params[:id]).connection
+      else
+        @particle = params[:particle].connection
+    end
   end
 
   def info
@@ -29,7 +38,7 @@ class ParticleJob < ActiveJob::Base
   def particle_params(*args)
     args.to_h.
          symbolize_keys.
-         slice(:core_id, :access_token)
+         slice(:core_id, :access_token, :particle, :id)
   end
 
 end

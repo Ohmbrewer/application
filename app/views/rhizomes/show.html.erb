@@ -1,0 +1,33 @@
+<% provide(:title, @rhizome.name) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="rhizome_info">
+      <h1>
+        <%= @rhizome.name %>
+      </h1>
+      <ul>
+        <li><span class="rhizome show_info">Name:</span> <%= @rhizome.name %></li>
+        <li><span class="rhizome show_info">Device ID:</span> <%= @rhizome.particle.device_id %></li>
+        <li><span class="rhizome show_info">Access Token:</span> <%= @rhizome.particle.access_token %></li>
+      </ul>
+    </section>
+    <%= link_to 'Edit',
+                edit_rhizome_path,
+                id: @rhizome.id,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Edit',
+                title: 'Edit' %>
+    <%= link_to 'Delete',
+                @rhizome,
+                method: :delete,
+                data: { confirm: 'You sure?' },
+                class: 'btn btn-sm btn-primary',
+                alt: 'Delete',
+                title: 'Delete' %>
+    <%= link_to 'Back',
+                rhizomes_path,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Back',
+                title: 'Back' %>
+  </aside>
+</div>

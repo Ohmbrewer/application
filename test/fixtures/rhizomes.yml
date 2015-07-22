@@ -1,0 +1,17 @@
+# Should be a good Rhizome
+zeus:
+  name: zeus
+  device_id: 54ff6d066667515117151666
+  access_token: d154e6c68722ab58d2ac007ccbcb667d5a5f5670
+
+# Should fail to validate the device id
+japanese:
+  name: japanese
+  device_id: 833r
+  access_token: d154e6c68733ab58d2ac007ccbcb667d5a5f5670
+
+# Should fail to validate the access token
+golden:
+  name: golden
+  device_id: 54ff6d066667515117151666
+  access_token: 834r

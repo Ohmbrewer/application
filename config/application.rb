@@ -25,8 +25,5 @@ module Ohmbrewer
 
     # Use Delayed Job for ActiveJob
     config.active_job.queue_adapter = :delayed_job
-
-    # Load Rhizomes
-    #config.x.rhizomes = config_for(:rhizomes)
   end
 end

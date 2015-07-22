@@ -1,0 +1,11 @@
+<% flash.each do |message_type, message| %>
+    <%= content_tag(:div, class: "alert alert-#{message_type}") do %>
+        <%= case message_type
+             when 'danger'
+               content_tag(:span, '', id: 'flash-glyphicon', class: 'glyphicon glyphicon-alert')
+             when 'success'
+               content_tag(:span, '', id: 'flash-glyphicon', class: 'glyphicon glyphicon-ok')
+           end %>
+          <%= sanitize message %>
+    <% end %>
+<% end %>

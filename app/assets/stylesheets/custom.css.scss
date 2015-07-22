@@ -103,14 +103,6 @@ footer ul li {
   margin-left: 15px;
 }
 
-/* Main Menu */
-.btn-group.btn-block {
-  display: table;
-}
-.btn-group.btn-block > .btn {
-  display: table-cell;
-}
-
 /* sidebar */
 
 aside {
@@ -166,6 +158,13 @@ $gray-medium-light: #eaeaea;
   width: 100%;
   margin-top: 45px;
   @include box_sizing;
+}
+
+#flash-glyphicon {
+  float: left;
+  padding-bottom: 1.5em;
+  font-size: 1.5em;
+  margin-right: 0.5em;
 }
 
 /* forms */

@@ -1,7 +1,7 @@
 class StaticPagesController < ApplicationController
 
   before_action :logged_in_user,
-                only: [:home, :configuration]
+                only: [:home]
 
   def home; end
 
@@ -10,7 +10,5 @@ class StaticPagesController < ApplicationController
   def help; end
 
   def about; end
-
-  def configuration; end
 
 end
