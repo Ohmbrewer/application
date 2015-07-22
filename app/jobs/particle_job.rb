@@ -11,7 +11,7 @@ class ParticleJob < ActiveJob::Base
         @particle = RubySpark::Core.new(params[:core_id],
                                         params[:access_token])
       when !params[:id].nil?
-        @particle = Particle.find_by(params[:id]).connection
+        @particle = Particle.find_by(id: params[:id]).connection
       else
         @particle = params[:particle].connection
     end

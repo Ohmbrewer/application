@@ -40,8 +40,8 @@ ActiveRecord::Schema.define(version: 20150715025507) do
     t.integer  "rhizome_id"
   end
 
-  add_index "particles", ["device_id"], name: "index_particles_on_device_id", unique: true
-  add_index "particles", ["rhizome_id"], name: "index_particles_on_rhizome_id"
+  add_index "particles", ["device_id"], name: "index_particles_on_device_id", unique: true, using: :btree
+  add_index "particles", ["rhizome_id"], name: "index_particles_on_rhizome_id", using: :btree
 
   create_table "rhizomes", force: :cascade do |t|
     t.string   "name",        null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20150715025507) do
     t.integer  "particle_id"
   end
 
-  add_index "rhizomes", ["particle_id"], name: "index_rhizomes_on_particle_id"
+  add_index "rhizomes", ["particle_id"], name: "index_rhizomes_on_particle_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -64,4 +64,6 @@ ActiveRecord::Schema.define(version: 20150715025507) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
+  add_foreign_key "particles", "rhizomes"
+  add_foreign_key "rhizomes", "particles"
 end
