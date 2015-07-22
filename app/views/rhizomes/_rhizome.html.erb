@@ -1,10 +1,10 @@
 <tr>
   <td><%= check_box_tag 'rhizomes[]', rhizome.id, false %></td>
   <td><%= link_to rhizome.name, rhizome %></td>
-  <td><%= rhizome.particle.device_id %></td>
+  <td><%= rhizome.particle_device.device_id %></td>
   <td>
   <% if current_user.admin? %>
-      <%= link_to ping_new_job_path(id: rhizome.particle.id),
+      <%= link_to ping_new_job_path(id: rhizome.particle_device.id),
                   method: :get,
                   class: 'btn btn-sm btn-primary',
                   alt: "Ping #{rhizome.name}",
