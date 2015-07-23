@@ -1,0 +1,28 @@
+<div class="modal fade" id="rhizome-<%= rhizome.id %>-<%= action %>" tabindex="-1" role="dialog" aria-labelledby="rhizome-<%= rhizome.id %>-<%= action %>-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header navbar-inverse">
+        <%= button_tag '', class: 'btn btn-sm btn-danger glyphicon glyphicon-remove', 'data-dismiss' => 'modal' %>
+        <h4 class="modal-title" id="rhizome-<%= rhizome.id %>-<%= action %>-label"><%= title %></h4>
+      </div>
+      <div class="modal-body rhizome-info">
+        <%= render "rhizomes/modals/#{action}", rhizome: rhizome %>
+      </div>
+      <div class="modal-footer">
+        <%= link_to 'Edit',
+                    edit_rhizome_path(id: rhizome.id),
+                    id: rhizome.id,
+                    class: 'btn btn-sm btn-primary',
+                    alt: 'Edit',
+                    title: 'Edit' %>
+        <%= link_to 'Delete',
+                    rhizome,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete #{rhizome.name}?" },
+                    class: 'btn btn-sm btn-primary',
+                    alt: 'Delete',
+                    title: 'Delete' %>
+      </div>
+    </div>
+  </div>
+</div>

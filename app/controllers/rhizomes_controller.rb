@@ -84,7 +84,7 @@ class RhizomesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rhizome_params
-      params.require(:rhizome).permit(:name, particle_attributes: [:device_id, :access_token])
+      params.require(:rhizome).permit(:name, particle_device_attributes: [:device_id, :access_token])
     end
 
 end
