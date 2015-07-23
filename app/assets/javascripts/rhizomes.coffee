@@ -1,4 +1,4 @@
-# Riffing on the example found at http://www.benkirane.ch/ajax-bootstrap-modals-rails
+## Riffing on the example found at http://www.benkirane.ch/ajax-bootstrap-modals-rails
 $ ->
   $.rails.allowAction = (link) ->
     return true unless link.attr('data-confirm')
@@ -7,12 +7,14 @@ $ ->
 
   $.rails.confirmed = (link) ->
     link.removeAttr('data-confirm')
-    link.trigger('click.rails')
+    link.trigger('click.rails') unless link.is('form')
+    link.trigger('submit.rails') if link.is('form')
 
   $.rails.showConfirmDialog = (link) ->
     message = link.attr 'data-confirm'
+    confirm_id = link.attr 'data-confirm-for'
     html = """
-           <div class="modal fade" id="confirmationDialog">
+           <div class="modal" id="confirmationDialog-#{confirm_id}">
              <div class="modal-dialog">
                <div class="modal-content">
                  <div class="modal-header navbar-inverse">
@@ -27,5 +29,5 @@ $ ->
              </div>
            </div>
            """
-    $(html).modal('show')
-    $('#confirmationDialog .confirm').on 'click', -> $.rails.confirmed(link)
+    $(html).modal()
+    $('#confirmationDialog-' + confirm_id + ' .confirm').on 'click', -> $.rails.confirmed(link)

@@ -10,7 +10,7 @@
 <%= form_for :rhizome,
              url: destroy_multiple_rhizomes_path,
              method: :delete,
-             data: { confirm: 'You sure you want to delete all of these?' },
+             data: { confirm: 'You sure you want to delete all of these?', confirm_for: 'destroy-multiple-rhizomes' },
              id: 'bulk-delete bulk-delete-rhizomes-form' do %>
 <div class="table-responsive">
     <%= will_paginate %>

@@ -2,7 +2,7 @@
   <td><%= check_box_tag 'rhizomes[]', rhizome.id, false %></td>
   <td>
     <%= link_to rhizome.name, '', 'data-toggle' => 'modal', 'data-target' => "#rhizome-#{rhizome.id}-show" %>
-    <%= render 'rhizomes/modals/rhizomes_modal', rhizome: rhizome, action: 'show', title: rhizome.name %>
+    <%= render 'rhizomes/modals/show', rhizome: rhizome %>
   </td>
   <td><%= rhizome.particle_device.device_id %></td>
   <td>
@@ -16,7 +16,7 @@
       <% end %>
       <%= link_to rhizome,
                   method: :delete,
-                  data: { confirm: "You sure you want to delete #{rhizome.name}?" },
+                  data: { confirm: "You sure you want to delete #{rhizome.name}?", confirm_for: "rhizome-#{rhizome.id}-destroy" },
                   class: 'btn btn-sm btn-primary',
                   alt: "Delete #{rhizome.name}",
                   title: "Delete #{rhizome.name}" do %>
