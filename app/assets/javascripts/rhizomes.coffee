@@ -14,7 +14,7 @@ $ ->
     message = link.attr 'data-confirm'
     confirm_id = link.attr 'data-confirm-for'
     html = """
-           <div class="modal" id="confirmationDialog-#{confirm_id}">
+           <div class="modal fade" id="confirmationDialog-#{confirm_id}">
              <div class="modal-dialog">
                <div class="modal-content">
                  <div class="modal-header navbar-inverse">
