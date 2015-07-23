@@ -15,7 +15,7 @@ class RhizomesController < ApplicationController
 
   def new
     @rhizome = Rhizome.new
-    @rhizome.build_particle
+    @rhizome.build_particle_device
   end
 
   def edit
