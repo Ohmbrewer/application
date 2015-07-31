@@ -17,6 +17,7 @@
                     title: 'Edit' %>
         <%= link_to 'Delete',
                     rhizome,
+                    id: "rhizome-#{rhizome.id}-destroy-from-show",
                     method: :delete,
                     data: { confirm: "You sure you want to delete #{rhizome.name}?" },
                     class: 'btn btn-sm btn-primary',
