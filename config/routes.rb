@@ -22,6 +22,12 @@ Rails.application.routes.draw do
 
   resources :jobs, shallow: true do
     get 'ping', on: :new
+    get 'pump', on: :new
+  end
+
+  # Provide webhooks for our HOPS... HOPhooks, if you will...
+  scope '/hooks/v1', :controller => :hooks do
+    post :pumps
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
