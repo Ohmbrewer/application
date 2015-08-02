@@ -7,12 +7,19 @@
   <td><%= rhizome.particle_device.device_id %></td>
   <td>
   <% if current_user.admin? %>
+      <%= link_to pump_new_job_path(id: rhizome.particle_device.id, pump_id: 1),
+                  method: :get,
+                  class: 'btn btn-sm btn-primary',
+                  alt: "Test Pump 1 Job #{rhizome.name}",
+                  title: "Test Pump 1 Job #{rhizome.name}" do %>
+        <span class="glyphicon glyphicon-transfer"></span>
+      <% end %>
       <%= link_to ping_new_job_path(id: rhizome.particle_device.id),
                   method: :get,
                   class: 'btn btn-sm btn-primary',
                   alt: "Ping #{rhizome.name}",
                   title: "Ping #{rhizome.name}" do %>
-          <span class="glyphicon glyphicon-asterisk"></span>
+          <span class="glyphicon glyphicon-certificate"></span>
       <% end %>
       <%= link_to rhizome,
                   method: :delete,

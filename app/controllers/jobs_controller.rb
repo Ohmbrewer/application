@@ -24,4 +24,9 @@ class JobsController < ApplicationController
     redirect_to rhizomes_url
   end
 
+  def pump
+    PumpJob.new(*params).perform_now
+    redirect_to rhizomes_url
+  end
+
 end
