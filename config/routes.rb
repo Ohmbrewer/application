@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     collection do
       delete :destroy_multiple
     end
+    # Provide a way to add a Particle webhook. Might want to refactor/automate this somehow...
+    resources :hooks, only: [:new, :create]
   end
 
   resources :jobs, shallow: true do

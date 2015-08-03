@@ -1,0 +1,24 @@
+<% provide(:title, 'Add Webhook for Rhizome') %>
+<h1>Add a Webhook for the Rhizome</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@particle_webhook, url: rhizome_hooks_url ) do |f| %>
+        <%= render 'shared/error_messages', object: f.object  %>
+
+        <%= f.label :device_id, 'Device ID' %>
+        <%= f.text_field :device_id, class: 'form-control', disabled: 'true' %>
+        <%= f.label :endpoint, 'Endpoint URL' %>
+        <%= f.text_field :endpoint, class: 'form-control' %>
+        <%= f.label :event_type, 'Event Type' %>
+        <%= f.select :event_type, ParticleWebhook::EVENT_TYPES.map { |e| [e.to_s.capitalize, e]}, class: 'form-control' %>
+        <%= f.label :event_id, 'Event ID' %>
+        <%= f.text_field :event_id, class: 'form-control' %>
+
+        <%= f.hidden_field :rhizome_id, value: params[:rhizome_id] %>
+
+        <%= button_tag 'Add', type: :submit, class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Cancel', rhizomes_path, class: 'btn btn-sm btn-primary btn-danger' %>
+    <% end %>
+  </div>
+</div>
