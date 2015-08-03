@@ -10,7 +10,6 @@ class JobsController < ApplicationController
   def ping
     result = PingJob.new(*params).perform_now
 
-    puts result
     if result[:connected]
       flash[:success] = "Pinged <strong>#{result[:name]}</strong>!<br />" <<
                         "Here's what I got:<br />" <<
@@ -25,17 +24,12 @@ class JobsController < ApplicationController
   end
 
   def pump
-    result = PumpJob.new(*params).perform_now
-
-    if result[:success].present?
-      flash[:success] = result[:success]
-    elsif result[:error].present?
-      flash[:danger] = result[:error]
-    else
-      flash[:warning] = "Something strange happened and I'm confused..."
-    end
-
+    PumpJob.new(*pump_params).perform
     redirect_to rhizomes_url
   end
 
+  private
+    def pump_params
+      params.permit(:id, :pump_id, :task, :_method, :authenticity_token)
+    end
 end

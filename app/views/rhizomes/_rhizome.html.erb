@@ -14,29 +14,36 @@
                     title: "Add a webhook for #{rhizome.name}" do %>
             <span class="glyphicon glyphicon-earphone"></span>
         <% end %>
-      <%= link_to pump_new_job_path(id: rhizome.particle_device.id, pump_id: 1),
-                  method: :get,
-                  class: 'btn btn-sm btn-success',
-                  alt: "Test Pump 1 Job #{rhizome.name}",
-                  title: "Test Pump 1 Job #{rhizome.name}" do %>
-        <span class="glyphicon glyphicon-transfer"></span>
-      <% end %>
-      <%= link_to ping_new_job_path(id: rhizome.particle_device.id),
-                  method: :get,
-                  class: 'btn btn-sm btn-success',
-                  alt: "Ping #{rhizome.name}",
-                  title: "Ping #{rhizome.name}" do %>
+        <%= link_to pump_path(id: rhizome.particle_device.id, pump_id: 1, task: :on),
+                    method: :post,
+                    class: 'btn btn-sm btn-success',
+                    alt: "Turn on Pump 1 for #{rhizome.name}",
+                    title: "Turn on Pump 1 for #{rhizome.name}" do %>
+          <span class="glyphicon glyphicon-repeat"></span>
+        <% end %>
+        <%= link_to pump_path(id: rhizome.particle_device.id, pump_id: 1, task: :off),
+                    method: :post,
+                    class: 'btn btn-sm btn-success',
+                    alt: "Turn off Pump 1 for #{rhizome.name}",
+                    title: "Turn off Pump 1 for #{rhizome.name}" do %>
+          <span class="glyphicon glyphicon-off"></span>
+        <% end %>
+        <%= link_to ping_path(id: rhizome.particle_device.id),
+                    method: :post,
+                    class: 'btn btn-sm btn-warning',
+                    alt: "Ping #{rhizome.name}",
+                    title: "Ping #{rhizome.name}" do %>
           <span class="glyphicon glyphicon-certificate"></span>
-      <% end %>
-      <%= link_to rhizome,
-                  method: :delete,
-                  data: { confirm: "You sure you want to delete #{rhizome.name}?" },
-                  class: 'btn btn-sm btn-danger',
-                  id: "rhizome-#{rhizome.id}-destroy",
-                  alt: "Delete #{rhizome.name}",
-                  title: "Delete #{rhizome.name}" do %>
-        <span class="glyphicon glyphicon-trash"></span>
-      <% end %>
+        <% end %>
+        <%= link_to rhizome,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete #{rhizome.name}?" },
+                    class: 'btn btn-sm btn-danger',
+                    id: "rhizome-#{rhizome.id}-destroy",
+                    alt: "Delete #{rhizome.name}",
+                    title: "Delete #{rhizome.name}" do %>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
   <% end %>
   </td>
 </tr>

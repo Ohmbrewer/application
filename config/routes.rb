@@ -22,9 +22,9 @@ Rails.application.routes.draw do
     resources :hooks, only: [:new, :create]
   end
 
-  resources :jobs, shallow: true do
-    get 'ping', on: :new
-    get 'pump', on: :new
+  scope :jobs, controller: :jobs, shallow: true do
+    post 'ping' #, on: :create
+    post 'pump' #, on: :new
   end
 
   # Provide webhooks for our HOPS... HOPhooks, if you will...

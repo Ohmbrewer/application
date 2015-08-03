@@ -5,7 +5,11 @@ class ParticleJob < ActiveJob::Base
   def initialize(*arguments)
     super
     params = particle_params(*arguments)
-    
+
+    if params[:device_id].nil? && params[:id].nil? && params[:particle].nil?
+      raise ArgumentError, "No way of specifying the Particle Device! Options: #{[:device_id, :id, :particle]}"
+    end
+
     case
       when !params[:device_id].nil? && !params[:access_token].nil?
         @particle = Particle::Client.new(access_token: params[:access_token])
