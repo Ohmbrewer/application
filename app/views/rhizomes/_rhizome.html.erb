@@ -14,7 +14,7 @@
                     title: "Add a webhook for #{rhizome.name}" do %>
             <span class="glyphicon glyphicon-earphone"></span>
         <% end %>
-      <%= link_to pump_new_job_path(id: rhizome.particle_device.device_id, pump_id: 1),
+      <%= link_to pump_new_job_path(id: rhizome.particle_device.id, pump_id: 1),
                   method: :get,
                   class: 'btn btn-sm btn-success',
                   alt: "Test Pump 1 Job #{rhizome.name}",

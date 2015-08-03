@@ -25,7 +25,16 @@ class JobsController < ApplicationController
   end
 
   def pump
-    PumpJob.new(*params).perform_now
+    result = PumpJob.new(*params).perform_now
+
+    if result[:success].present?
+      flash[:success] = result[:success]
+    elsif result[:error].present?
+      flash[:danger] = result[:error]
+    else
+      flash[:warning] = "Something strange happened and I'm confused..."
+    end
+
     redirect_to rhizomes_url
   end
 
