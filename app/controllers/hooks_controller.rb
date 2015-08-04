@@ -3,7 +3,7 @@ class HooksController < ApplicationController
   # == Enabled Before Filters ==
 
   before_action :set_rhizome,
-                only: [:new, :create]
+                only: [:new, :create, :index, :destroy]
 
   # Have to skip this to receive hooks from outside of Ohmbrewer.
   # Otherwise, we get CSRF token authenticity errors.
@@ -16,20 +16,57 @@ class HooksController < ApplicationController
   end
 
   def create
-    @particle_webhook = ParticleWebhook.new(webhook_params)
-    particle_client = Particle::Client.new(access_token: @rhizome.particle_device.access_token)
-    begin
-      particle_client.webhook(@particle_webhook.to_task_hash).create
-    rescue => e
-      logger.error "Failed to add webhook for #{@particle_webhook.event_type} #{@particle_webhook.event_id} on device #{@particle_webhook.device_id}."
-      logger.error e
-      flash[:danger] = 'Webhook creation failed!'
+    # TODO: Figure out how to get this to work without the kludgy punt to destroy.
+    #       For some reason, the destroy multiple (hooks#destroy) always tries to POST to create instead of destroy
+    if params[:hooks].present?
+      destroy
+    else
+      @particle_webhook = ParticleWebhook.new(hook_params)
+      particle_client = Particle::Client.new(access_token: @rhizome.particle_device.access_token)
+      begin
+        particle_client.webhook(@particle_webhook.to_task_hash).create
+      rescue => e
+        logger.error "Failed to add webhook for #{@particle_webhook.event_type} #{@particle_webhook.event_id} on device #{@particle_webhook.device_id}."
+        logger.error e
+        flash[:danger] = 'Webhook creation failed!'
+        redirect_to rhizomes_path
+        return
+      end
+
+      flash[:success] = 'Webhook added!'
       redirect_to rhizomes_path
-      return
+    end
+  end
+
+  def index
+    particle_client = Particle::Client.new(access_token: @rhizome.particle_device.access_token)
+
+    @particle_webhooks = associated_hooks(particle_client, @rhizome.particle_device.device_id).collect { |ph|
+      et, ei = ph.event.split('/')
+      ParticleWebhook.new device_id: ph.deviceID, endpoint: ph.url, event_type: et.to_sym, event_id: ei.to_i, webhook_id: ph.id
+    }
+  end
+
+  def destroy
+    particle_client = Particle::Client.new(access_token: @rhizome.particle_device.access_token)
+    hooks = associated_hooks(particle_client, @rhizome.particle_device.device_id)
+
+    pre = hooks.length
+    post = 0
+    hooks.each do |hook|
+      post += 1 if hook.remove
     end
 
-    flash[:success] = 'Webhook added!'
-    redirect_to rhizomes_path
+    case post
+      when pre
+        flash[:success] = 'Webhooks deleted'
+      when 0
+        flash[:danger] = 'Deletion failed!'
+      else
+        flash[:warning] = "Something strange happened... #{pre - post} Webhooks weren't deleted."
+    end
+
+    redirect_to rhizome_hooks_url
   end
 
   # == Particle Event Routes ==
@@ -65,8 +102,9 @@ class HooksController < ApplicationController
     @rhizome = Rhizome.find(params[:rhizome_id]) unless params[:rhizome_id].to_i.zero?
   end
 
-  def webhook_params
-    params.require(:particle_webhook).permit(:device_id, :endpoint, :event_id, :event_type)
+  def hook_params
+    params.require(:particle_webhook)
+          .permit(:device_id, :endpoint, :event_id, :event_type, :hooks)
   end
 
   # Strong parameter requirements to be enforced when creating a PumpStatus
@@ -83,5 +121,12 @@ class HooksController < ApplicationController
         :published_at,
         :ttl
     )
+  end
+
+  # Gets the hooks that report as belonging to a given device
+  # @param [Particle::Client] particle_client Client for interfacing with the Particle service
+  # @param [String] device_id The Device ID of the device we want webhooks for
+  def associated_hooks(particle_client, device_id)
+    particle_client.webhooks.select { |wh| wh if (wh.deviceID == device_id) }
   end
 end

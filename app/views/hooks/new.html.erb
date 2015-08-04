@@ -16,6 +16,7 @@
         <%= f.text_field :event_id, class: 'form-control' %>
 
         <%= f.hidden_field :rhizome_id, value: params[:rhizome_id] %>
+        <%= f.hidden_field :device_id, value: @particle_webhook.device_id %>
 
         <%= button_tag 'Add', type: :submit, class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Cancel', rhizomes_path, class: 'btn btn-sm btn-primary btn-danger' %>

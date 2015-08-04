@@ -1,0 +1,48 @@
+<% provide(:title, "Webhooks for #{@rhizome.name}") %>
+<h1>
+  Manage Webhooks for <%= @rhizome.name %> <%= link_to '',
+                                                       new_rhizome_hook_path(rhizome_id: @rhizome.id),
+                                                       method: :get,
+                                                       class: 'btn btn-sm btn-primary glyphicon glyphicon-plus',
+                                                       alt: "Add a webhook for #{@rhizome.name}",
+                                                       title: "Add a webhook for #{@rhizome.name}" %>
+</h1>
+<h5>
+  The Device ID for <b><%= @rhizome.name %></b> is: <b><%= @rhizome.particle_device.device_id %></b>
+</h5>
+<%= form_tag url: rhizome_hooks_path(rhizome_id: @rhizome.id, id: @rhizome.particle_device.device_id),
+             method: :delete do %>
+<div class="table-responsive">
+    <table class="hooks table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>
+            <%= button_tag '',
+                           type: :submit,
+                           data: { confirm: 'You sure you want to delete all of these?' },
+                           class: 'btn btn-sm btn-danger glyphicon glyphicon-trash',
+                           alt: 'Delete Selected',
+                           title: 'Delete Selected' %>
+          </th>
+          <th>Endpoint URL</th>
+          <th>Event Type</th>
+          <th>Event ID</th>
+        </tr>
+      </thead>
+      <tbody>
+      <%= render @particle_webhooks %>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td>
+        <%= link_to 'Back',
+                    rhizomes_path,
+                    class: 'btn btn-sm btn-primary',
+                    alt: 'Back to Rhizomes',
+                    title: 'Back to Rhizomes' %>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+</div>
+<% end %>

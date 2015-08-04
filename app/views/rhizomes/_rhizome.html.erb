@@ -9,10 +9,16 @@
   <% if current_user.admin? %>
         <%= link_to new_rhizome_hook_path(rhizome_id: rhizome.id),
                     method: :get,
-                    class: 'btn btn-sm btn-primary',
+                    class: 'btn btn-sm btn-info',
                     alt: "Add a webhook for #{rhizome.name}",
                     title: "Add a webhook for #{rhizome.name}" do %>
             <span class="glyphicon glyphicon-earphone"></span>
+        <% end %>
+        <%= link_to rhizome_hooks_path(rhizome_id: rhizome.id),
+                    class: 'btn btn-sm btn-info',
+                    alt: "Delete webhooks for #{rhizome.name}",
+                    title: "Delete webhooks for #{rhizome.name}" do %>
+            <span class="glyphicon glyphicon-phone-alt"></span>
         <% end %>
         <%= link_to pump_path(id: rhizome.particle_device.id, pump_id: 1, task: :on),
                     method: :post,

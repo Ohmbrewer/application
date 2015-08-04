@@ -3,7 +3,7 @@ class ParticleWebhook
 
   EVENT_TYPES = [:pumps]
 
-  attr_accessor :device_id, :endpoint, :event_id
+  attr_accessor :device_id, :endpoint, :event_id, :webhook_id
   attr_reader :event_type
 
   validates :device_id, presence: true
@@ -45,7 +45,7 @@ class ParticleWebhook
     def task_hash(args)
       settings = {
           mydevices: true,
-          deviceid: args[:device_id],
+          deviceID: args[:device_id],
           event: "#{args[:event_type]}/#{args[:event_id]}",
           url: "#{args[:endpoint]}/hooks/v1/#{args[:event_type]}"
       }
