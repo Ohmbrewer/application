@@ -6,7 +6,7 @@
     <%= form_for(@rhizome) do |f| %>
         <%= render 'fields', f: f, object: @rhizome %>
         <%= button_tag 'Save', type: :submit, class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Cancel', rhizomes_path, class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Cancel', rhizomes_path, class: 'btn btn-sm btn-primary btn-danger' %>
     <% end %>
   </div>
 </div>

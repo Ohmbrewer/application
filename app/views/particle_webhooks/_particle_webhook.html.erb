@@ -1,0 +1,12 @@
+<tr>
+  <td><%= check_box_tag 'hooks[]', particle_webhook.webhook_id, false, class: 'hook_checkbox' %></td>
+  <td>
+    <%= particle_webhook.endpoint %>
+  </td>
+  <td>
+    <%= particle_webhook.event_type %>
+  </td>
+  <td>
+    <%= particle_webhook.event_id %>
+  </td>
+</tr>

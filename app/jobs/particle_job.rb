@@ -5,7 +5,11 @@ class ParticleJob < ActiveJob::Base
   def initialize(*arguments)
     super
     params = particle_params(*arguments)
-    
+
+    if params[:device_id].nil? && params[:id].nil? && params[:particle].nil?
+      raise ArgumentError, "No way of specifying the Particle Device! Options: #{[:device_id, :id, :particle]}"
+    end
+
     case
       when !params[:device_id].nil? && !params[:access_token].nil?
         @particle = Particle::Client.new(access_token: params[:access_token])
@@ -15,6 +19,24 @@ class ParticleJob < ActiveJob::Base
       else
         @particle = params[:particle].connection
     end
+  end
+
+  class << self
+
+    # Consistently formats a Hash of arguments for passing to a Particle device function
+    # @param [Hash] args_hash Hash of the arguments to pass the Particle device's function
+    # @param [Array] order_by Optional order of the arguments
+    # @return [String] String representation of the arguments to pass to the Particle device's function
+    def to_particle_args(args_hash, order_by = nil)
+      if order_by.nil?
+        args_hash.map{|_,v| v }.join(',')
+      else
+        result = ''
+        order_by.each { |k| result << "#{args_hash[k]}," }
+        result.chop
+      end
+    end
+
   end
 
   private

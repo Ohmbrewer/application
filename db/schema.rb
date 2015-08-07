@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150722043549) do
+ActiveRecord::Schema.define(version: 20150802035232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,16 @@ ActiveRecord::Schema.define(version: 20150722043549) do
 
   add_index "particle_devices", ["device_id"], name: "index_particle_devices_on_device_id", unique: true, using: :btree
   add_index "particle_devices", ["rhizome_id"], name: "index_particle_devices_on_rhizome_id", using: :btree
+
+  create_table "pump_statuses", force: :cascade do |t|
+    t.string   "device_id"
+    t.integer  "pump_id"
+    t.string   "state"
+    t.datetime "stop_time"
+    t.integer  "speed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "rhizomes", force: :cascade do |t|
     t.string   "name",        null: false

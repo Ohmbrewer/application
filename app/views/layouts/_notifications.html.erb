@@ -5,6 +5,10 @@
                content_tag(:span, '', id: 'flash-glyphicon', class: 'glyphicon glyphicon-alert')
              when 'success'
                content_tag(:span, '', id: 'flash-glyphicon', class: 'glyphicon glyphicon-ok')
+             when 'warning'
+               content_tag(:span, '', id: 'flash-glyphicon', class: 'glyphicon glyphicon-warning-sign')
+             else
+               content_tag(:span, '', id: 'flash-glyphicon', class: 'glyphicon glyphicon-info-sign')
            end %>
           <%= sanitize message %>
     <% end %>
