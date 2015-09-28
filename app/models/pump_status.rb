@@ -5,22 +5,22 @@ class PumpStatus < ActiveRecord::Base
   validates :pump_id, presence: true
   validates :state, presence: true
 
-  after_save   :notify_state_change
-  after_create :notify_state_change
+  # after_save   :notify_state_change
+  # after_create :notify_state_change
 
   def initialize(attributes = nil, options = {})
     super self.class.parse_incoming_pump_status(attributes), options
   end
 
-  def to_sse_json
-    JSON.generate({
-                      device_id:  device_id,
-                      pump_id:    pump_id,
-                      state:      state,
-                      speed:      speed,
-                      stop_time:  stop_time
-                  })
-  end
+  # def to_sse_json
+  #   JSON.generate({
+  #                     device_id:  device_id,
+  #                     pump_id:    pump_id,
+  #                     state:      state,
+  #                     speed:      speed,
+  #                     stop_time:  stop_time
+  #                 })
+  # end
 
   class << self
 
@@ -37,27 +37,27 @@ class PumpStatus < ActiveRecord::Base
       }
     end
 
-    def on_change
-      PumpStatus.connection.execute 'LISTEN pump_statuses'
-      loop do
-        PumpStatus.connection.raw_connection.wait_for_notify do |event, pid, pump_status|
-          yield pump_status
-        end
-      end
-    ensure
-      PumpStatus.connection.execute 'UNLISTEN pump_statuses'
-    end
-
-    def event_channel
-      {event: 'pump_status_update'}
-    end
-
+  #   def on_change
+  #     PumpStatus.connection.execute 'LISTEN pump_statuses'
+  #     loop do
+  #       PumpStatus.connection.raw_connection.wait_for_notify do |event, pid, pump_status|
+  #         yield pump_status
+  #       end
+  #     end
+  #   ensure
+  #     PumpStatus.connection.execute 'UNLISTEN pump_statuses'
+  #   end
+  #
+  #   def event_channel
+  #     {event: 'pump_status_update'}
+  #   end
+  #
   end
-
-  private
-
-    def notify_state_change
-      PumpStatus.connection.execute "NOTIFY pump_statuses, '#{to_sse_json}'"
-    end
+  #
+  # private
+  #
+  #   def notify_state_change
+  #     PumpStatus.connection.execute "NOTIFY pump_statuses, '#{to_sse_json}'"
+  #   end
 
 end
