@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   scope :jobs, controller: :jobs, shallow: true do
     post 'ping'
     post 'pump'
-    get  'dashboard'
+    # get  'dashboard'
   end
 
   # Provide webhooks for our HOPS... HOPhooks, if you will...
@@ -33,9 +33,9 @@ Rails.application.routes.draw do
     post :pumps
   end
 
-  # Paths under this controller are used with SSE to stream status updates
-  scope :status_updates, controller: :status_updates, shallow: true do
-    get :pumps
-  end
+  # # Paths under this controller are used with SSE to stream status updates
+  # scope :status_updates, controller: :status_updates, shallow: true do
+  #   get :pumps
+  # end
 
 end

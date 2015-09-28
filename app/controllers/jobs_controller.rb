@@ -3,13 +3,13 @@ class JobsController < ApplicationController
   # == Enabled Before Filters ==
 
   before_action :logged_in_user,
-                only: [:ping, :dashboard]
+                only: [:ping] #, :dashboard]
 
   # == Routes ==
 
-  def dashboard
-    @pump_statuses = PumpStatus.paginate(page: params[:page])
-  end
+  # def dashboard
+  #   @pump_statuses = PumpStatus.paginate(page: params[:page])
+  # end
 
   def ping
     result = PingJob.new(*params).perform_now
