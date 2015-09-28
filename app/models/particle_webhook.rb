@@ -66,8 +66,7 @@ class ParticleWebhook
       {
           id:       '{{id}}',
           state:    '{{state}}',
-          speed:    '{{speed}}',
-          stopTime: '{{stopTime}}',
+          stop_time: '{{stop_time}}',
           rhizome:  '{{SPARK_CORE_ID}}'
       }
     end

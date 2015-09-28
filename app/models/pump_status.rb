@@ -17,7 +17,6 @@ class PumpStatus < ActiveRecord::Base
   #                     device_id:  device_id,
   #                     pump_id:    pump_id,
   #                     state:      state,
-  #                     speed:      speed,
   #                     stop_time:  stop_time
   #                 })
   # end
@@ -32,8 +31,7 @@ class PumpStatus < ActiveRecord::Base
           device_id: params['coreid'],
           pump_id:   params['data'].present? ? params['data']['id'] : nil,
           state:     params['data'].present? ? params['data']['state'] : nil,
-          stop_time:  params['data'].present? ? Time.at(params['data']['stopTime'].to_i).to_datetime : nil,
-          speed:     params['data'].present? ? params['data']['speed'] : nil
+          stop_time:  params['data'].present? ? Time.at(params['data']['stop_time'].to_i).to_datetime : nil
       }
     end
 
