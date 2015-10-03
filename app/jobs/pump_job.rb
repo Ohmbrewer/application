@@ -33,8 +33,7 @@ class PumpJob < ParticleJob
           send_task({
                         id: pump_id,
                         state: 'on',
-                        stop_time: minute_from_now.to_i,
-                        speed: 3
+                        stop_time: minute_from_now.to_i
                     })
         when :off
           send_task({

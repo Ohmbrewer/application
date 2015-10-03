@@ -116,7 +116,7 @@ class HooksController < ApplicationController
     json_params = ActionController::Parameters.new json_hash
     json_params.permit(
         :event,
-        {data: [:id, :state, :stopTime, :speed]},
+        {data: [:id, :state, :stop_time]},
         :coreid,
         :published_at,
         :ttl
