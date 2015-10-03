@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928055032) do
+ActiveRecord::Schema.define(version: 20151003090000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,17 @@ ActiveRecord::Schema.define(version: 20150928055032) do
   end
 
   add_index "rhizomes", ["particle_id"], name: "index_rhizomes_on_particle_id", using: :btree
+
+  create_table "temperature_sensor_statuses", force: :cascade do |t|
+    t.string   "device_id"
+    t.integer  "temp_id"
+    t.string   "state"
+    t.datetime "stop_time"
+    t.float    "temperature"
+    t.datetime "last_read_time"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name",            limit: 255

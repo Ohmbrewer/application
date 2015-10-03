@@ -32,8 +32,17 @@ class JobsController < ApplicationController
     redirect_to rhizomes_url
   end
 
+  def temp
+    TemperatureSensorJob.new(*temp_params).perform
+    redirect_to rhizomes_url
+  end
+
   private
     def pump_params
       params.permit(:id, :pump_id, :task, :_method, :authenticity_token)
+    end
+
+    def temp_params
+      params.permit(:id, :temp_id, :task, :_method, :authenticity_token)
     end
 end
