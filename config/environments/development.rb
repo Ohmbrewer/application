@@ -45,7 +45,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
 
   # Adds the Rhizomes
-  config.x.rhizomes = config_for(:rhizomes)
+  config.x.rhizomes = config_for(:rhizomes) if File.exists?("#{File.dirname(__FILE__)}../rhizomes.yml")
 
   # Provide custom encryption keys
   config.keys = {
