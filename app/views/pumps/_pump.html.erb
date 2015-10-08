@@ -1,0 +1,30 @@
+<% disabler = pump.destroy_disabled? ? ' disabled' : '' %>
+<tr>
+  <td><%= check_box_tag 'pumps[]',
+                        pump.id,
+                        false,
+                        class: "pump_checkbox#{disabler}",
+                        disabled: pump.destroy_disabled? %></td>
+  <td><%= pump.type.titlecase %></td>
+  <%= pump_group_column(pump) %>
+  <td><%= pins_list(pump) %></td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to sti_equipment_type_path(pump.type, pump, :edit),
+                    class: 'btn btn-sm btn-info',
+                    alt: "Change Pins for #{pump.type.titlecase}",
+                    title: "Change Pins for #{pump.type.titlecase}" do %>
+            <span class="glyphicon glyphicon-wrench"></span>
+        <% end %>
+        <%= link_to pump,
+                    method: :delete,
+                    data: { confirm: "You sure you want to remove this #{pump.type.titlecase}?" },
+                    class: "btn btn-sm btn-danger#{disabler}",
+                    id: "equipment-#{pump.id}-destroy",
+                    alt: "Remove #{pump.type.titlecase}",
+                    title: "Remove #{pump.type.titlecase}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

@@ -1,0 +1,7 @@
+<%= f.label :data_pin %>
+<%= f.select :data_pin,
+             Rhizome.digital_pins.map { |et| ["D#{et}", et] },
+             {prompt: '--'},
+             class: 'form-control' %>
+<%= f.label :onewire_id, 'OneWire ID' %>
+<%= f.text_field :onewire_id %>

@@ -1,0 +1,30 @@
+<% disabler = heating_element.destroy_disabled? ? ' disabled' : '' %>
+<tr>
+  <td><%= check_box_tag 'heating_elements[]',
+                        heating_element.id,
+                        false,
+                        class: "heating_element_checkbox#{disabler}",
+                        disabled: heating_element.destroy_disabled? %></td>
+  <td><%= heating_element.type.titlecase %></td>
+  <%= heating_element_group_column(heating_element) %>
+  <td><%= pins_list(heating_element) %></td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to sti_equipment_type_path(heating_element.type, heating_element, :edit),
+                    class: 'btn btn-sm btn-info',
+                    alt: "Change Pins for #{heating_element.type.titlecase}",
+                    title: "Change Pins for #{heating_element.type.titlecase}" do %>
+            <span class="glyphicon glyphicon-wrench"></span>
+        <% end %>
+        <%= link_to heating_element,
+                    method: :delete,
+                    data: { confirm: "You sure you want to remove this #{heating_element.type.titlecase}?" },
+                    class: "btn btn-sm btn-danger#{disabler}",
+                    id: "equipment-#{heating_element.id}-destroy",
+                    alt: "Remove #{heating_element.type.titlecase} ##{heating_element.id}",
+                    title: "Remove #{heating_element.type.titlecase} ##{heating_element.id}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

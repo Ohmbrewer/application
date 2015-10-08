@@ -1,0 +1,42 @@
+<% provide(:title, 'Manage Thermostats') %>
+<h1>
+  Manage Thermostats <%= link_to '',
+                                new_thermostat_path,
+                                class: 'btn btn-sm btn-primary glyphicon glyphicon-plus',
+                                alt: 'Add a Thermostat',
+                                title: 'Add a Thermostat' %>
+</h1>
+
+<%= form_for :thermostat,
+             url: destroy_multiple_thermostats_path,
+             method: :delete,
+             id: 'bulk-delete bulk-delete-thermostats-form' do %>
+    <div class="table-responsive">
+      <%= will_paginate %>
+
+      <table class="thermostats table table-hover table-striped">
+        <thead>
+        <tr>
+          <th>
+            <%= button_tag '',
+                           type: :submit,
+                           method: :delete,
+                           id: 'destroy-multiple-thermostats',
+                           data: { confirm: 'You sure you want to remove all of these?' },
+                           class: 'btn btn-sm btn-primary glyphicon glyphicon-trash',
+                           alt: 'Remove Selected Thermostat',
+                           title: 'Remove Selected Thermostat' %>
+          </th>
+          <th>Type</th>
+          <th>Pins</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render @thermostats %>
+        </tbody>
+      </table>
+
+      <%= will_paginate %>
+    </div>
+<% end %>

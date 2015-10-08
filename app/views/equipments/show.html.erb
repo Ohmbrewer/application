@@ -1,0 +1,22 @@
+<% provide(:title, "#{@type.titlecase} ##{@equipment.id}") %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="equipment_info">
+      <h1>
+        <%= @type.titlecase %> #<%= @equipment.id %>
+      </h1>
+      <h4>
+        Pins:
+      </h4>
+      <% if @equipment.pins.length.zero? %>
+      <p>None</p>
+      <% else %>
+      <ul>
+        <% @equipment.pins.each do |k, v| %>
+            <li><%= k.titlecase %>: <%= v %></li>
+        <% end %>
+      </ul>
+      <% end %>
+    </section>
+  </aside>
+</div>

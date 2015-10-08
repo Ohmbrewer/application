@@ -43,7 +43,10 @@ class RhizomesController < ApplicationController
   end
 
   def destroy
-    if params[:rhizomes].nil?
+    if !params[:heating_elements].nil? || !params[:temperature_sensors].nil? ||
+       !params[:pumps].nil? || !params[:equipments].nil?
+      redirect_to controller: :equipments, action: :destroy_multiple, params: params
+    elsif params[:rhizomes].nil?
 
       if @rhizome.nil?
         flash[:danger] = 'No Rhizome selected!'

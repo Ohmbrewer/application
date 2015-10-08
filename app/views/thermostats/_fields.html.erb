@@ -1,0 +1,19 @@
+<%= render 'shared/error_messages', object: f.object  %>
+
+<% if rhizome.nil? %>
+    <%= f.label :rhizome %>
+    <%= f.select :rhizome,
+                 Rhizome.all.map { |r| [r.name, r.id] },
+                 {},
+                 class: 'form-control' %>
+<% else %>
+    <%= f.hidden_field :rhizome, value: rhizome.id %>
+<% end %>
+<h5><%= f.label :element, 'Heating Element' %></h5>
+<%= f.fields_for :element do |p| %>
+    <%= render partial: 'heating_elements/pins', locals: {f: p} %>
+<% end %>
+<h5><%= f.label :sensor, 'Temperature Sensor' %></h5>
+<%= f.fields_for :sensor do |p| %>
+    <%= render partial: 'temperature_sensors/pins', locals: {f: p} %>
+<% end %>

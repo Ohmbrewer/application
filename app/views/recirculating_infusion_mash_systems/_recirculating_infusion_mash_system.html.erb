@@ -1,0 +1,29 @@
+<tr>
+  <td><%= check_box_tag 'recirculating_infusion_mash_systems[]',
+                        recirculating_infusion_mash_system.id,
+                        false,
+                        class: 'recirculating_infusion_mash_system_checkbox' %></td>
+  <td><%= recirculating_infusion_mash_system.type %></td>
+  <td>
+    <%= render partial: 'pins_list', locals: {rims: recirculating_infusion_mash_system} %>
+  </td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to edit_recirculating_infusion_mash_system_path(recirculating_infusion_mash_system),
+                    class: 'btn btn-sm btn-info',
+                    alt: "Change Pins for RIMS ##{recirculating_infusion_mash_system.rhizome_eid}",
+                    title: "Change Pins for RIMS ##{recirculating_infusion_mash_system.rhizome_eid}" do %>
+            <span class="glyphicon glyphicon-wrench"></span>
+        <% end %>
+        <%= link_to recirculating_infusion_mash_system,
+                    method: :delete,
+                    data: { confirm: 'You sure you want to remove this RIMS?' },
+                    class: 'btn btn-sm btn-danger',
+                    id: "rims-#{recirculating_infusion_mash_system.id}-destroy",
+                    alt: "Remove RIMS ##{recirculating_infusion_mash_system.rhizome_eid}",
+                    title: "Remove RIMS ##{recirculating_infusion_mash_system.rhizome_eid}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

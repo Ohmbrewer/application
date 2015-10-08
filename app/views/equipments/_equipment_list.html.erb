@@ -1,0 +1,34 @@
+<%= form_for :equipment,
+             url: destroy_multiple_equipments_path,
+             method: :delete,
+             id: 'bulk-delete bulk-delete-equipments-form' do %>
+    <div class="table-responsive">
+      <%= will_paginate %>
+
+      <table class="equipments table table-hover table-striped">
+        <thead>
+        <tr>
+          <th>
+            <%= button_tag '',
+                           type: :submit,
+                           method: :delete,
+                           id: 'destroy-multiple-equipments',
+                           data: { confirm: 'You sure you want to remove all of these?' },
+                           class: 'btn btn-sm btn-primary glyphicon glyphicon-trash',
+                           alt: 'Remove Selected Equipment',
+                           title: 'Remove Selected Equipment' %>
+          </th>
+          <th>Type</th>
+          <th>Group</th>
+          <th>Pins</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render e %>
+        </tbody>
+      </table>
+
+      <%= will_paginate %>
+    </div>
+<% end %>

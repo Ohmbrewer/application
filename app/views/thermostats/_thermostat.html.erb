@@ -1,0 +1,24 @@
+<tr>
+  <td><%= check_box_tag 'thermostats[]', thermostat.id, false, class: 'thermostat_checkbox' %></td>
+  <td><%= thermostat.type.titlecase %></td>
+  <td><%= render partial: 'pins_list', locals: {thermostat: @thermostat} %></td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to edit_thermostat_path(thermostat),
+                    class: 'btn btn-sm btn-info',
+                    alt: "Change Pins for Thermostat ##{thermostat.rhizome_eid}",
+                    title: "Change Pins for Thermostat ##{thermostat.rhizome_eid}" do %>
+            <span class="glyphicon glyphicon-wrench"></span>
+        <% end %>
+        <%= link_to thermostat,
+                    method: :delete,
+                    data: { confirm: 'You sure you want to remove this Thermostat?' },
+                    class: 'btn btn-sm btn-danger',
+                    id: "thermostat-#{thermostat.id}-destroy",
+                    alt: "Remove Thermostat ##{thermostat.rhizome_eid}",
+                    title: "Remove Thermostat ##{thermostat.rhizome_eid}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

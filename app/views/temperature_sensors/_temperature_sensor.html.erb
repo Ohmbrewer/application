@@ -1,0 +1,30 @@
+<% disabler = temperature_sensor.destroy_disabled? ? ' disabled' : '' %>
+<tr>
+  <td><%= check_box_tag 'temperature_sensors[]',
+                        temperature_sensor.id,
+                        false,
+                        class: "temperature_sensor_checkbox#{disabler}",
+                        disabled: temperature_sensor.destroy_disabled? %></td>
+  <td><%= temperature_sensor.type.titlecase %></td>
+  <%= temperature_sensor_group_column(temperature_sensor) %>
+  <td><%= pins_list(temperature_sensor) %></td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to sti_equipment_type_path(temperature_sensor.type, temperature_sensor, :edit),
+                    class: 'btn btn-sm btn-info',
+                    alt: "Change Pins for #{temperature_sensor.type.titlecase}",
+                    title: "Change Pins for #{temperature_sensor.type.titlecase}" do %>
+            <span class="glyphicon glyphicon-wrench"></span>
+        <% end %>
+        <%= link_to temperature_sensor,
+                    method: :delete,
+                    data: { confirm: "You sure you want to remove this #{temperature_sensor.type.titlecase}?" },
+                    class: "btn btn-sm btn-danger#{disabler}",
+                    id: "equipment-#{temperature_sensor.id}-destroy",
+                    alt: "Remove #{temperature_sensor.type.titlecase}",
+                    title: "Remove #{temperature_sensor.type.titlecase}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>
