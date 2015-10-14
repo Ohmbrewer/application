@@ -1,7 +1,7 @@
 class ParticleWebhook
   include ActiveModel::Model
 
-  EVENT_TYPES = [:pumps]
+  EVENT_TYPES = [:pumps, :temps]
 
   attr_accessor :device_id, :endpoint, :event_id, :webhook_id
   attr_reader :event_type
@@ -21,21 +21,13 @@ class ParticleWebhook
 
 
   def to_task_hash
-    settings = {
+    {
         mydevices: true,
         deviceid: device_id,
         event: "#{event_type}/#{event_id}",
-        url: "#{endpoint}/hooks/v1/#{event_type}"
+        url: "#{endpoint}/hooks/v1/#{event_type}",
+        json: self.class.send("#{event_type}_task_json")
     }
-
-    case event_type
-      when :pumps
-        settings.merge!({json: self.class.pump_task_json})
-      else
-        raise ArgumentError, "Invalid Event Type supplied: #{event_type}"
-    end
-
-    settings
   end
 
   class << self
@@ -43,21 +35,13 @@ class ParticleWebhook
     # Returns our current configuration for the JSON section of the Pump task webhook creation call.
     # Should probably be refactored into the database or something smart...
     def task_hash(args)
-      settings = {
+      {
           mydevices: true,
           deviceID: args[:device_id],
           event: "#{args[:event_type]}/#{args[:event_id]}",
-          url: "#{args[:endpoint]}/hooks/v1/#{args[:event_type]}"
+          url: "#{args[:endpoint]}/hooks/v1/#{args[:event_type]}",
+          json: self.class.send("#{args[:event_type]}_task")
       }
-
-      case args[:event_type]
-        when :pumps
-          settings.merge!({json: pump_task_json})
-        else
-          raise ArgumentError, "Invalid Event Type supplied: #{args[:event_type]}"
-      end
-
-      settings
     end
 
     # Returns our current configuration for the JSON section of the Pump task webhook creation call.
@@ -68,6 +52,19 @@ class ParticleWebhook
           state:    '{{state}}',
           stop_time: '{{stop_time}}',
           rhizome:  '{{SPARK_CORE_ID}}'
+      }
+    end
+
+    # Returns our current configuration for the JSON section of the Temperature Sensor task webhook creation call.
+    # Should probably be refactored into the database or something smart...
+    def temp_task_json
+      {
+          id:             '{{id}}',
+          state:          '{{state}}',
+          stop_time:      '{{stop_time}}',
+          temperature:    '{{temperature}}',
+          last_read_time: '{{last_read_time}}',
+          rhizome:        '{{SPARK_CORE_ID}}'
       }
     end
 
