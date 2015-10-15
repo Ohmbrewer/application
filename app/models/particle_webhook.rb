@@ -1,7 +1,7 @@
 class ParticleWebhook
   include ActiveModel::Model
 
-  EVENT_TYPES = [:pumps, :temps]
+  EVENT_TYPES = [:pumps, :temps, :heat]
 
   attr_accessor :device_id, :endpoint, :event_id, :webhook_id
   attr_reader :event_type
@@ -64,6 +64,18 @@ class ParticleWebhook
           stop_time:      '{{stop_time}}',
           temperature:    '{{temperature}}',
           last_read_time: '{{last_read_time}}',
+          rhizome:        '{{SPARK_CORE_ID}}'
+      }
+    end
+
+    # Returns our current configuration for the JSON section of the Heating Element task webhook creation call.
+    # Should probably be refactored into the database or something smart...
+    def heat_task_json
+      {
+          id:             '{{id}}',
+          state:          '{{state}}',
+          stop_time:      '{{stop_time}}',
+          voltage:        '{{voltage}}',
           rhizome:        '{{SPARK_CORE_ID}}'
       }
     end

@@ -7,7 +7,7 @@ class HooksController < ApplicationController
 
   # Have to skip this to receive hooks from outside of Ohmbrewer.
   # Otherwise, we get CSRF token authenticity errors.
-  skip_before_filter :verify_authenticity_token, only: [:pumps, :temps]
+  skip_before_filter :verify_authenticity_token, only: [:pumps, :temps, :heat]
 
   # == Routes ==
 
@@ -118,6 +118,29 @@ class HooksController < ApplicationController
              status: 405
     end
   end
+  def heat
+    if heat_params['event'].present? && heat_params['event'].start_with?('heat')
+
+      @heat_status = HeatingElementStatus.new heat_params
+      if @heat_status.save
+        render json: {
+                   msg: 'Heating Element status logged!'
+               },
+               status: 200
+      else
+        render json: {
+                   msg: 'Heating Element status could not be logged for some reason...'
+               },
+               status: 500
+      end
+    else
+      render json: {
+                 msg: 'Specified event cannot be processed at this endpoint.',
+                 name: heat_params[:name]
+             },
+             status: 405
+    end
+  end
 
   private
 
@@ -157,6 +180,22 @@ class HooksController < ApplicationController
     json_params.permit(
         :event,
         {data: [:id, :state, :stop_time, :temperature, :last_read_time]},
+        :coreid,
+        :published_at,
+        :ttl
+    )
+  end
+
+  # Strong parameter requirements to be enforced when creating a PumpStatus
+  def heat_params
+    json_hash = JSON.parse(request.body.read,
+                           symbolize_names: true)
+    json_hash[:data] = JSON.parse(json_hash[:data],
+                                  symbolize_names: true)
+    json_params = ActionController::Parameters.new json_hash
+    json_params.permit(
+        :event,
+        {data: [:id, :state, :stop_time]},
         :coreid,
         :published_at,
         :ttl
