@@ -9,6 +9,11 @@
 #   inflect.irregular 'person', 'people'
 #   inflect.uncountable %w( fish sheep )
 # end
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  # This is more for practicality than anything. Otherwise, our migration and model for Equipment gets confused.
+  # Just be wary when trying to auto-generate text on a page.
+  inflect.irregular 'equipment', 'equipments'
+end
 
 # These inflection rules are supported but not enabled by default:
 # ActiveSupport::Inflector.inflections(:en) do |inflect|

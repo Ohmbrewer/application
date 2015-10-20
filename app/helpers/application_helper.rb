@@ -12,4 +12,27 @@ module ApplicationHelper
     end
   end
 
+  def js_back_button(back_or_cancel=:back)
+    case back_or_cancel
+      when :back
+        link_to 'Back',
+                'javascript:history.back()',
+                class: 'btn btn-sm btn-primary',
+                alt: 'Back',
+                title: 'Back'
+      when :cancel
+        link_to 'Cancel',
+                'javascript:history.back()',
+                class: 'btn btn-sm btn-danger',
+                alt: 'Cancel',
+                title: 'Cancel'
+      else
+        link_to 'Back',
+                'javascript:history.back()',
+                class: 'btn btn-sm btn-primary',
+                alt: 'Back',
+                title: 'Back'
+    end
+  end
+
 end

@@ -1,0 +1,23 @@
+<ul>
+  <li>
+    Tube:
+    <ul>
+      <li>
+        Heating Element:
+        <%= pins_list(rims.tube.element) %>
+      </li>
+      <li>
+        Temperature Sensor:
+        <%= pins_list(rims.tube.sensor) %>
+      </li>
+    </ul>
+  </li>
+  <li>
+    Safety Sensor:
+    <%= pins_list(rims.safety_sensor) %>
+  </li>
+  <li>
+    Recirculation Pump:
+    <%= pins_list(rims.recirculation_pump) %>
+  </li>
+</ul>

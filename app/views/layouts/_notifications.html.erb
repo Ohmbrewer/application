@@ -11,5 +11,8 @@
                content_tag(:span, '', id: 'flash-glyphicon', class: 'glyphicon glyphicon-info-sign')
            end %>
           <%= sanitize message %>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
     <% end %>
 <% end %>

@@ -53,7 +53,7 @@
                     class: 'btn btn-sm btn-success',
                     alt: "Turn on Heating Element 1 for #{rhizome.name}",
                     title: "Turn on Heating Element 1 for #{rhizome.name}" do %>
-            <span class="glyphicon glyphicon-candle"></span>
+            <span class="glyphicon glyphicon-fire"></span>
         <% end %>
         <%= link_to heating_element_path(id: rhizome.particle_device.id, heat_id: 1, task: :off),
                     method: :post,

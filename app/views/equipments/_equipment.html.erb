@@ -1,0 +1,27 @@
+<% disabler = equipment.thermostat.nil? ? '' : ' disabled' %>
+<tr>
+  <td><%= check_box_tag 'equipments[]', equipment.id, false, class: "equipment_checkbox#{disabler}" %></td>
+  <td><%= equipment.type.titlecase %></td>
+  <td>
+    <ul>
+    <% unless equipment.thermostat.nil? %>
+          <li>
+            <%= link_to "Thermostat #{equipment.thermostat.rhizome_eid}", equipment.thermostat %>
+          </li>
+    <% end %>
+    </ul>
+  </td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to equipment,
+                    method: :delete,
+                    data: { confirm: "You sure you want to remove this #{equipment.type.titlecase}?" },
+                    class: "btn btn-sm btn-danger#{disabler}",
+                    id: "equipment-#{equipment.id}-destroy",
+                    alt: "Remove #{equipment.type.titlecase} ##{equipment.id}",
+                    title: "Remove #{equipment.type.titlecase} ##{equipment.id}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

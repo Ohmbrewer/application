@@ -22,6 +22,30 @@ Rails.application.routes.draw do
     resources :hooks, only: [:index, :new, :create, :destroy]
   end
 
+  resources :equipments
+  resources :equipments do
+    collection do
+      delete :destroy_multiple
+    end
+  end
+  resources :equipment, controller: 'equipments', type: 'Equipment' # Compensates for the janky pluralization
+  resources :pumps, controller: 'equipments', type: 'Pump'
+  resources :heating_elements, controller: 'equipments', type: 'HeatingElement'
+  resources :temperature_sensors, controller: 'equipments', type: 'TemperatureSensor'
+  resources :thermostats
+  resources :thermostats do
+    collection do
+      delete :destroy_multiple
+    end
+  end
+  resources :recirculating_infusion_mash_systems
+  resources :recirculating_infusion_mash_systems do
+    collection do
+      delete :destroy_multiple
+    end
+  end
+  resources :rims, controller: 'recirculating_infusion_mash_systems' # Compensates for the stupid-long name
+
   scope :jobs, controller: :jobs, shallow: true do
     post 'ping'
     post 'pump'

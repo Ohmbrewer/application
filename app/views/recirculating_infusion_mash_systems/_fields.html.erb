@@ -1,0 +1,30 @@
+<%= render 'shared/error_messages', object: f.object  %>
+
+<% if rhizome.nil? %>
+    <%= f.label :rhizome %>
+    <%= f.select :rhizome,
+                 Rhizome.all.map { |r| [r.name, r.id] },
+                 {},
+                 class: 'form-control' %>
+<% else %>
+    <%= f.hidden_field :rhizome, value: rhizome.id %>
+<% end %>
+<h4><%= f.label :tube, 'Tube' %></h4>
+<%= f.fields_for :tube do |p| %>
+    <h5><%= p.label :element, 'Heating Element' %></h5>
+    <%= p.fields_for :element do |ep| %>
+        <%= render partial: 'heating_elements/pins', locals: {f: ep} %>
+    <% end %>
+    <h5><%= p.label :sensor, 'Temperature Sensor' %></h5>
+    <%= p.fields_for :sensor do |tsp| %>
+        <%= render partial: 'temperature_sensors/pins', locals: {f: tsp} %>
+    <% end %>
+<% end %>
+<h4><%= f.label :safety_sensor, 'Safety Sensor' %></h4>
+<%= f.fields_for :safety_sensor do |p| %>
+    <%= render partial: 'temperature_sensors/pins', locals: {f: p} %>
+<% end %>
+<h4><%= f.label :recirculation_pump, 'Recirculation Pump' %></h4>
+<%= f.fields_for :recirculation_pump do |p| %>
+    <%= render partial: 'pumps/pins', locals: {f: p} %>
+<% end %>

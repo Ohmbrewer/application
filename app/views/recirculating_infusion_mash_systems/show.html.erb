@@ -1,0 +1,28 @@
+<% provide(:title, "RIMS #{@recirculating_infusion_mash_system.rhizome_eid}") %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="equipment_info">
+      <h1>
+        RIMS <%= @recirculating_infusion_mash_system.rhizome_eid %>
+      </h1>
+      <h4>
+        Pins:
+      </h4>
+      <%= render partial: 'pins_list', locals: {rims: @recirculating_infusion_mash_system} %>
+    </section>
+    <%= link_to 'Edit',
+                edit_thermostat_path,
+                id: @recirculating_infusion_mash_system.id,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Edit',
+                title: 'Edit' %>
+    <%= link_to 'Delete',
+                @recirculating_infusion_mash_system,
+                method: :delete,
+                data: { confirm: 'You sure?' },
+                class: 'btn btn-sm btn-danger',
+                alt: 'Delete',
+                title: 'Delete' %>
+    <%= js_back_button %>
+  </aside>
+</div>

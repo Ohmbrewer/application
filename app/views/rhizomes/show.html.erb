@@ -9,6 +9,7 @@
         <li><span class="rhizome show_info">Name:</span> <%= @rhizome.name %></li>
         <li><span class="rhizome show_info">Device ID:</span> <%= @rhizome.particle_device.device_id %></li>
         <li><span class="rhizome show_info">Access Token:</span> <%= @rhizome.particle_device.access_token %></li>
+        <!-- TODO: Add a way to display the Equipment attached to the Rhizome from its non-modal :show page -->
       </ul>
     </section>
     <%= link_to 'Edit',
@@ -17,6 +18,7 @@
                 class: 'btn btn-sm btn-primary',
                 alt: 'Edit',
                 title: 'Edit' %>
+    <%= render partial: 'equipments/add_equipment_dropdown', locals: {rhizome: @rhizome} %>
     <%= link_to 'Delete',
                 @rhizome,
                 method: :delete,

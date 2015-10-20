@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151007014640) do
+ActiveRecord::Schema.define(version: 20151016060732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,14 +32,27 @@ ActiveRecord::Schema.define(version: 20151007014640) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "equipments", force: :cascade do |t|
+    t.string   "type"
+    t.jsonb    "pins",          default: {}, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "thermostat_id"
+    t.integer  "rims_id"
+  end
+
+  add_index "equipments", ["pins"], name: "index_equipments_on_pins", using: :btree
+  add_index "equipments", ["rims_id"], name: "index_equipments_on_rims_id", using: :btree
+  add_index "equipments", ["thermostat_id"], name: "index_equipments_on_thermostat_id", using: :btree
+
   create_table "heating_element_statuses", force: :cascade do |t|
     t.string   "device_id"
     t.integer  "heat_id"
     t.string   "state"
     t.datetime "stop_time"
     t.integer  "voltage"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "particle_devices", force: :cascade do |t|
@@ -62,6 +75,11 @@ ActiveRecord::Schema.define(version: 20151007014640) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "recirculating_infusion_mash_systems", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "rhizomes", force: :cascade do |t|
     t.string   "name",        null: false
     t.datetime "created_at",  null: false
@@ -70,6 +88,14 @@ ActiveRecord::Schema.define(version: 20151007014640) do
   end
 
   add_index "rhizomes", ["particle_id"], name: "index_rhizomes_on_particle_id", using: :btree
+
+  create_table "sprouts", force: :cascade do |t|
+    t.integer "rhizome_id"
+    t.integer "sproutable_id"
+    t.string  "sproutable_type"
+  end
+
+  add_index "sprouts", ["sproutable_type", "sproutable_id"], name: "index_sprouts_on_sproutable_type_and_sproutable_id", using: :btree
 
   create_table "temperature_sensor_statuses", force: :cascade do |t|
     t.string   "device_id"
@@ -81,6 +107,14 @@ ActiveRecord::Schema.define(version: 20151007014640) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
+
+  create_table "thermostats", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "rims_id"
+  end
+
+  add_index "thermostats", ["rims_id"], name: "index_thermostats_on_rims_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",            limit: 255

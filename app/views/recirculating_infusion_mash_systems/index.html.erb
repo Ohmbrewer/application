@@ -1,0 +1,42 @@
+<% provide(:title, 'Manage RIMS') %>
+<h1>
+  Manage RIMS <%= link_to '',
+                          new_recirculating_infusion_mash_system_path,
+                          class: 'btn btn-sm btn-primary glyphicon glyphicon-plus',
+                          alt: 'Add a RIMS',
+                          title: 'Add a RIMS' %>
+</h1>
+
+<%= form_for :recirculating_infusion_mash_system,
+             url: destroy_multiple_recirculating_infusion_mash_systems_path,
+             method: :delete,
+             id: 'bulk-delete bulk-delete-rims-form' do %>
+    <div class="table-responsive">
+      <%= will_paginate %>
+
+      <table class="rims table table-hover table-striped">
+        <thead>
+        <tr>
+          <th>
+            <%= button_tag '',
+                           type: :submit,
+                           method: :delete,
+                           id: 'destroy-multiple-rims',
+                           data: { confirm: 'You sure you want to remove all of these?' },
+                           class: 'btn btn-sm btn-primary glyphicon glyphicon-trash',
+                           alt: 'Remove Selected RIMS',
+                           title: 'Remove Selected RIMS' %>
+          </th>
+          <th>Type</th>
+          <th>Pins</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render @recirculating_infusion_mash_systems %>
+        </tbody>
+      </table>
+
+      <%= will_paginate %>
+    </div>
+<% end %>

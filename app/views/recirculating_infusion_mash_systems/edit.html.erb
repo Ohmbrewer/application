@@ -1,0 +1,12 @@
+<% provide(:title, 'Edit RIMS') %>
+<h1>Edit RIMS</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@recirculating_infusion_mash_system) do |f| %>
+        <%= render partial: 'fields', locals: {f: f, object: @recirculating_infusion_mash_system, rhizome: @rhizome} %>
+        <%= button_tag 'Save', type: :submit, class: 'btn btn-sm btn-primary' %>
+        <%= js_back_button(:cancel) %>
+    <% end %>
+  </div>
+</div>

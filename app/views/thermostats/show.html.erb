@@ -1,0 +1,29 @@
+<% disabler = @thermostat.destroy_disabled? ? ' disabled' : '' %>
+<% provide(:title, "Thermostat #{@thermostat.rhizome_eid}") %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="equipment_info">
+      <h1>
+        Thermostat <%= @thermostat.rhizome_eid %>
+      </h1>
+      <h4>
+        Pins:
+      </h4>
+      <%= render partial: 'pins_list', locals: {thermostat: @thermostat} %>
+    </section>
+    <%= link_to 'Edit',
+                edit_thermostat_path,
+                id: @thermostat.id,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Edit',
+                title: 'Edit' %>
+    <%= link_to 'Delete',
+                @thermostat,
+                method: :delete,
+                data: { confirm: 'You sure?' },
+                class: "btn btn-sm btn-danger#{disabler}",
+                alt: 'Delete',
+                title: 'Delete' %>
+    <%= js_back_button %>
+  </aside>
+</div>
