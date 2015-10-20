@@ -51,4 +51,24 @@
 #     render nothing: true
 #   end
 #
+#   def heat
+#     # SSE expects the `text/event-stream` content type
+#     response.headers['Cache-Control'] = 'no-cache'
+#     response.headers['Content-Type'] = 'text/event-stream'
+#
+#     sse = EventStreamer::SSE.new(response.stream)
+#
+#     begin
+#       HeatingElementStatus.on_change do |data|
+#         sse.write(data, HeatingElementStatus.event_channel)
+#       end
+#     rescue IOError
+#       # When the client disconnects, we'll get an IOError on write
+#     ensure
+#       sse.close
+#     end
+#
+#     render nothing: true
+#   end
+#
 # end

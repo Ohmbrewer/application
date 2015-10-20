@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     post 'ping'
     post 'pump'
     post 'temp'
+    post 'heat'
     # get  'dashboard'
   end
 
@@ -33,6 +34,7 @@ Rails.application.routes.draw do
   scope '/hooks/v1', :controller => :hooks do
     post :pumps
     post :temps
+    post :heat
   end
 
   # # Paths under this controller are used with SSE to stream status updates

@@ -48,6 +48,20 @@
                     title: "Turn off Temperature Sensor 1 for #{rhizome.name}" do %>
             <span class="glyphicon glyphicon-remove-sign"></span>
         <% end %>
+        <%= link_to heating_element_path(id: rhizome.particle_device.id, heat_id: 1, task: :on),
+                    method: :post,
+                    class: 'btn btn-sm btn-success',
+                    alt: "Turn on Heating Element 1 for #{rhizome.name}",
+                    title: "Turn on Heating Element 1 for #{rhizome.name}" do %>
+            <span class="glyphicon glyphicon-candle"></span>
+        <% end %>
+        <%= link_to heating_element_path(id: rhizome.particle_device.id, heat_id: 1, task: :off),
+                    method: :post,
+                    class: 'btn btn-sm btn-success',
+                    alt: "Turn off Heating Element 1 for #{rhizome.name}",
+                    title: "Turn off Heating Element 1 for #{rhizome.name}" do %>
+            <span class="glyphicon glyphicon-remove-sign"></span>
+        <% end %>
         <%= link_to ping_path(id: rhizome.particle_device.id),
                     method: :post,
                     class: 'btn btn-sm btn-warning',

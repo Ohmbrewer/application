@@ -36,6 +36,10 @@ class JobsController < ApplicationController
     TemperatureSensorJob.new(*temp_params).perform
     redirect_to rhizomes_url
   end
+  def heat
+    HeatingElementJob.new(*heat_params).perform
+    redirect_to rhizomes_url
+  end
 
   private
     def pump_params
@@ -45,4 +49,7 @@ class JobsController < ApplicationController
     def temp_params
       params.permit(:id, :temp_id, :task, :_method, :authenticity_token)
     end
+  def heat_params
+    params.permit(:id, :heat_id, :task, :_method, :authenticity_token)
+  end
 end
