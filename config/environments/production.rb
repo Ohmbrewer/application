@@ -78,7 +78,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Adds the Rhizomes
-  config.x.rhizomes = config_for(:rhizomes)
+  config.x.rhizomes = config_for(:rhizomes) if File.exists?("#{File.dirname(__FILE__)}../rhizomes.yml")
 
   # Provide custom encryption keys
   # TODO: PROVIDE THIS VIA ENVIRONMENT VARIABLES!!!
