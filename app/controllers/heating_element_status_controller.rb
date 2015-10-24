@@ -1,3 +1,0 @@
-class HeatingElementStatusController < ApplicationController
-end
-

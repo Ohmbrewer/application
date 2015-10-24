@@ -29,33 +29,61 @@ class Rhizome < ActiveRecord::Base
   validates :name, presence: true,
                    length: { maximum: 50 }
 
+  # == Instance Methods ==
+
+  # == Sproutable Management Methods ==
+
   # Provides a short-hand method for getting the various polymorphic
   # equipment types connected to the Rhizome. Add the collection call
   # when you add a new type.
   def attached
-    [equipments, thermostats].flatten
+    [equipments, thermostats, recirculating_infusion_mash_systems].flatten
   end
 
-  def add_thermostat_children(t)
-    if t.is_a? Thermostat
-      equipments << t.element
-      equipments << t.sensor
+  # Associates the subsystems of the given Thermostat as Equipment of the Rhizome
+  # @param therm [Thermostat] The Thermostat
+  def add_thermostat_children(therm)
+    if therm.is_a? Thermostat
+      equipments << therm.element
+      equipments << therm.sensor
     end
   end
 
-  def add_rims_children(t)
-    if t.is_a? RecirculatingInfusionMashSystem
-      add_thermostat_children(t.tube)
-      equipments << t.safety_sensor
-      equipments << t.recirculation_pump
+  # Associates the subsystems of the given RIMS as Equipment of the Rhizome
+  # @param rims [RecirculatingInfusionMashSystem] The RIMS
+  def add_rims_children(rims)
+    if rims.is_a? RecirculatingInfusionMashSystem
+      add_thermostat_children(rims.tube)
+      equipments << rims.safety_sensor
+      equipments << rims.recirculation_pump
     end
   end
 
+  # == Particle Device Shortcuts ==
+
+  # Is the Rhizome's Particle device connected to the cloud?
+  # @return [TrueFalse] True if the device is connected, false otherwise
+  def connected?
+    particle_device.connection.connected?
+  end
+
+  # A shortcut to the interesting part of the Rhizome's internal ParticleDevice object
+  # @return [Particle::Client] The client for interacting with the Particle device
+  def particle
+    particle_device.connection
+  end
+
+  # == Class Methods ==
   class << self
 
     # The digital pins supported by the Rhizome.
     def digital_pins
       [0, 1, 2, 3, 4, 5]
+    end
+
+    def from_device_id(device_id)
+      pd = ParticleDevice.where(device_id: device_id).first
+      Rhizome.find(pd.rhizome.id)
     end
 
   end

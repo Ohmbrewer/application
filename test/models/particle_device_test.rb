@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ParticleTest < ActiveSupport::TestCase
+class ParticleDeviceTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

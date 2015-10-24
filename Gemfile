@@ -47,6 +47,7 @@ gem 'bootstrap-will_paginate', '0.0.10'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'particlerb'
+gem 'aasm', '4.4.0'
 
 group :development, :test do
   gem 'binding_of_caller', '0.7.3.pre1'

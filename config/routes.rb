@@ -48,16 +48,13 @@ Rails.application.routes.draw do
 
   scope :jobs, controller: :jobs, shallow: true do
     post 'ping'
-    post 'pump'
-    post 'temp'
-    post 'heat'
     # get  'dashboard'
   end
 
   # Provide webhooks for our HOPS... HOPhooks, if you will...
   scope '/hooks/v1', :controller => :hooks do
-    post :pumps
-    post :temps
+    post :pump
+    post :temp
     post :heat
   end
 

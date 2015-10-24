@@ -20,49 +20,7 @@
                     title: "Delete webhooks for #{rhizome.name}" do %>
             <span class="glyphicon glyphicon-phone-alt"></span>
         <% end %>
-        <%= link_to pump_path(id: rhizome.particle_device.id, pump_id: 1, task: :on),
-                    method: :post,
-                    class: 'btn btn-sm btn-success',
-                    alt: "Turn on Pump 1 for #{rhizome.name}",
-                    title: "Turn on Pump 1 for #{rhizome.name}" do %>
-          <span class="glyphicon glyphicon-repeat"></span>
-        <% end %>
-        <%= link_to pump_path(id: rhizome.particle_device.id, pump_id: 1, task: :off),
-                    method: :post,
-                    class: 'btn btn-sm btn-success',
-                    alt: "Turn off Pump 1 for #{rhizome.name}",
-                    title: "Turn off Pump 1 for #{rhizome.name}" do %>
-          <span class="glyphicon glyphicon-off"></span>
-        <% end %>
-        <%= link_to temp_path(id: rhizome.particle_device.id, temp_id: 1, task: :on),
-                    method: :post,
-                    class: 'btn btn-sm btn-success',
-                    alt: "Turn on Temperature Sensor 1 for #{rhizome.name}",
-                    title: "Turn on Temperature Sensor 1 for #{rhizome.name}" do %>
-            <span class="glyphicon glyphicon-dashboard"></span>
-        <% end %>
-        <%= link_to temp_path(id: rhizome.particle_device.id, temp_id: 1, task: :off),
-                    method: :post,
-                    class: 'btn btn-sm btn-success',
-                    alt: "Turn off Temperature Sensor 1 for #{rhizome.name}",
-                    title: "Turn off Temperature Sensor 1 for #{rhizome.name}" do %>
-            <span class="glyphicon glyphicon-remove-sign"></span>
-        <% end %>
-        <%= link_to heating_element_path(id: rhizome.particle_device.id, heat_id: 1, task: :on),
-                    method: :post,
-                    class: 'btn btn-sm btn-success',
-                    alt: "Turn on Heating Element 1 for #{rhizome.name}",
-                    title: "Turn on Heating Element 1 for #{rhizome.name}" do %>
-            <span class="glyphicon glyphicon-fire"></span>
-        <% end %>
-        <%= link_to heating_element_path(id: rhizome.particle_device.id, heat_id: 1, task: :off),
-                    method: :post,
-                    class: 'btn btn-sm btn-success',
-                    alt: "Turn off Heating Element 1 for #{rhizome.name}",
-                    title: "Turn off Heating Element 1 for #{rhizome.name}" do %>
-            <span class="glyphicon glyphicon-remove-sign"></span>
-        <% end %>
-        <%= link_to ping_path(id: rhizome.particle_device.id),
+        <%= link_to ping_path(rhizome: rhizome.id),
                     method: :post,
                     class: 'btn btn-sm btn-warning',
                     alt: "Ping #{rhizome.name}",
