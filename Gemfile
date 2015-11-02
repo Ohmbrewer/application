@@ -39,6 +39,9 @@ gem 'puma'
 # Twitter Bootstrap
 gem 'bootstrap-sass', '3.3.3'
 
+# Form fancification
+gem 'cocoon', '1.2.6'
+
 # Adds pagination capabilities
 gem 'will_paginate',           '3.0.7'
 gem 'bootstrap-will_paginate', '0.0.10'
@@ -48,6 +51,7 @@ gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'particlerb'
 gem 'aasm', '4.4.0'
+gem 'closure_tree', '6.0.0'
 
 group :development, :test do
   gem 'binding_of_caller', '0.7.3.pre1'

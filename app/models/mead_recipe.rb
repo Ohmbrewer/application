@@ -1,0 +1,3 @@
+class MeadRecipe < Recipe
+
+end

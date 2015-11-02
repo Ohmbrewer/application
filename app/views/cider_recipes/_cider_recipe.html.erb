@@ -1,0 +1,34 @@
+<tr>
+  <td><%= check_box_tag 'cider_recipes[]', cider_recipe.id, false, class: 'cider_recipe_checkbox' %></td>
+  <% if current_page?(recipes_path) %>
+      <td><%= cider_recipe.type.gsub('Recipe', '').titlecase %></td>
+  <% end %>
+  <td><%= link_to cider_recipe.name, cider_recipe_path(cider_recipe.id) %></td>
+  <td>
+    <% unless cider_recipe.schedule.nil? %>
+        <%= link_to 'View', '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{cider_recipe.schedule.id}-show" %>
+        <%= render 'schedules/modals/show', schedule: cider_recipe.schedule %>
+    <% end %>
+  </td>
+  <td>Coming soon!</td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to recipe_duplicate_path(cider_recipe),
+                    method: :post,
+                    class: 'btn btn-sm btn-primary',
+                    alt: "Copy #{cider_recipe.name}",
+                    title: "Copy #{cider_recipe.name}" do %>
+            <span class="glyphicon glyphicon-duplicate"></span>
+        <% end %>
+        <%= link_to cider_recipe,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete this \"#{cider_recipe.name}\"?" },
+                    class: 'btn btn-sm btn-danger',
+                    id: "cider-recipe-#{cider_recipe.id}-destroy",
+                    alt: "Delete #{cider_recipe.name}",
+                    title: "Delete #{cider_recipe.name}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

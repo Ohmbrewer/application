@@ -1,0 +1,3 @@
+class WineRecipe < Recipe
+
+end

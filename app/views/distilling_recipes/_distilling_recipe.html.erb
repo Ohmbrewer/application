@@ -1,0 +1,34 @@
+<tr>
+  <td><%= check_box_tag 'distilling_recipes[]', distilling_recipe.id, false, class: 'distilling_recipe_checkbox' %></td>
+  <% if current_page?(recipes_path) %>
+      <td><%= distilling_recipe.type.gsub('Recipe', '').titlecase %></td>
+  <% end %>
+  <td><%= link_to distilling_recipe.name, distilling_recipe_path(distilling_recipe.id) %></td>
+  <td>
+    <% unless distilling_recipe.schedule.nil? %>
+        <%= link_to 'View', '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{distilling_recipe.schedule.id}-show" %>
+        <%= render 'schedules/modals/show', schedule: distilling_recipe.schedule %>
+    <% end %>
+  </td>
+  <td>Coming soon!</td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to recipe_duplicate_path(distilling_recipe),
+                    method: :post,
+                    class: 'btn btn-sm btn-primary',
+                    alt: "Copy #{distilling_recipe.name}",
+                    title: "Copy #{distilling_recipe.name}" do %>
+            <span class="glyphicon glyphicon-duplicate"></span>
+        <% end %>
+        <%= link_to distilling_recipe,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete \"#{distilling_recipe.name}\"?" },
+                    class: 'btn btn-sm btn-danger',
+                    id: "distilling-recipe-#{distilling_recipe.id}-destroy",
+                    alt: "Delete #{distilling_recipe.name}",
+                    title: "Delete #{distilling_recipe.name}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

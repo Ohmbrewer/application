@@ -22,6 +22,27 @@ Rails.application.routes.draw do
     resources :hooks, only: [:index, :new, :create, :destroy]
   end
 
+  resources :schedules
+  resources :schedules do
+    post 'duplicate' => 'schedules#duplicate'
+    collection do
+      delete :destroy_multiple
+    end
+  end
+
+  resources :recipes
+  resources :recipes do
+    post 'duplicate' => 'recipes#duplicate'
+    collection do
+      delete :destroy_multiple
+    end
+  end
+  resources :beer_recipes, controller: 'recipes', type: 'BeerRecipe'
+  resources :distilling_recipes, controller: 'recipes', type: 'DistillingRecipe'
+  resources :cider_recipes, controller: 'recipes', type: 'CiderRecipe'
+  resources :mead_recipes, controller: 'recipes', type: 'MeadRecipe'
+  resources :wine_recipes, controller: 'recipes', type: 'WineRecipe'
+
   resources :equipments
   resources :equipments do
     collection do

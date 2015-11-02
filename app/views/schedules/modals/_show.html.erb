@@ -1,0 +1,27 @@
+<div class="modal fade" id="schedule-<%= schedule.id %>-show" tabindex="-1" role="dialog" aria-labelledby="schedule-<%= schedule.id %>-show-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header navbar-inverse">
+        <%= button_tag '', class: 'btn btn-sm btn-danger glyphicon glyphicon-remove', 'data-dismiss' => 'modal' %>
+        <h4 class="modal-title" id="schedule-<%= schedule.id %>-show-label"><%= schedule.name %></h4>
+      </div>
+      <div class="modal-body schedule-info">
+        <%= render partial: 'schedules/task_list', locals: {schedule: schedule} %>
+      </div>
+      <div class="modal-footer">
+        <%= link_to 'Edit',
+                    edit_schedule_path(id: schedule.id),
+                    class: 'btn btn-sm btn-primary',
+                    alt: 'Edit',
+                    title: 'Edit' %>
+        <%= link_to 'Delete',
+                    schedule,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete \"#{schedule.name}\"?" },
+                    class: 'btn btn-sm btn-primary btn-danger',
+                    alt: 'Delete',
+                    title: 'Delete' %>
+      </div>
+    </div>
+  </div>
+</div>

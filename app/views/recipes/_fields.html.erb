@@ -1,0 +1,34 @@
+<%= render 'shared/error_messages', object: f.object  %>
+
+<%= f.label :name %>
+<%= f.text_field :name, class: 'form-control' %>
+
+<% if type == 'Recipe' %>
+    <%= f.label :type %>
+    <%= f.select :type,
+                 Recipe.recipe_types.map { |et| [et.titlecase, et] },
+                 {},
+                 disabled: type != 'Recipe',
+                 class: 'form-control' %>
+<% else %>
+    <%= f.hidden_field :type, value: type %>
+<% end %>
+
+<div class="form-group">
+<%= f.label :schedule %>
+    <div class="input-group">
+        <%= f.select :schedule,
+                     Schedule.all.map { |r| [r.name, r.id] },
+                     {include_blank: 'Choose existing...', selected: (f.object.schedule.nil? ? '' : f.object.schedule.id)},
+                     class: 'form-control' %>
+        <div class="input-group-btn">
+        <%= link_to '',
+                    new_schedule_path,
+                    class: 'btn btn-success glyphicon glyphicon-plus',
+                    alt: 'Add a new Schedule',
+                    title: 'Add a new Schedule' %>
+        </div>
+    </div>
+</div>
+
+<!-- TODO: Add Additions support to Recipe -->

@@ -1,0 +1,12 @@
+<% provide(:title, "Add #{@type.titlecase}") %>
+<h1>Add <%= @type.titlecase %></h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@recipe) do |f| %>
+        <%= render partial: 'fields', locals: {f: f, object: @recipe, type: @type} %>
+        <%= button_tag 'Add', type: :submit, class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Cancel', sti_recipe_type_path(@type), class: 'btn btn-sm btn-primary btn-danger' %>
+    <% end %>
+  </div>
+</div>
