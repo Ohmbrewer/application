@@ -1,4 +1,6 @@
+require 'rhizome_interfaces/webhooks/json_templates'
 class HooksController < ApplicationController
+  include RhizomeInterfaces::Webhooks::JSONTemplates
 
   # == Enabled Before Filters ==
 
@@ -12,7 +14,7 @@ class HooksController < ApplicationController
   # == Routes ==
 
   def new
-    @particle_webhook = ParticleWebhook.new(device_id: @rhizome.particle_device.device_id)
+    @particle_webhook = ParticleWebhook.new(rhizome: @rhizome)
   end
 
   def create
@@ -26,7 +28,7 @@ class HooksController < ApplicationController
       begin
         particle_client.webhook(@particle_webhook.to_task_hash).create
       rescue => e
-        logger.error "Failed to add webhook for #{@particle_webhook.event_type} #{@particle_webhook.event_id} on device #{@particle_webhook.device_id}."
+        logger.error "Failed to add webhook for #{@particle_webhook.event_type} #{@particle_webhook.event_id} on #{@particle_webhook.rhizome.name}."
         logger.error e
         flash[:danger] = 'Webhook creation failed!'
         redirect_to rhizomes_path
@@ -43,7 +45,8 @@ class HooksController < ApplicationController
 
     @particle_webhooks = associated_hooks(particle_client, @rhizome.particle_device.device_id).collect { |ph|
       et, ei = ph.event.split('/')
-      ParticleWebhook.new device_id: ph.deviceID, endpoint: ph.url, event_type: et.to_sym, event_id: ei.to_i, webhook_id: ph.id
+      r = Rhizome::from_device_id(ph.deviceID)
+      ParticleWebhook.new rhizome: r, endpoint: ph.url, event_type: et.to_sym, event_id: ei.to_i, webhook_id: ph.id
     }
   end
 
@@ -71,141 +74,92 @@ class HooksController < ApplicationController
 
   # == Particle Event Routes ==
 
-  def pumps
-    if pump_params['event'].present? && pump_params['event'].start_with?('pumps')
-
-      @pump_status = PumpStatus.new pump_params
-      if @pump_status.save
-        render json: {
-                   msg: 'Pump status logged!'
-               },
-               status: 200
-      else
-        render json: {
-                   msg: 'Pump status could not be logged for some reason...'
-               },
-               status: 500
-      end
+  def pump
+    if event_params(:pump)['event'].present? && event_params(:pump)['event'].start_with?('pump')
+      @pump_status = PumpStatus.new event_params(:pump)
+      handle_event(@pump_status)
     else
-      render json: {
-                 msg: 'Specified event cannot be processed at this endpoint.',
-                 name: pump_params[:name]
-             },
-             status: 405
+      handle_event_missing(event_params(:name))
     end
   end
 
-  def temps
-    if temp_params['event'].present? && temp_params['event'].start_with?('temps')
-
-      @temp_status = TemperatureSensorStatus.new temp_params
-      if @temp_status.save
-        render json: {
-                   msg: 'Temperature Sensor status logged!'
-               },
-               status: 200
-      else
-        render json: {
-                   msg: 'Temperature Sensor status could not be logged for some reason...'
-               },
-               status: 500
-      end
+  def temp
+    if event_params(:temp)['event'].present? && event_params(:temp)['event'].start_with?('temp')
+      @temp_status = TemperatureSensorStatus.new event_params(:temp)
+      handle_event(@temp_status)
     else
-      render json: {
-                 msg: 'Specified event cannot be processed at this endpoint.',
-                 name: temp_params[:name]
-             },
-             status: 405
+      handle_event_missing(event_params(:name))
     end
   end
+
   def heat
-    if heat_params['event'].present? && heat_params['event'].start_with?('heat')
-
-      @heat_status = HeatingElementStatus.new heat_params
-      if @heat_status.save
-        render json: {
-                   msg: 'Heating Element status logged!'
-               },
-               status: 200
-      else
-        render json: {
-                   msg: 'Heating Element status could not be logged for some reason...'
-               },
-               status: 500
-      end
+    if event_params(:heat)['event'].present? && event_params(:heat)['event'].start_with?('heat')
+      @heat_status = HeatingElementStatus.new event_params(:heat)
+      handle_event(@heat_status)
     else
-      render json: {
-                 msg: 'Specified event cannot be processed at this endpoint.',
-                 name: heat_params[:name]
-             },
-             status: 405
+      handle_event_missing(event_params(:name))
     end
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_rhizome
-    @rhizome = Rhizome.find(params[:rhizome_id]) unless params[:rhizome_id].to_i.zero?
-  end
+    def handle_event(status)
+      if status.save
+        render json: {
+                   msg: "#{status.type.titlecase} logged!"
+               },
+               status: 200
+      else
+        render json: {
+                   msg: "#{status.type.titlecase} could not be logged for some reason..."
+               },
+               status: 500
+      end
+    end
 
-  def hook_params
-    params.require(:particle_webhook)
-          .permit(:device_id, :endpoint, :event_id, :event_type, :hooks)
-  end
+    def handle_event_missing(event)
+      render json: {
+                 msg: 'Specified event cannot be processed at this endpoint.',
+                 name: event
+             },
+             status: 405
+    end
 
-  # Strong parameter requirements to be enforced when creating a PumpStatus
-  def pump_params
-    json_hash = JSON.parse(request.body.read,
-                           symbolize_names: true)
-    json_hash[:data] = JSON.parse(json_hash[:data],
-                                  symbolize_names: true)
-    json_params = ActionController::Parameters.new json_hash
-    json_params.permit(
-        :event,
-        {data: [:id, :state, :stop_time]},
-        :coreid,
-        :published_at,
-        :ttl
-    )
-  end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_rhizome
+        @rhizome = Rhizome.find(params[:rhizome_id]) unless params[:rhizome_id].to_i.zero?
+        @rhizome = Rhizome.find(params[:rhizome].to_i) unless params[:rhizome].nil?
+    end
 
-  # Strong parameter requirements to be enforced when creating a PumpStatus
-  def temp_params
-    json_hash = JSON.parse(request.body.read,
-                           symbolize_names: true)
-    json_hash[:data] = JSON.parse(json_hash[:data],
-                                  symbolize_names: true)
-    json_params = ActionController::Parameters.new json_hash
-    json_params.permit(
-        :event,
-        {data: [:id, :state, :stop_time, :temperature, :last_read_time]},
-        :coreid,
-        :published_at,
-        :ttl
-    )
-  end
+    def hook_params
+      p = params.require(:particle_webhook)
+                .permit(:rhizome, :rhizome_id, :endpoint, :event_id, :event_type, :hooks)
+      unless p[:rhizome].nil?
+        unless p[:rhizome].is_a? Rhizome
+          p[:rhizome] = Rhizome.find(p[:rhizome])
+        end
+      end
+      p
+    end
 
-  # Strong parameter requirements to be enforced when creating a PumpStatus
-  def heat_params
-    json_hash = JSON.parse(request.body.read,
-                           symbolize_names: true)
-    json_hash[:data] = JSON.parse(json_hash[:data],
-                                  symbolize_names: true)
-    json_params = ActionController::Parameters.new json_hash
-    json_params.permit(
-        :event,
-        {data: [:id, :state, :stop_time]},
-        :coreid,
-        :published_at,
-        :ttl
-    )
-  end
+    def particle_json
+      json_hash = JSON.parse(request.body.read,
+                             symbolize_names: true)
+      json_hash[:data] = JSON.parse(json_hash[:data],
+                                    symbolize_names: true)
+    end
 
-  # Gets the hooks that report as belonging to a given device
-  # @param [Particle::Client] particle_client Client for interfacing with the Particle service
-  # @param [String] device_id The Device ID of the device we want webhooks for
-  def associated_hooks(particle_client, device_id)
-    particle_client.webhooks.select { |wh| wh if (wh.deviceID == device_id) }
-  end
+    # Strong parameter requirements to be enforced when creating an EquipmentStatus
+    # @param event [Symbol] The event to create a status for
+    def event_params(event)
+      json_params = ActionController::Parameters.new particle_json
+      json_params.permit(send("#{event}_task_params"))
+    end
+
+    # Gets the hooks that report as belonging to a given device
+    # @param [Particle::Client] particle_client Client for interfacing with the Particle service
+    # @param [String] device_id The Device ID of the device we want webhooks for
+    def associated_hooks(particle_client, device_id)
+      particle_client.webhooks.select { |wh| wh if (wh.deviceID == device_id) }
+    end
 end

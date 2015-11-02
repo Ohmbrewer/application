@@ -1,7 +1,7 @@
-require 'rhizome_sprout/rhizome_sprout'
+require 'rhizome_interfaces/sprout/temperature_sensor_sprout'
 
 class TemperatureSensor < Equipment
-  include RhizomeSprout
+  include RhizomeInterfaces::TemperatureSensorSprout
 
   belongs_to :thermostat, validate: true, touch: true
   belongs_to :recirculating_infusion_mash_system, validate: true,
@@ -13,15 +13,6 @@ class TemperatureSensor < Equipment
 
   validates :onewire_id, presence: true, on: :update
   validates :data_pin, presence: true, on: :update
-
-  # == Sproutable Interface Methods ==
-  def rhizome_eid
-    onewire_id
-  end
-
-  def rhizome_type_name
-    'temp'
-  end
 
   def destroy_disabled?
     !thermostat.nil? ||

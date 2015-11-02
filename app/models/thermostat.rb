@@ -1,7 +1,7 @@
-require 'rhizome_sprout/rhizome_sprout'
+require 'rhizome_interfaces/sprout/thermostat_sprout'
 
 class Thermostat < ActiveRecord::Base
-  include RhizomeSprout
+  include RhizomeInterfaces::ThermostatSprout
 
   has_one :sprout, as: :sproutable, dependent: :destroy
   has_one :rhizome, through: :sprout
@@ -44,14 +44,6 @@ class Thermostat < ActiveRecord::Base
 
   def type
     'Thermostat'
-  end
-
-  def rhizome_type_name
-    'therm'
-  end
-
-  def rhizome_eid
-    element.rhizome_eid
   end
 
   def build_subsystems

@@ -4,6 +4,8 @@ class JobsController < ApplicationController
 
   before_action :logged_in_user,
                 only: [:ping] #, :dashboard]
+  before_action :set_rhizome,
+                only: [:ping]
 
   # == Routes ==
 
@@ -12,7 +14,7 @@ class JobsController < ApplicationController
   # end
 
   def ping
-    result = PingJob.new(*params).perform_now
+    result = RhizomePingJob.new(@rhizome).perform_now
 
     if result[:connected]
       flash[:success] = "Pinged <strong>#{result[:name]}</strong>!<br />" <<
@@ -27,29 +29,10 @@ class JobsController < ApplicationController
     redirect_to rhizomes_url
   end
 
-  def pump
-    PumpJob.new(*pump_params).perform
-    redirect_to rhizomes_url
-  end
-
-  def temp
-    TemperatureSensorJob.new(*temp_params).perform
-    redirect_to rhizomes_url
-  end
-  def heat
-    HeatingElementJob.new(*heat_params).perform
-    redirect_to rhizomes_url
-  end
-
   private
-    def pump_params
-      params.permit(:id, :pump_id, :task, :_method, :authenticity_token)
+    # Use callbacks to share common setup or constraints between actions.
+    def set_rhizome
+      @rhizome = Rhizome.find(params[:rhizome]) unless params[:rhizome].to_i.zero?
     end
 
-    def temp_params
-      params.permit(:id, :temp_id, :task, :_method, :authenticity_token)
-    end
-  def heat_params
-    params.permit(:id, :heat_id, :task, :_method, :authenticity_token)
-  end
 end

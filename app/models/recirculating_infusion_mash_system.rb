@@ -1,7 +1,7 @@
-require 'rhizome_sprout/rhizome_sprout'
+require 'rhizome_interfaces/sprout/rims_sprout'
 
 class RecirculatingInfusionMashSystem < ActiveRecord::Base
-  include RhizomeSprout
+  include RhizomeInterfaces::RIMSSprout
 
   has_one :sprout, as: :sproutable, dependent: :destroy
   has_one :rhizome, through: :sprout
@@ -54,14 +54,6 @@ class RecirculatingInfusionMashSystem < ActiveRecord::Base
 
   def type
     'RIMS'
-  end
-
-  def rhizome_type_name
-    'rims'
-  end
-
-  def rhizome_eid
-    tube.rhizome_eid
   end
 
   def build_subsystems
