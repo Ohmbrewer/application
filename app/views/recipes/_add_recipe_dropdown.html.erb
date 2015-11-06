@@ -1,0 +1,20 @@
+<span class="dropdown">
+  <a id="add-recipe"
+     class="dropdown-toggle btn btn-sm btn-primary"
+     data-target="#"
+     data-toggle="dropdown"
+     aria-haspopup="true"
+     aria-expanded="false">
+    <span class="glyphicon glyphicon-plus"></span>
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="add-recipe">
+    <% Recipe.recipe_types.each do |t| %>
+        <li>
+          <%= link_to t.titlecase.gsub('Recipe', ''),
+                      new_recipe_path(type: t),
+                      alt: "Add #{t.titlecase}",
+                      title: "Add #{t.titlecase}" %>
+        </li>
+    <% end %>
+  </ul>
+</span>

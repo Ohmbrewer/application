@@ -4,7 +4,7 @@ class TurnOnTask < Task
   # == Instance Methods ==
 
   # We always want this Task to try to turn the Equipment on
-  def initialize
+  def initialize(attributes = nil, options = {})
     super
     update_data[:state] = 'ON'
   end

@@ -1,0 +1,34 @@
+<tr>
+  <td><%= check_box_tag 'recipes[]', recipe.id, false, class: 'recipe_checkbox' %></td>
+  <% if current_page?(recipes_path) %>
+    <td><%= recipe.type.gsub('Recipe', '').titlecase %></td>
+  <% end %>
+  <td><%= link_to recipe.name, recipe_path(recipe.id) %></td>
+  <td>
+    <% unless recipe.schedule.nil? %>
+        <%= link_to 'View', '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{recipe.schedule.id}-show" %>
+        <%= render 'schedules/modals/show', schedule: recipe.schedule %>
+    <% end %>
+  </td>
+  <td>Coming soon!</td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to recipe_duplicate_path(recipe),
+                    method: :post,
+                    class: 'btn btn-sm btn-primary',
+                    alt: "Copy #{recipe.name}",
+                    title: "Copy #{recipe.name}" do %>
+            <span class="glyphicon glyphicon-duplicate"></span>
+        <% end %>
+        <%= link_to recipe,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete this #{recipe.type.titlecase}?" },
+                    class: 'btn btn-sm btn-danger',
+                    id: "recipe-#{recipe.id}-destroy",
+                    alt: "Remove #{recipe.type.titlecase} ##{recipe.id}",
+                    title: "Remove #{recipe.type.titlecase} ##{recipe.id}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

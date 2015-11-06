@@ -6,6 +6,11 @@ class Task < ActiveRecord::Base
   include RhizomeInterfaces::EquipmentStates
   include Scheduler::StateMachines::TaskStateMachine
 
+  # Tasks are organized in a tree structure representing
+  # the order they should be run in.
+  has_closure_tree
+
+  belongs_to :schedule
   belongs_to :equipment
   has_many :equipment_statuses, -> { order(created_at: :desc) }
 
@@ -13,6 +18,7 @@ class Task < ActiveRecord::Base
   # These scopes make so anything that references Equipment generally
   # may also reference each of these subclasses specifically, automagically.
   scope :turn_on_tasks, -> { where(type: 'TurnOnTask') }
+  scope :turn_off_tasks, -> { where(type: 'TurnOffTask') }
 
   # == Serializers ==
   # HashSerializer provides a way to convert the JSONB contents
@@ -35,10 +41,43 @@ class Task < ActiveRecord::Base
       resending:   -2
   }
 
+  # This enumerates all the events our various Task types support for triggering off of.
+  # See the State Diagram or the TaskStateMachine module for more details.
+  enum trigger: {
+           duration_reached:     7,
+           send_message:         1,
+           resend_success:       2,
+           message_acknowledged: 3,
+           start_ramping:        4,
+           start_holding:        5,
+           ready:                6,
+           failure:             -1,
+           restart:             -2,
+           send_failure:        -3,
+           resend_failure:      -4,
+           message_rejected:    -5,
+           ramp_failure:        -6,
+           hold_failure:        -7
+       }
+
   # This gives us a way to store the data that will be sent with *all* updates.
   # Subclasses that have additional update data to send will have
   # additional store_accessors
   store_accessor :update_data, :state, :stop_time
+
+  # == Validators ==
+  validates :duration, length: {minimum: 0}
+  validates :equipment, presence: true
+  validate :event_and_parent_validation
+
+  # Ensures that the control pin and the power pin are set to different values or no value.
+  def event_and_parent_validation
+    if parent_id.nil? ^ trigger.nil?
+      errors.add(:trigger, ' may be not set unless the Parent Task is specified.') if parent_id.nil?
+      errors.add(:parent_id, ' requires a trigger event.') if trigger.nil?
+    end
+  end
+
 
   # == Instance Methods ==
 
@@ -70,6 +109,10 @@ class Task < ActiveRecord::Base
     raise NoMethodError, 'Tried to use the base Task class!'
   end
 
+  def type_name_display
+    type.gsub('Task', '').titlecase
+  end
+
   # == Class Methods ==
   class << self
 
@@ -79,6 +122,12 @@ class Task < ActiveRecord::Base
     # @return [EquipmentStatus] The EquipmentStatus subclass to watch for updates of
     def status_class
       raise NoMethodError, 'Tried to use the base Task class!'
+    end
+
+    # TODO: Move this out into a table of available Task Types
+    # The list of supported Equipment types
+    def task_types
+      %w(TurnOnTask TurnOffTask)
     end
 
   end

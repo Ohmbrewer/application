@@ -1,0 +1,42 @@
+<%= form_for :recipe,
+             url: destroy_multiple_recipes_path,
+             method: :delete,
+             id: 'bulk-delete bulk-delete-recipes-form' do %>
+    <div class="table-responsive">
+      <%= will_paginate %>
+
+      <table class="recipes table table-hover table-striped">
+        <thead>
+        <tr>
+          <th>
+            <%= button_tag '',
+                           type: :submit,
+                           method: :delete,
+                           id: 'destroy-multiple-recipes',
+                           data: { confirm: 'You sure you want to remove all of these?' },
+                           class: 'btn btn-sm btn-primary glyphicon glyphicon-trash',
+                           alt: 'Remove Selected Equipment',
+                           title: 'Remove Selected Equipment' %>
+            <%= link_to '',
+                        schedules_path,
+                        class: 'btn btn-sm btn-primary glyphicon glyphicon-th-list',
+                        alt: 'Manage Schedules',
+                        title: 'Manage Schedules' %>
+          </th>
+          <% if current_page?(recipes_path) %>
+              <th>Type</th>
+          <% end %>
+          <th>Name</th>
+          <th>Schedule</th>
+          <th>Additions</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render e %>
+        </tbody>
+      </table>
+
+      <%= will_paginate %>
+    </div>
+<% end %>

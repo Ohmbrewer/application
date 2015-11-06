@@ -1,0 +1,37 @@
+<% provide(:title, "#{@recipe.name} | #{@type.titlecase}") %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="recipe_info">
+      <h1>
+        <%= @recipe.name %>
+      </h1>
+      <h4>Schedule</h4>
+        <% if @recipe.schedule.nil? %>
+          <ul><li>Not specified yet...</li></ul>
+        <% else %>
+          <%= render partial: 'schedules/task_list', locals: {schedule: @recipe.schedule} %>
+        <% end %>
+      <h4>Additions</h4>
+      <ul>
+        <li>Coming Soon!</li>
+      </ul>
+    </section>
+    <%= link_to 'Edit',
+                sti_recipe_type_path(@type, @recipe, :edit),
+                class: 'btn btn-sm btn-primary',
+                alt: 'Edit',
+                title: 'Edit' %>
+    <%= link_to 'Delete',
+                @recipe,
+                method: :delete,
+                data: { confirm: 'You sure?' },
+                class: 'btn btn-sm btn-danger',
+                alt: 'Delete',
+                title: 'Delete' %>
+    <%= link_to 'Back',
+                sti_recipe_type_path(@type),
+                class: 'btn btn-sm btn-primary',
+                alt: 'Back',
+                title: 'Back' %>
+  </aside>
+</div>

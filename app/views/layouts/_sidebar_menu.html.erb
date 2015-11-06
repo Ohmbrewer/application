@@ -8,9 +8,11 @@
       <span class="glyphicon glyphicon-book"></span> Recipe Book
     <% end %>
     <div class="collapse in" id="recipe-section">
-      <%= link_to 'Beer', '#', class: 'list-group-item'  %>
-      <%= link_to 'Cider, Mead, or Wine', '#', class: 'list-group-item'  %>
-      <%= link_to 'Distilling', '#', class: 'list-group-item'  %>
+      <%= link_to 'Beer', beer_recipes_path, class: 'list-group-item'  %>
+      <%= link_to 'Cider', cider_recipes_path, class: 'list-group-item'  %>
+      <%= link_to 'Mead', mead_recipes_path, class: 'list-group-item'  %>
+      <%= link_to 'Wine', wine_recipes_path, class: 'list-group-item'  %>
+      <%= link_to 'Distilling', distilling_recipes_path, class: 'list-group-item'  %>
     </div>
 
     <%= link_to '#batches-section',

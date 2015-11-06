@@ -1,0 +1,34 @@
+<tr>
+  <td><%= check_box_tag 'beer_recipes[]', beer_recipe.id, false, class: 'beer_recipe_checkbox' %></td>
+  <% if current_page?(recipes_path) %>
+      <td><%= beer_recipe.type.titlecase %></td>
+  <% end %>
+  <td><%= link_to beer_recipe.name, beer_recipe_path(beer_recipe.id) %></td>
+  <td>
+    <% unless beer_recipe.schedule.nil? %>
+        <%= link_to 'View', '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{beer_recipe.schedule.id}-show" %>
+        <%= render 'schedules/modals/show', schedule: beer_recipe.schedule %>
+    <% end %>
+  </td>
+  <td>Coming soon!</td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to recipe_duplicate_path(beer_recipe),
+                    method: :post,
+                    class: 'btn btn-sm btn-primary',
+                    alt: "Copy #{beer_recipe.name}",
+                    title: "Copy #{beer_recipe.name}" do %>
+            <span class="glyphicon glyphicon-duplicate"></span>
+        <% end %>
+        <%= link_to beer_recipe,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete this \"#{beer_recipe.name}\"?" },
+                    class: 'btn btn-sm btn-danger',
+                    id: "beer-recipe-#{beer_recipe.id}-destroy",
+                    alt: "Delete #{beer_recipe.name}",
+                    title: "Delete #{beer_recipe.name}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

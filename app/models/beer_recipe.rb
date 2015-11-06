@@ -1,0 +1,3 @@
+class BeerRecipe < Recipe
+
+end

@@ -1,0 +1,11 @@
+<% provide(:title, "Manage Schedules") %>
+<h1>
+  Manage Schedules
+  <%= link_to '',
+              new_schedule_path,
+              class: 'btn btn-sm btn-primary glyphicon glyphicon-plus',
+              alt: 'Add a Schedule',
+              title: 'Add a Schedule' %>
+</h1>
+
+<%= render partial: 'schedule_list', locals: {e: @schedules} %>

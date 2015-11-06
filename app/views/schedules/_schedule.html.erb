@@ -1,0 +1,27 @@
+<tr>
+  <td><%= check_box_tag 'schedules[]', schedule.id, false, class: 'schedule_checkbox' %></td>
+  <td>
+    <%= link_to schedule.name, '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{schedule.id}-show" %>
+    <%= render 'schedules/modals/show', schedule: schedule %>
+  </td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to schedule_duplicate_path(schedule),
+                    method: :post,
+                    class: 'btn btn-sm btn-primary',
+                    alt: "Copy #{schedule.name}",
+                    title: "Copy #{schedule.name}" do %>
+            <span class="glyphicon glyphicon-duplicate"></span>
+        <% end %>
+        <%= link_to schedule,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete \"#{schedule.name}\"?" },
+                    class: 'btn btn-sm btn-danger',
+                    id: "schedule-#{schedule.id}-destroy",
+                    alt: "Delete #{schedule.name}",
+                    title: "Delete #{schedule.name}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>

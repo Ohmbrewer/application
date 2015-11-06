@@ -1,0 +1,17 @@
+<% provide(:title, "Manage #{@type == 'Recipe' ? @type : @type.titlecase.pluralize}") %>
+<h1>
+  Manage
+  <%= @type == 'Recipe' ? @type : @type.titlecase.pluralize %>
+
+  <% if @type == 'Recipe' %>
+      <%= render partial: 'recipes/add_recipe_dropdown', locals: {} %>
+  <% else %>
+      <%= link_to '',
+                  sti_recipe_type_path(@type, :new),
+                  class: 'btn btn-sm btn-primary glyphicon glyphicon-plus',
+                  alt: "Add a #{@type.titlecase}",
+                  title: "Add a #{@type.titlecase}" %>
+  <% end %>
+</h1>
+
+<%= render partial: 'recipe_list', locals: {e: @recipes, t: @type} %>

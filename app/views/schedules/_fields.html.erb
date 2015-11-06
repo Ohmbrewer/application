@@ -1,0 +1,28 @@
+<%= render 'shared/error_messages', object: f.object  %>
+
+<%= f.label :name %>
+<%= f.text_field :name, class: 'form-control' %>
+
+<h3>
+  Tasks
+</h3>
+<%= f.label :root_task_id, 'Root Task' %>
+<%= f.select :root_task_id,
+             Task.where(schedule_id: f.object.id).map { |t| ["##{t.id}", t.id] },
+             {include_blank: true, selected: (f.object.nil? || f.object.root_task.nil? ? '' : f.object.root_task.id)},
+             class: 'form-control' %>
+<div id="tasks" class="form-group">
+    <%= f.fields_for :tasks do |task| %>
+        <%= render 'task_fields', f: task %>
+    <% end %>
+    <div class="add-task-control">
+    <%= link_to_add_association '',
+                                f,
+                                :tasks,
+                                'data-association-insertion-method': :before,
+                                'data-association-insertion-traversal': :parent,
+                                alt: 'Add Task',
+                                title: 'Add Task',
+                                class: 'btn btn-sm btn-success glyphicon glyphicon-plus task' %>
+    </div>
+</div>

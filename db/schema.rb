@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151025172312) do
+ActiveRecord::Schema.define(version: 20151104235604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,14 @@ ActiveRecord::Schema.define(version: 20151025172312) do
   add_index "particle_devices", ["device_id"], name: "index_particle_devices_on_device_id", unique: true, using: :btree
   add_index "particle_devices", ["rhizome_id"], name: "index_particle_devices_on_rhizome_id", using: :btree
 
+  create_table "recipes", force: :cascade do |t|
+    t.string   "name"
+    t.string   "type"
+    t.integer  "schedule_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "recirculating_infusion_mash_systems", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -82,6 +90,13 @@ ActiveRecord::Schema.define(version: 20151025172312) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "schedules", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "root_task_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   create_table "sprouts", force: :cascade do |t|
     t.integer "rhizome_id"
     t.integer "sproutable_id"
@@ -90,6 +105,15 @@ ActiveRecord::Schema.define(version: 20151025172312) do
 
   add_index "sprouts", ["sproutable_type", "sproutable_id"], name: "index_sprouts_on_sproutable_type_and_sproutable_id", using: :btree
 
+  create_table "task_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id",   null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations",   null: false
+  end
+
+  add_index "task_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "task_anc_desc_idx", unique: true, using: :btree
+  add_index "task_hierarchies", ["descendant_id"], name: "task_desc_idx", using: :btree
+
   create_table "tasks", force: :cascade do |t|
     t.string   "type"
     t.integer  "status"
@@ -97,8 +121,14 @@ ActiveRecord::Schema.define(version: 20151025172312) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "equipment_id"
+    t.integer  "schedule_id"
+    t.integer  "duration",     default: 0
+    t.integer  "parent_id"
+    t.integer  "sort_order"
+    t.integer  "trigger"
   end
 
+  add_index "tasks", ["schedule_id"], name: "index_tasks_on_schedule_id", using: :btree
   add_index "tasks", ["update_data"], name: "index_tasks_on_update_data", using: :btree
 
   create_table "thermostats", force: :cascade do |t|

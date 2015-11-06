@@ -1,0 +1,3 @@
+class DistillingRecipe < Recipe
+
+end

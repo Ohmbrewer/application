@@ -1,0 +1,25 @@
+<ul>
+  <% if schedule.root_task.nil? %>
+      <li>No root task picked...</li>
+  <% else %>
+      <% schedule.root_task.self_and_descendants.each do |task| %>
+      <li>
+        <span class="label label-success">
+          <% if task.id == schedule.root_task.id %>
+              <span class="glyphicon glyphicon-flash"></span>
+          <% end %>
+          Task #<%= task.id %>:
+        </span><br />
+        <span class="label label-primary"><%= task.type_name_display %></span>
+        <% unless task.equipment.nil? %>
+            <span class="label label-default"><%= task.equipment.type.titlecase %> #<%= task.equipment.rhizome_eid %></span>
+            for <span class="label label-warning"><%= task.duration %> sec.</span>
+            <% unless task.parent.nil? %>
+                after <span class="label label-danger"><%= task.trigger.titlecase %></span>
+                fires for <span class="label label-success">Task #<%= task.parent.id %></span>
+            <% end %>
+        <% end %>
+      </li>
+      <% end %>
+  <% end %>
+</ul>

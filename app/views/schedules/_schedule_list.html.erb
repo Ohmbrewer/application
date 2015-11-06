@@ -1,0 +1,32 @@
+<%= form_for :schedule,
+             url: destroy_multiple_schedules_path,
+             method: :delete,
+             id: 'bulk-delete bulk-delete-schedules-form' do %>
+    <div class="table-responsive">
+      <%= will_paginate %>
+
+      <table class="schedules table table-hover table-striped">
+        <thead>
+        <tr>
+          <th>
+            <%= button_tag '',
+                           type: :submit,
+                           method: :delete,
+                           id: 'destroy-multiple-schedules',
+                           data: { confirm: 'You sure you want to remove all of these?' },
+                           class: 'btn btn-sm btn-primary glyphicon glyphicon-trash',
+                           alt: 'Remove Selected Equipment',
+                           title: 'Remove Selected Equipment' %>
+          </th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render e %>
+        </tbody>
+      </table>
+
+      <%= will_paginate %>
+    </div>
+<% end %>

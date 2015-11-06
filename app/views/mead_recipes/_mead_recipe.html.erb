@@ -1,0 +1,34 @@
+<tr>
+  <td><%= check_box_tag 'mead_recipes[]', mead_recipe.id, false, class: 'mead_recipe_checkbox' %></td>
+  <% if current_page?(recipes_path) %>
+      <td><%= mead_recipe.type.gsub('Recipe', '').titlecase %></td>
+  <% end %>
+  <td><%= link_to mead_recipe.name, mead_recipe_path(mead_recipe.id) %></td>
+  <td>
+    <% unless mead_recipe.schedule.nil? %>
+        <%= link_to 'View', '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{mead_recipe.schedule.id}-show" %>
+        <%= render 'schedules/modals/show', schedule: mead_recipe.schedule %>
+    <% end %>
+  </td>
+  <td>Coming soon!</td>
+  <td>
+    <% if current_user.admin? %>
+        <%= link_to recipe_duplicate_path(mead_recipe),
+                    method: :post,
+                    class: 'btn btn-sm btn-primary',
+                    alt: "Copy #{mead_recipe.name}",
+                    title: "Copy #{mead_recipe.name}" do %>
+            <span class="glyphicon glyphicon-duplicate"></span>
+        <% end %>
+        <%= link_to mead_recipe,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete \"#{mead_recipe.name}\"?" },
+                    class: 'btn btn-sm btn-danger',
+                    id: "mead-recipe-#{mead_recipe.id}-destroy",
+                    alt: "Delete #{mead_recipe.name}",
+                    title: "Delete #{mead_recipe.name}" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+    <% end %>
+  </td>
+</tr>
