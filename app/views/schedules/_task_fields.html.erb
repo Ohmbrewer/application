@@ -30,17 +30,17 @@
         </span>
     </div>
     <div class="input-group">
-    <span class="input-group-addon">after</span>
+    <span class="input-group-addon">after Task</span>
+      <%= f.label :parent_id, 'Parent Task', class: 'sr-only' %>
+      <%= f.select :parent_id,
+                   Task.where(schedule_id: f.object.schedule_id).map { |t| ["##{t.id}", t.id] },
+                   {include_blank: true, selected: (f.object.nil? ? '' : f.object.parent_id)},
+                   class: 'form-control' %>
+    <span class="input-group-addon">is</span>
     <%= f.label :trigger, class: 'sr-only' %>
     <%= f.select :trigger,
-                 Task.triggers.map { |t, _| [t.titlecase, t] },
+                 Task.triggers.map { |t, _| [t.gsub('on_', '').titlecase, t] },
                  {include_blank: true, selected: (f.object.trigger.nil? ? '' : f.object.trigger)},
-                 class: 'form-control' %>
-    <span class="input-group-addon">fires for Task</span>
-    <%= f.label :parent_id, 'Parent Task', class: 'sr-only' %>
-    <%= f.select :parent_id,
-                 Task.where(schedule_id: f.object.schedule_id).map { |t| ["##{t.id}", t.id] },
-                 {include_blank: true, selected: (f.object.nil? ? '' : f.object.parent_id)},
                  class: 'form-control' %>
 
     </div>

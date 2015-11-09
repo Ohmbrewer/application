@@ -6,8 +6,6 @@ module RhizomeInterfaces
     # This automagically adds the ClassMethods to the ClassMethods of Sprout
     def self.included(base)
       base.extend(ClassMethods)
-      interceptor = const_set("#{base.name}Interceptor", Module.new)
-      base.prepend interceptor
     end
 
     # == Class Methods to Include ==
@@ -20,6 +18,14 @@ module RhizomeInterfaces
       # @return [Equipment|Thermostat|Recirculating_Infusion_Mash_System] The sprout instance
       def find_by_rhizome_eid(rhizome, rhizome_eid)
         rhizome.temperature_sensors.select {|p| p.rhizome_eid.to_i == rhizome_eid }.first
+      end
+
+      # Formats a String of additional arguments to supplement the defaults in #to_args_str
+      # @abstract This method must be implemented to pass those extra arguments.
+      # @param extra [Hash] Hash of extra arguments
+      # @return [String] The extra arguments, ready for appending
+      def parse_extra_args(extra={})
+        ''
       end
 
     end

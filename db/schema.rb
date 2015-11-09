@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104235604) do
+ActiveRecord::Schema.define(version: 20151108220411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",               default: 0, null: false
@@ -126,6 +127,7 @@ ActiveRecord::Schema.define(version: 20151104235604) do
     t.integer  "parent_id"
     t.integer  "sort_order"
     t.integer  "trigger"
+    t.uuid     "job_id"
   end
 
   add_index "tasks", ["schedule_id"], name: "index_tasks_on_schedule_id", using: :btree

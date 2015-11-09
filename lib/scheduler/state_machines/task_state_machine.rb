@@ -10,115 +10,174 @@ module Scheduler
 
         base.send(:aasm, column: :status, whiny_transitions: false) do
 
-          # These states must match the statuses of Task::status
-          state :scheduled, initial: true
+          # These states must match the statuses of Task::status and Task::trigger
+          state :queued, initial: true
+          state :started
           state :message_sent
           state :ramping
           state :holding
           state :done
           state :failed
+          state :overridden
           state :resending
+
+          event :start do
+            after do
+              Rails.logger.info "Loading #{type} ##{id} from the queue for " <<
+                                "#{equipment.type} ##{equipment.rhizome_eid} on #{equipment.rhizome.name}"
+              compute_stop_time!
+              trigger_children(:started)
+            end
+            transitions from: :queued, to: :started
+          end
 
           event :send_message do
             after do
-              puts 'Sent message!'
+              Rails.logger.info 'Sent message!'
+              trigger_children(:message_sent)
             end
-            transitions from: :scheduled, to: :message_sent
+            transitions from: :started, to: :message_sent
           end
 
           event :send_failure do
             after do
-              puts 'Sent message failed!'
+              Rails.logger.info 'Sent message failed!'
+              trigger_children(:resending)
             end
-            transitions from: :scheduled, to: :resending
+            transitions from: :started, to: :resending
           end
 
           event :resend_success do
             after do
-              puts 'Resend success!'
+              Rails.logger.info 'Resend success!'
+              trigger_children(:message_sent)
             end
             transitions from: :resending, to: :message_sent
           end
 
           event :resend_failure do
             after do
-              puts 'Resend failure!'
+              Rails.logger.info 'Resend failure!'
+              trigger_children(:failed)
             end
             transitions from: :resending, to: :failed
           end
 
           event :message_acknowledged do
             after do
-              puts 'Message ack!'
+              Rails.logger.info 'Message ack!'
+              trigger_children(:done)
             end
             transitions from: :message_sent, to: :done
           end
 
           event :start_ramping do
             after do
-              puts 'Start ramping!'
+              Rails.logger.info 'Start ramping!'
+              trigger_children(:ramping)
             end
             transitions from: :message_sent, to: :ramping
           end
 
           event :message_rejected do
             after do
-              puts 'Message rejected!'
+              Rails.logger.info 'Message rejected!'
+              trigger_children(:failed)
             end
             transitions from: :message_sent, to: :failed
           end
 
           event :start_holding do
             after do
-              puts 'Start holding!'
+              Rails.logger.info 'Start holding!'
+              trigger_children(:holding)
             end
             transitions from: :message_sent, to: :holding
           end
 
           event :ready do
             after do
-              puts 'Ready!'
+              Rails.logger.info 'Ready!'
+              trigger_children(:holding)
             end
             transitions from: :ramping, to: :holding
           end
 
           event :ramp_failure do
             after do
-              puts 'Ramp fail!'
+              Rails.logger.info 'Ramp fail!'
+              trigger_children(:failed)
             end
             transitions from: :ramping, to: :failed
           end
 
           event :duration_reached do
             after do
-              puts 'All done!'
+              Rails.logger.info 'All done!'
+              trigger_children(:done)
             end
             transitions from: :holding, to: :done
           end
 
           event :hold_failure do
             after do
-              puts 'Hold failure!'
+              Rails.logger.info 'Hold failure!'
+              trigger_children(:failed)
             end
             transitions from: :holding, to: :failed
           end
 
           event :failure do
             after do
-              puts 'Shit!'
+              Rails.logger.info 'Shit!'
+              trigger_children(:failed)
             end
             transitions to: :failed
           end
 
+          event :override do
+            after do
+              Rails.logger.info 'New task was more important! Unblocking and overriding!'
+              trigger_children(:overridden)
+            end
+            transitions to: :overridden
+          end
+
           event :restart do
             after do
-              puts 'Restarting!'
+              Rails.logger.info 'Restarting!'
+              trigger_children(:started)
             end
-            transitions from: :failed, to: :scheduled
+            transitions from: :failed, to: :started
           end
 
         end
 
+      end
+
+      # Computes the stop_time based on when the Task actually
+      # gets started and the provided duration
+      def compute_stop_time!
+        itself.stop_time = Time.now.to_i + duration
+        save!
+        Rails.logger.info "Computed stop time as #{stop_time}"
+      end
+
+      # Start any child tasks based on the provided state
+      # @param [Symbol] state The state trigger
+      def trigger_children(state)
+
+        children.each do |child|
+          if child.send("on_#{state}?")
+            Rails.logger.info "Queuing #{child.type} ##{child.id}"
+            child.failure! unless TaskJob.set(queue: child.queue_name).perform_later(child)
+          end
+        end
+
+      end
+
+      def override_and_dequeue
+        override! if Delayed::Job.find(job_id).destroy
       end
 
       # Determines if a task is done immediately after successfully sending a message

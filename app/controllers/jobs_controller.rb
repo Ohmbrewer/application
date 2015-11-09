@@ -6,6 +6,10 @@ class JobsController < ApplicationController
                 only: [:ping] #, :dashboard]
   before_action :set_rhizome,
                 only: [:ping]
+  before_action :set_schedule,
+                only: [:schedule]
+  before_action :set_task,
+                only: [:task]
 
   # == Routes ==
 
@@ -29,10 +33,52 @@ class JobsController < ApplicationController
     redirect_to rhizomes_url
   end
 
+  # Launches a ScheduleJob if the provided Schedule is runnable.
+  def schedule
+    if @schedule.runnable?
+      result = ScheduleJob.perform_later(@schedule)
+
+      if result
+        flash[:success] = "Starting Schedule <strong>#{@schedule.name}</strong>"
+      else
+        flash[:danger] = "Could not start Schedule <strong>#{@schedule.name}</strong>!"
+      end
+
+    else
+      flash[:danger] = "Could not start Schedule <strong>#{@schedule.name}</strong>! " <<
+                       'It needs to be fixed first. ' <<
+                       'Make sure you have set a root task and that it saves with no errors.'
+    end
+
+    redirect_to schedules_path
+  end
+
+  # Launches a TaskJob.
+  def task
+    result = TaskJob.perform_later(@task)
+
+    if result
+      flash[:success] = "Starting Task <strong>#{@task.type} ##{@task.id}</strong>"
+    else
+      flash[:danger] = "Could not start Task <strong>#{@task.type} ##{@task.id}</strong>!"
+    end
+
+
+    redirect_to schedules_path
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_rhizome
       @rhizome = Rhizome.find(params[:rhizome]) unless params[:rhizome].to_i.zero?
+    end
+
+    def set_schedule
+      @schedule = Schedule.find(params[:schedule_id]) unless params[:schedule_id].to_i.zero?
+    end
+
+    def set_task
+      @task = Task.find(params[:task_id]) unless params[:task_id].to_i.zero?
     end
 
 end
