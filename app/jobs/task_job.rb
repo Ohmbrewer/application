@@ -4,9 +4,18 @@ class TaskJob < ActiveJob::Base
   # queue when creating the TaskJob.
   queue_as :task
 
+  # When the Task is pulled from the queue, it needs to be started.
+  before_perform do |job|
+    job.arguments.first.job_id = job_id
+    job.arguments.first.start!
+
+    Rails.logger.info "Starting job #{job_id} for task #{job.arguments.first.type} ##{job.arguments.first.id}!"
+  end
+
   # Processes a given Task
   # @param [Task] task The Task to process
   def perform(task)
+    task.reload
 
     # If we're restarting the task, we don't want to resend it
     task.send_message! do
@@ -37,6 +46,14 @@ class TaskJob < ActiveJob::Base
 
   end
 
+  # If the job itself fails (as opposed to the Task), let's wait 5 seconds and try again
+  # @param [Time] current_time Current time
+  # @param [Integer] attempts Number of attempts before giving up (ignored)
+  # @return [Time] The time to reschedule the job
+  def reschedule_at(current_time, attempts)
+    current_time + 5.seconds
+  end
+
   private
 
   def message_sent_transition(task)
@@ -54,23 +71,17 @@ class TaskJob < ActiveJob::Base
   # @param task [Task] The task to process
   def do_ramping(task)
     while task.ramping?
-      last_check = task.equipment_statuses
-                       .updated_after(task.updated_at - 30)
-                       .last
 
-      unless last_check.nil?
-        # Got the first status update
-
-        if task.stop_time > Time.now.to_i
-          # In the holding period.
-          # Let the task dictate what should be happening.
-          task.do_ramp(last_check)
-          return if task.failed?
-        elsif task.stop_time <= Time.now.to_i
-          # Passed the ramping period. If we haven't failed out, this is a success.
-          task.ready!
-          return
-        end
+      if task.stop_time > Time.now.to_i
+        # In the ramping period.
+        # Let the task dictate what should be happening.
+        last_check = task.last_update(30)
+        task.do_ramp(last_check) unless last_check.nil?
+        return if task.failed?
+      elsif task.stop_time <= Time.now.to_i
+        # Passed the ramping period. If we haven't failed out, this is a success.
+        task.duration_reached!
+        return
       end
 
       sleep 15 # Then take a nap...
@@ -81,24 +92,18 @@ class TaskJob < ActiveJob::Base
   # @param task [Task] The task to process
   def do_holding(task)
     while task.holding?
-      last_check = task.equipment_statuses
-                       .updated_after(task.updated_at - 30)
-                       .last
-
-      unless last_check.nil?
-        # Got the first status update
 
         if task.stop_time > Time.now.to_i
           # In the holding period.
           # Let the task dictate what should be happening.
-          task.do_hold(last_check)
+          last_check = task.last_update(30)
+          task.do_hold(last_check) unless last_check.nil?
           return if task.failed?
         elsif task.stop_time <= Time.now.to_i
           # Passed the holding period. If we haven't failed out, this is a success.
           task.duration_reached!
           return
         end
-      end
 
       sleep 15 # Then take a nap...
     end

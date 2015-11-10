@@ -25,9 +25,15 @@ Rails.application.routes.draw do
   resources :schedules
   resources :schedules do
     post 'duplicate' => 'schedules#duplicate'
+    post 'run'       => 'jobs#schedule'
+    post 'run_task'  => 'jobs#task'
     collection do
       delete :destroy_multiple
     end
+  end
+
+  resources :tasks do
+    post 'run'  => 'jobs#task'
   end
 
   resources :recipes

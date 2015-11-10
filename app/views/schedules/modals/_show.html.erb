@@ -3,12 +3,28 @@
     <div class="modal-content">
       <div class="modal-header navbar-inverse">
         <%= button_tag '', class: 'btn btn-sm btn-danger glyphicon glyphicon-remove', 'data-dismiss' => 'modal' %>
-        <h4 class="modal-title" id="schedule-<%= schedule.id %>-show-label"><%= schedule.name %></h4>
+        <h4 class="modal-title" id="schedule-<%= schedule.id %>-show-label"><%= schedule.name %>
+        <% if schedule.runnable? %>
+            <span class="label label-sm label-success">
+              <span class="glyphicon glyphicon-ok-circle"></span>
+            </span>
+        <% else %>
+            <span class="label label-sm label-danger">
+              <span class="glyphicon glyphicon-ban-circle"></span>
+            </span>
+        <% end %>
+        </h4>
       </div>
       <div class="modal-body schedule-info">
         <%= render partial: 'schedules/task_list', locals: {schedule: schedule} %>
       </div>
       <div class="modal-footer">
+        <%= link_to 'Run',
+                    schedule_run_path(schedule),
+                    method: :post,
+                    class: "btn btn-sm btn-success#{schedule.runnable? ? '' : ' disabled'}",
+                    alt: "Run #{schedule.name}",
+                    title: "Run #{schedule.name}" %>
         <%= link_to 'Edit',
                     edit_schedule_path(id: schedule.id),
                     class: 'btn btn-sm btn-primary',

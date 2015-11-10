@@ -32,32 +32,28 @@ class Task < ActiveRecord::Base
   # We leave it up to the particular Task subtype and the TaskJob to manage
   # *how* the Task transitions between them.
   enum status: {
-      scheduled:    0,
-      message_sent: 1,
-      ramping:      2,
-      holding:      3,
-      done:         4,
+      queued:       0,
+      started:      1,
+      message_sent: 2,
+      ramping:      3,
+      holding:      4,
+      done:         5,
       failed:      -1,
-      resending:   -2
+      resending:   -2,
+      overridden:  -3
   }
 
   # This enumerates all the events our various Task types support for triggering off of.
   # See the State Diagram or the TaskStateMachine module for more details.
   enum trigger: {
-           duration_reached:     7,
-           send_message:         1,
-           resend_success:       2,
-           message_acknowledged: 3,
-           start_ramping:        4,
-           start_holding:        5,
-           ready:                6,
-           failure:             -1,
-           restart:             -2,
-           send_failure:        -3,
-           resend_failure:      -4,
-           message_rejected:    -5,
-           ramp_failure:        -6,
-           hold_failure:        -7
+           on_started:      0,
+           on_message_sent: 1,
+           on_ramping:      2,
+           on_holding:      3,
+           on_done:         4,
+           on_failed:      -1,
+           on_resending:   -2,
+           on_overridden:  -3
        }
 
   # This gives us a way to store the data that will be sent with *all* updates.
@@ -111,6 +107,31 @@ class Task < ActiveRecord::Base
 
   def type_name_display
     type.gsub('Task', '').titlecase
+  end
+
+  def trigger_name_display
+    trigger.gsub('on_', '').titlecase
+  end
+
+  def queue_name
+    if equipment.nil?
+      raise NotImplementedError, 'No queue name generator specified!'
+    else
+      "#{equipment.type}_#{equipment.rhizome_eid}"
+    end
+  end
+
+  # Blocking Tasks do not allow other Tasks to override them
+  # @return [TrueFalse] Whether the Task is a blocking task
+  def blocking?
+    false
+  end
+
+  # The last status update sent for this Task
+  # @param [Integer] window Number of seconds ago to include in the scan (optional, defaults to 30)
+  # @return [EquipmentStatus] The last status found or nil if no statuses have been sent in that window
+  def last_update(window=30)
+    equipment_statuses.updated_after(updated_at - window).last
   end
 
   # == Class Methods ==

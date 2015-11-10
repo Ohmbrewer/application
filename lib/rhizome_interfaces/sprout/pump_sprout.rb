@@ -6,8 +6,6 @@ module RhizomeInterfaces
     # This automagically adds the ClassMethods to the ClassMethods of Sprout
     def self.included(base)
       base.extend(ClassMethods)
-      interceptor = const_set("#{base.name}Interceptor", Module.new)
-      base.prepend interceptor
     end
 
     # == Class Methods to Include ==

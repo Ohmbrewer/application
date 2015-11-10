@@ -6,6 +6,13 @@
   </td>
   <td>
     <% if current_user.admin? %>
+        <%= link_to schedule_run_path(schedule),
+                    method: :post,
+                    class: "btn btn-sm btn-success#{schedule.runnable? ? '' : ' disabled'}",
+                    alt: "Run #{schedule.name}",
+                    title: "Run #{schedule.name}" do %>
+            <span class="glyphicon glyphicon-play-circle"></span>
+        <% end %>
         <%= link_to schedule_duplicate_path(schedule),
                     method: :post,
                     class: 'btn btn-sm btn-primary',

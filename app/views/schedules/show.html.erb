@@ -1,12 +1,29 @@
 <% provide(:title, @schedule.name) %>
 <div class="row">
-  <aside class="col-md-4">
+  <aside class="col-md-8">
     <section class="schedule_info">
       <h1>
         <%= @schedule.name %>
       </h1>
+      <% if @schedule.runnable? %>
+            <span class="label label-sm label-success">
+              <span class="glyphicon glyphicon-ok-circle"></span>
+              Ready to Run
+            </span>
+      <% else %>
+            <span class="label label-sm label-danger">
+              <span class="glyphicon glyphicon-ban-circle"></span>
+              Not Ready to Run
+            </span>
+      <% end %>
       <%= render partial: 'task_list', locals: {schedule: @schedule} %>
     </section>
+    <%= link_to 'Run',
+                schedule_run_path(@schedule),
+                method: :post,
+                class: "btn btn-sm btn-success#{@schedule.runnable? ? '' : ' disabled'}",
+                alt: "Run #{@schedule.name}",
+                title: "Run #{@schedule.name}" %>
     <%= link_to 'Edit',
                 edit_schedule_path,
                 id: @schedule.id,
