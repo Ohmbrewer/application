@@ -53,12 +53,7 @@ module RhizomeInterfaces
     def to_args_str(args = {})
       extra_args = self.class.parse_extra_args(args)
       extra_args.prepend(',') if extra_args.length > 0
-      "#{rhizome_eid},#{args[:current_task]},#{args[:state]},#{args[:stop_time]}#{extra_args}"
-    end
-
-    # The name of Particle Function for updating this Equipment instance
-    def update_function_name
-      "#{rhizome_type_name}_#{rhizome_eid}"
+      "#{rhizome_type_name},#{rhizome_eid},#{args[:current_task]},#{args[:state]},#{args[:stop_time]}#{extra_args}"
     end
 
     # Sends the provided information to the Rhizome's appropriate Particle Function endpoint.
@@ -69,11 +64,11 @@ module RhizomeInterfaces
       begin
         rhizome.particle_device
                .connection
-               .function update_function_name,
+               .function 'update',
                          to_args_str(args)
       rescue Particle::BadRequest => e
-        msg = "Lost contact with Rhizome or the Rhizome doesn't support " <<
-              "the \"#{update_function_name}\" function! Check your equipment!"
+        msg = 'Lost contact with Rhizome or the Rhizome doesn\'t support ' <<
+              'the "update" function! Check your equipment!'
         Rails.logger.error msg
         return false
       end
