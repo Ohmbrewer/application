@@ -126,31 +126,21 @@ class SchedulesController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_schedule
-    unless params[:id] == 'destroy_multiple'
-      @schedule = Schedule.find(params[:id]) unless params[:id].to_i.zero?
-    end
-  end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def schedule_params
-    p = params.require(:schedule)
-          .permit(:name,
-                  :root_task_id,
-                  tasks_attributes: [:id, :type, :equipment, :duration, :trigger, :parent_id, :_destroy])
-    unless p[:tasks_attributes].nil?
-      p[:tasks_attributes].each do |k, _|
-        if p[:tasks_attributes][k][:equipment].nil? ||
-               p[:tasks_attributes][k][:equipment].to_i.zero?
-          p[:tasks_attributes][k][:equipment] = nil
-        else
-          p[:tasks_attributes][k][:equipment] = Equipment.find(p[:tasks_attributes][k][:equipment].to_i)
-        end
-        puts p[:tasks_attributes][k].inspect
+    # Use callbacks to share common setup or constraints between actions.
+    def set_schedule
+      unless params[:id] == 'destroy_multiple'
+        @schedule = Schedule.find(params[:id]) unless params[:id].to_i.zero?
       end
     end
-    p
-  end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def schedule_params
+      params.require(:schedule)
+            .permit(:name,
+                    :root_task_id,
+                    tasks_attributes: [:id, :type, :sprout, :equipment, :duration, :trigger,
+                                       :target_temperature, :ramp_estimate, :parent_id, :_destroy])
+    end
   
 end

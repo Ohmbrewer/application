@@ -18,13 +18,10 @@
         </span>
         <br />
         <span class="label label-success"><%= task.type_name_display %></span>
-        <% unless task.equipment.nil? %>
-            <span class="label label-default"><%= task.equipment.type.titlecase %> #<%= task.equipment.rhizome_eid %></span>
-            for <span class="label label-warning"><%= task.duration %> sec.</span>
-            <% unless task.parent.nil? %>
-                after <span class="label label-primary">Task #<%= task.parent.id %></span>
-                is <span class="label label-danger"><%= task.trigger_name_display %></span>
-            <% end %>
+        <% if !task.equipment.nil? %>
+            <%= render partial: 'schedules/equipment_task_details', locals: {task: task} %>
+        <% elsif !task.thermostat.nil? %>
+            <%= render partial: 'schedules/thermostat_task_details', locals: {task: task} %>
         <% end %>
       </li>
       <% end %>

@@ -30,11 +30,10 @@ class RecirculatingInfusionMashSystem < ActiveRecord::Base
   validates :recirculation_pump, presence: true
 
   def rhizome_must_match_validation
-    unless tube.nil? || safety_sensor.nil? || recirculation_pump.nil?
-      unless tube.rhizome.nil? || safety_sensor.rhizome.nil? || recirculation_pump.rhizome.nil?
-        unless (tube.rhizome == safety_sensor.rhizome) && (tube.rhizome == recirculation_pump.rhizome)
-          errors.add(:tube, ', Safety Sensor, and Recirculation Pump must be registered as attached to the same Rhizome.')
-        end
+    unless tube.nil? && safety_sensor.nil? && recirculation_pump.nil?
+      if (tube.rhizome.nil? || safety_sensor.rhizome.nil? || recirculation_pump.rhizome.nil?) ||
+         !((tube.rhizome == safety_sensor.rhizome) && (tube.rhizome == recirculation_pump.rhizome))
+        errors.add(:tube, ', Safety Sensor, and Recirculation Pump must be registered as attached to the same Rhizome.')
       end
     end
   end

@@ -12,16 +12,13 @@
                      {},
                      class: 'form-control' %>
         <span class="input-group-addon"></span>
-        <%= f.label :equipment, class: 'sr-only' %>
-        <%= f.select :equipment,
-                     Equipment.all.map { |et| ["#{et.type.titlecase} #{et.rhizome_eid}", et.id] },
-                     {include_blank: true, selected: (f.object.equipment.nil? ? '' : f.object.equipment.id)},
+        <%= f.label :sprout, class: 'sr-only' %>
+        <%= f.select :sprout,
+                     (Equipment.all + Thermostat.all).map { |et| ["#{et.type.titlecase} #{et.rhizome_eid}", "#{et.type}_#{et.id}"] },
+                     {include_blank: true, selected: (f.object.sprout.nil?  ? '' : f.object.sprout)},
                      class: 'form-control' %>
-        <span class="input-group-addon">for</span>
-        <%= f.label :duration, class: 'sr-only' %>
-        <%= f.text_field :duration, class: 'form-control' %>
-        <span class="input-group-addon">sec.</span>
-          <span class="input-group-btn">
+
+        <span class="input-group-btn">
         <%= link_to_remove_association '',
                                        f,
                                        alt: 'Remove Task',
@@ -29,7 +26,25 @@
                                        class: 'btn btn-danger glyphicon glyphicon-minus' %>
         </span>
     </div>
+
+
+    <% if f.object.type == 'RunThermostatTask' %>
     <div class="input-group">
+      <span class="input-group-addon">take</span>
+      <%= f.label :ramp_estimate, class: 'sr-only' %>
+      <%= f.text_field :ramp_estimate, class: 'form-control' %>
+      <span class="input-group-addon">sec. or less to ramp to</span>
+      <%= f.label :target_temperature, class: 'sr-only' %>
+      <%= f.text_field :target_temperature, class: 'form-control' %>
+      <span class="input-group-addon">&deg;C</span>
+    </div>
+    <% end %>
+
+    <div class="input-group">
+      <span class="input-group-addon">hold for</span>
+      <%= f.label :duration, class: 'sr-only' %>
+      <%= f.text_field :duration, class: 'form-control' %>
+      <span class="input-group-addon">sec.</span>
     <span class="input-group-addon">after Task</span>
       <%= f.label :parent_id, 'Parent Task', class: 'sr-only' %>
       <%= f.select :parent_id,

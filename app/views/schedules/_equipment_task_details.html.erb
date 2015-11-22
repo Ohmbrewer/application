@@ -1,0 +1,6 @@
+<span class="label label-default"><%= task.equipment.type.titlecase %> #<%= task.equipment.rhizome_eid %></span>
+for <span class="label label-warning"><%= task.duration %> sec.</span>
+<% unless task.parent.nil? %>
+  after <span class="label label-primary">Task #<%= task.parent.id %></span>
+  is <span class="label label-danger"><%= task.trigger_name_display %></span>
+<% end %>

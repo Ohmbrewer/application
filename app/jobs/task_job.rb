@@ -79,8 +79,8 @@ class TaskJob < ActiveJob::Base
         task.do_ramp(last_check) unless last_check.nil?
         return if task.failed?
       elsif task.stop_time <= Time.now.to_i
-        # Passed the ramping period. If we haven't failed out, this is a success.
-        task.duration_reached!
+        # Passed the ramping period, but didn't transition...
+        task.ramp_failure!
         return
       end
 
