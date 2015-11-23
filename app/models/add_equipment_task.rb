@@ -27,12 +27,4 @@ class AddEquipmentTask < Task
     raise NoMethodError, 'AddEquipmentTask-based classes do not process status!'
   end
 
-  # The EquipmentStatus variant to watch for notifications of
-  # @abstract Task subclasses must override this to function
-  # @raise [NoMethodError] If not supplied by the subclass
-  # @return [EquipmentStatus] The EquipmentStatus subclass to watch for updates of
-  def status_class
-    raise NoMethodError, 'Tried to use the base EquipmentTask class!'
-  end
-
 end

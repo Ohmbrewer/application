@@ -10,6 +10,7 @@ module RhizomeInterfaces
 
     # == Class Methods to Include ==
     module ClassMethods
+      include Sprout::ClassMethods
 
       # Locates the Equipment subclass, Thermostat, or RIMS instance associated with a
       # given Rhizome Sprout ID.

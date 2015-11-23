@@ -23,8 +23,14 @@ module Scheduler
 
           event :start do
             after do
-              Rails.logger.info "Loading #{type} ##{id} from the queue for " <<
-                                "#{equipment.type} ##{equipment.rhizome_eid} on #{equipment.rhizome.name}"
+              unless equipment.nil?
+                Rails.logger.info "Loading #{type} ##{id} from the queue for " <<
+                                  "#{equipment.type} ##{equipment.rhizome_eid} on #{equipment.rhizome.name}"
+              end
+              unless thermostat.nil?
+                Rails.logger.info "Loading #{type} ##{id} from the queue for " <<
+                                  "Thermostat ##{thermostat.rhizome_eid} on #{thermostat.rhizome.name}"
+              end
               compute_stop_time!
               trigger_children(:started)
             end
@@ -158,7 +164,7 @@ module Scheduler
       # Computes the stop_time based on when the Task actually
       # gets started and the provided duration
       def compute_stop_time!
-        itself.stop_time = Time.now.to_i + duration
+        itself.stop_time = Time.now.to_i + ramp_estimate + duration
         save!
         Rails.logger.info "Computed stop time as #{stop_time}"
       end

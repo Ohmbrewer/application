@@ -116,6 +116,9 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
     unless p[:rhizome].nil?
       unless p[:rhizome].is_a? Rhizome
         p[:rhizome] = Rhizome.find(p[:rhizome])
+        p[:tube_attributes][:rhizome] = p[:rhizome]
+        p[:safety_sensor_attributes][:rhizome] = p[:rhizome]
+        p[:recirculation_pump_attributes][:rhizome] = p[:rhizome]
       end
     end
     p
