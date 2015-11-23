@@ -16,17 +16,16 @@ module RhizomeInterfaces
       # given Rhizome Sprout ID.
       # @param rhizome [Rhizome] The Rhizome with the desired Sprout
       # @param rhizome_eid [Integer] The Rhizome Sprout ID / Equipment ID
-      # @return [Equipment|Thermostat|Recirculating_Infusion_Mash_System] The sprout instance
+      # @return [Pump] The sprout instance
       def find_by_rhizome_eid(rhizome, rhizome_eid)
         rhizome.pumps.select {|p| p.rhizome_eid.to_i == rhizome_eid }.first
       end
 
-      # The Pump has optional parameters to set on Update. Supply them keyed as follows:
-      # * Speed (:speed)
+      # The Pump has optional parameters to set on Update.
       # @param extra [Hash] Hash of extra arguments
       # @return [String] The extra arguments, ready for appending
       def parse_extra_args(extra={})
-        "#{extra[:speed].nil? ? '' : "#{extra[:speed]}"}"
+        ''
       end
 
     end
