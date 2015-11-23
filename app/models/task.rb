@@ -13,6 +13,7 @@ class Task < ActiveRecord::Base
   belongs_to :schedule
   belongs_to :equipment
   belongs_to :thermostat
+  belongs_to :recirculating_infusion_mash_system
   has_many :equipment_statuses, -> { order(created_at: :desc) }
 
   # == Subclass scopes ==
@@ -88,6 +89,8 @@ class Task < ActiveRecord::Base
         "#{equipment.type}_#{equipment_id}"
       when !thermostat.nil?
         "Thermostat_#{thermostat_id}"
+      when !recirculating_infusion_mash_system.nil?
+        "RIMS_#{recirculating_infusion_mash_system_id}"
       else
         nil
     end
@@ -105,6 +108,9 @@ class Task < ActiveRecord::Base
       when s.start_with?('Thermostat')
         # Set the Thermostat
         self.thermostat = Thermostat.find(s.split('_').last.to_i)
+      when s.start_with?('RIMS')
+        # Set the RIMS
+        self.recirculating_infusion_mash_system = RecirculatingInfusionMashSystem.find(s.split('_').last.to_i)
       else
         # Easier than enumerating all the Equipment types
         self.equipment = Equipment.find(s.split('_').last.to_i)
@@ -195,6 +201,27 @@ class Task < ActiveRecord::Base
     # The list of supported Equipment types
     def task_types
       %w(TurnOnTask TurnOffTask RunThermostatTask)
+    end
+
+    # Provides a standardized option list of all the Tasks
+    # @return [Array] An option list array
+    def task_options
+      task_types.map do |et|
+        [et.gsub('Task', '').titlecase, et]
+      end
+    end
+
+    # Provides a standardized option list of all possible Parent Tasks
+    # @param [Integer] schedule_id The ID of the Schedule containing the Tasks
+    # @return [Array] An option list array
+    def parent_task_options(schedule_id)
+      where(schedule_id: schedule_id).map { |t| ["##{t.id}", t.id] }
+    end
+
+    # Provides a standardized option list of all possible Triggers
+    # @return [Array] An option list array
+    def trigger_options
+      triggers.map { |t, _| [t.gsub('on_', '').titlecase, t] }
     end
 
   end

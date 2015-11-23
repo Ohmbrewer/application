@@ -86,6 +86,23 @@ class Rhizome < ActiveRecord::Base
       Rhizome.find(pd.rhizome.id)
     end
 
+    # Provides a standardized option list of all the Tasks
+    # @return [Array] An option list array
+    def rhizome_options
+      all.collect do |r|
+        [
+          r.name,
+          (r.temperature_sensors.order('id ASC') +
+           r.heating_elements.order('id ASC') +
+           r.pumps.order('id ASC') +
+           r.thermostats.order('id ASC') +
+           r.recirculating_infusion_mash_systems.order('id ASC')).collect do |s|
+            ["#{s.type.titlecase} #{s.rhizome_eid}", "#{s.type}_#{s.id}"]
+          end
+        ]
+      end
+    end
+
   end
 
 end
