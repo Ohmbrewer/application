@@ -21,7 +21,7 @@ module RhizomeInterfaces
         rhizome.temperature_sensors.select {|p| p.rhizome_eid.to_i == rhizome_eid }.first
       end
 
-      # Formats a String of additional arguments to supplement the defaults in #to_args_str
+      # Formats a String of additional arguments to supplement the defaults in #to_update_args_str
       # @abstract This method must be implemented to pass those extra arguments.
       # @param extra [Hash] Hash of extra arguments
       # @return [String] The extra arguments, ready for appending
@@ -38,6 +38,13 @@ module RhizomeInterfaces
 
     def rhizome_type_name
       'temp'
+    end
+
+    # Produces a String of arguments for the Sprout's pins, formatted in the way that the Particle Function
+    # on the Rhizome expects for /add
+    # @return [String] The argument string for /add
+    def add_pin_args_str
+      "#{data_pin}"
     end
 
   end

@@ -41,5 +41,12 @@ module RhizomeInterfaces
       'heat'
     end
 
+    # Produces a String of arguments for the Sprout's pins, formatted in the way that the Particle Function
+    # on the Rhizome expects for /add
+    # @return [String] The argument string for /add
+    def add_pin_args_str
+      "#{control_pin},#{power_pin.nil? || power_pin.empty? ? '-1' : power_pin}"
+    end
+
   end
 end

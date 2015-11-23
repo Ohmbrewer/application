@@ -27,6 +27,20 @@
                     title: "Ping #{rhizome.name}" do %>
           <span class="glyphicon glyphicon-certificate"></span>
         <% end %>
+        <%= link_to add_sprouts_path(rhizome: rhizome.id),
+                    method: :post,
+                    class: 'btn btn-sm btn-warning',
+                    alt: "Flash Sprouts to #{rhizome.name}",
+                    title: "Flash Sprouts to #{rhizome.name}" do %>
+            <span class="glyphicon glyphicon-plus-sign"></span>
+        <% end %>
+        <%= link_to clear_sprouts_path(rhizome: rhizome.id),
+                    method: :post,
+                    class: 'btn btn-sm btn-warning',
+                    alt: "Clear Sprouts on #{rhizome.name}",
+                    title: "Clear Sprouts on #{rhizome.name}" do %>
+            <span class="glyphicon glyphicon-minus-sign"></span>
+        <% end %>
         <%= link_to rhizome,
                     method: :delete,
                     data: { confirm: "You sure you want to delete #{rhizome.name}?" },
