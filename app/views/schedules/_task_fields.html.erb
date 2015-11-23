@@ -2,19 +2,19 @@
   <div class="form-group">
     <div class="input-group">
         <% if f.object.id.nil? %>
-            <span class="input-group-addon glyphicon glyphicon-cog"></span>
+            <span class="input-group-addon glyphicon glyphicon-cog">&nbsp;</span>
         <% else %>
             <span class="input-group-addon" style="font-weight: bold;">#<%= f.object.id %></span>
         <% end %>
         <%= f.label :type, class: 'sr-only' %>
         <%= f.select :type,
-                     Task.task_types.map { |et| [et.gsub('Task', '').titlecase, et] },
+                     Task.task_options,
                      {},
                      class: 'form-control' %>
         <span class="input-group-addon"></span>
         <%= f.label :sprout, class: 'sr-only' %>
         <%= f.select :sprout,
-                     (Equipment.all + Thermostat.all).map { |et| ["#{et.type.titlecase} #{et.rhizome_eid}", "#{et.type}_#{et.id}"] },
+                     Rhizome.rhizome_options,
                      {include_blank: true, selected: (f.object.sprout.nil?  ? '' : f.object.sprout)},
                      class: 'form-control' %>
 
@@ -27,17 +27,8 @@
         </span>
     </div>
 
-
     <% if f.object.type == 'RunThermostatTask' %>
-    <div class="input-group">
-      <span class="input-group-addon">take</span>
-      <%= f.label :ramp_estimate, class: 'sr-only' %>
-      <%= f.text_field :ramp_estimate, class: 'form-control' %>
-      <span class="input-group-addon">sec. or less to ramp to</span>
-      <%= f.label :target_temperature, class: 'sr-only' %>
-      <%= f.text_field :target_temperature, class: 'form-control' %>
-      <span class="input-group-addon">&deg;C</span>
-    </div>
+        <%= render partial: 'schedules/run_thermostat_task_fields', locals: {f: f} %>
     <% end %>
 
     <div class="input-group">
@@ -48,13 +39,13 @@
     <span class="input-group-addon">after Task</span>
       <%= f.label :parent_id, 'Parent Task', class: 'sr-only' %>
       <%= f.select :parent_id,
-                   Task.where(schedule_id: f.object.schedule_id).map { |t| ["##{t.id}", t.id] },
+                   Task.parent_task_options(f.object.schedule_id),
                    {include_blank: true, selected: (f.object.nil? ? '' : f.object.parent_id)},
                    class: 'form-control' %>
     <span class="input-group-addon">is</span>
     <%= f.label :trigger, class: 'sr-only' %>
     <%= f.select :trigger,
-                 Task.triggers.map { |t, _| [t.gsub('on_', '').titlecase, t] },
+                 Task.trigger_options,
                  {include_blank: true, selected: (f.object.trigger.nil? ? '' : f.object.trigger)},
                  class: 'form-control' %>
 
