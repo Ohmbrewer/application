@@ -45,5 +45,12 @@ module RhizomeInterfaces
       element.rhizome_eid
     end
 
+    # Produces a String of arguments for the Sprout's pins, formatted in the way that the Particle Function
+    # on the Rhizome expects for /add
+    # @return [String] The argument string for /add
+    def add_pin_args_str
+      "#{sensor.add_pin_args_str},#{element.add_pin_args_str}"
+    end
+
   end
 end

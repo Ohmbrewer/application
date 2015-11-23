@@ -33,11 +33,18 @@ module RhizomeInterfaces
 
     # == Instance Methods to Include ==
     def rhizome_eid
-      control_pin
+      power_pin
     end
 
     def rhizome_type_name
       'pump'
+    end
+
+    # Produces a String of arguments for the Sprout's pins, formatted in the way that the Particle Function
+    # on the Rhizome expects for /add
+    # @return [String] The argument string for /add
+    def add_pin_args_str
+      "#{power_pin}"
     end
 
   end

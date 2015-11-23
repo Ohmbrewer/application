@@ -75,6 +75,8 @@ Rails.application.routes.draw do
 
   scope :jobs, controller: :jobs, shallow: true do
     post 'ping'
+    post 'add_sprouts'
+    post 'clear_sprouts'
     # get  'dashboard'
   end
 

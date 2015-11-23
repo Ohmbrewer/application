@@ -5,7 +5,7 @@ class JobsController < ApplicationController
   before_action :logged_in_user,
                 only: [:ping] #, :dashboard]
   before_action :set_rhizome,
-                only: [:ping]
+                only: [:ping, :add_sprouts, :clear_sprouts]
   before_action :set_schedule,
                 only: [:schedule]
   before_action :set_task,
@@ -31,6 +31,34 @@ class JobsController < ApplicationController
     end
 
     redirect_to rhizomes_url
+  end
+
+  # Adds all of a Rhizome's Sprouts to the Rhizome
+  def add_sprouts
+    result = AddRhizomeSproutsJob.set(queue: "#{@rhizome.name}_add_sprouts")
+                                 .perform_now(@rhizome)
+
+    if result
+      flash[:success] = "Flashed Sprouts to <strong>#{@rhizome.name}</strong>"
+    else
+      flash[:danger] = "Could not flash Sprouts to <strong>#{@rhizome.name}</strong>! Try again, but if the problem persists you should clear the Sprouts and start over."
+    end
+
+    redirect_to rhizomes_path
+  end
+
+  # Adds all of a Rhizome's Sprouts to the Rhizome
+  def clear_sprouts
+    result = ClearRhizomeSproutsJob.set(queue: "#{@rhizome.name}_clear_sprouts")
+                                    .perform_now(@rhizome)
+
+    if result
+      flash[:success] = "Cleared Sprouts on <strong>#{@rhizome.name}</strong>"
+    else
+      flash[:danger] = "Could not clear Sprouts on <strong>#{@rhizome.name}</strong>!"
+    end
+
+    redirect_to rhizomes_path
   end
 
   # Launches a ScheduleJob if the provided Schedule is runnable.

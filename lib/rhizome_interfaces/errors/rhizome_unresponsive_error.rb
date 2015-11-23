@@ -1,3 +1,4 @@
+require 'rhizome_interfaces/errors/rhizome_error'
 module RhizomeInterfaces
   module Errors
 
