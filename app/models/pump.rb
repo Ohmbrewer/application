@@ -10,10 +10,8 @@ class Pump < Equipment
                                                   foreign_key: :rims_id
   alias_attribute :rims, :recirculating_infusion_mash_system
 
-  store_accessor :pins, :control_pin, :power_pin, :speed
+  store_accessor :pins, :power_pin
 
-  validate :pin_match_validation
-  validate :control_pin_in_use_validation
   validate :power_pin_in_use_validation
 
   def destroy_disabled?
