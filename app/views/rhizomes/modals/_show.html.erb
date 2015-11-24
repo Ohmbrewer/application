@@ -6,11 +6,21 @@
         <h4 class="modal-title" id="rhizome-<%= rhizome.id %>-show-label"><%= rhizome.name %></h4>
       </div>
       <div class="modal-body rhizome-info">
-        <ul>
-          <li><span class="rhizome show_info">Device ID:</span> <%= rhizome.particle_device.device_id %></li>
-          <li><span class="rhizome show_info">Access Token:</span> <%= rhizome.particle_device.access_token %></li>
-        </ul>
-        <%= render partial: 'rhizomes/equipment', locals: {rhizome: rhizome} %>
+        <h3 class="center">Particle Device</h3>
+        <div class="table-responsive">
+          <table class="rhizome table table-hover">
+            <tbody>
+              <tr>
+                <td><span class="rhizome show_info">Device ID:</span></td>
+                <td><%= rhizome.particle_device.device_id %></td>
+              </tr>
+              <tr>
+                <td><span class="rhizome show_info">Access Token:</span></td>
+                <td><%= rhizome.particle_device.access_token %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="modal-footer">
         <%= link_to 'Edit',
@@ -18,7 +28,6 @@
                     class: 'btn btn-sm btn-primary',
                     alt: 'Edit',
                     title: 'Edit' %>
-        <%= render partial: 'equipments/add_equipment_dropdown', locals: {rhizome: rhizome} %>
         <%= link_to 'Delete',
                     rhizome,
                     method: :delete,

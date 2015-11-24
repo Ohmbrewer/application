@@ -8,7 +8,7 @@ class EquipmentsController < ApplicationController
   before_action :set_type
   before_action :set_equipment,
                 only: [:show, :edit, :update, :destroy]
-  before_action :set_rhizome,
+  before_action :set_equipment_profile,
                 only: [:new, :create]
 
   # == Routes ==
@@ -26,7 +26,7 @@ class EquipmentsController < ApplicationController
   def new
     if @type == 'Equipment'
       flash[:danger] = 'You must be more specific about the type of Equipment you wish to create.'
-      redirect_to rhizomes_path
+      redirect_to equipments_path
     end
     @equipment = type_class.new
   end
@@ -36,11 +36,12 @@ class EquipmentsController < ApplicationController
   def create
     @equipment = Equipment.new(equipment_params)
     if @equipment.valid?
-      @rhizome.equipments << @equipment
-      msg = "#{@equipment.type.titlecase} successfully added to #{@rhizome.name}!"
+      @equipment_profile.equipments << @equipment
+      msg = "#{@equipment.type.titlecase} successfully added to #{@equipment_profile.name}!"
+
       if @equipment.save
         flash[:success] = msg
-        redirect_to rhizomes_path
+        redirect_to equipment_profiles_path
       else
         render action: 'new'
       end
@@ -52,7 +53,7 @@ class EquipmentsController < ApplicationController
   def update
     if @equipment.update(equipment_params)
       flash[:success] = "#{@equipment.type.titlecase} successfully updated!"
-      redirect_to rhizomes_path
+      redirect_to equipment_profiles_path
     else
       render action: 'edit'
     end
@@ -60,10 +61,10 @@ class EquipmentsController < ApplicationController
 
   def destroy
     if params[:id] != 'destroy_multiple'
-      msg = "#{@type.titlecase} removed from #{@equipment.rhizome.name}!"
+      msg = "#{@type.titlecase} removed from #{@equipment.equipment_profile.name}!"
       @equipment.destroy
       flash[:success] = msg
-      redirect_to rhizomes_path
+      redirect_to equipment_profiles_path
     else
       destroy_multiple
     end
@@ -73,6 +74,12 @@ class EquipmentsController < ApplicationController
     ids = Equipment.equipment_types
                    .collect { |t| params[t.pluralize.underscore] }
     pre = Equipment.where(id: ids)
+    landing_url = case
+                    when pre.all?{|e| !e.equipment_profile.nil? }
+                      equipment_profiles_url
+                    else
+                      equipments_url
+                  end
     Equipment.destroy_all(id: ids)
     post = pre.where(id: ids)
 
@@ -85,7 +92,7 @@ class EquipmentsController < ApplicationController
         flash[:warning] = "Something strange happened... #{pre.length - post.length} pieces of Equipment weren't removed."
     end
 
-    redirect_to rhizomes_url
+    redirect_to landing_url
   end
 
   private
@@ -93,11 +100,13 @@ class EquipmentsController < ApplicationController
     def equipment_params
       p = params.require(type.underscore.to_sym)
                 .permit(:type, :control_pin, :power_pin,
-                        :data_pin, :onewire_id, :rhizome)
-      unless p[:rhizome].nil?
-        unless p[:rhizome].is_a? Rhizome
-          p[:rhizome] = Rhizome.find(p[:rhizome])
+                        :data_pin, :onewire_id, :equipment_profile)
+      if !(p[:equipment_profile].nil? || p[:equipment_profile].empty?)
+        unless p[:equipment_profile].is_a? EquipmentProfile
+          p[:equipment_profile] = EquipmentProfile.find(p[:equipment_profile])
         end
+      else
+        p.delete(:equipment_profile)
       end
       p
     end
@@ -105,7 +114,7 @@ class EquipmentsController < ApplicationController
     def set_equipment
       unless params[:id] == 'destroy_multiple'
         @equipment = type_class.find(params[:id])
-        @rhizome = @equipment.rhizome
+        @equipment_profile = @equipment.equipment_profile
       end
     end
 
@@ -113,17 +122,17 @@ class EquipmentsController < ApplicationController
       @type = type
     end
 
-    def set_rhizome
+    def set_equipment_profile
       # Coming from an Equipment page
       unless params[type.underscore.to_sym].nil?
-        unless params[type.underscore.to_sym][:rhizome].nil?
-          @rhizome = Rhizome.find(params[type.underscore.to_sym][:rhizome].to_i)
+        unless params[type.underscore.to_sym][:equipment_profile].nil? || params[type.underscore.to_sym][:equipment_profile].empty?
+          @equipment_profile = EquipmentProfile.find(params[type.underscore.to_sym][:equipment_profile].to_i)
         end
       end
 
-      # Coming from the Rhizome pages
-      unless params[:rhizome].nil?
-        @rhizome = Rhizome.find(params[:rhizome].to_i)
+      # Coming from the Equipment Profile pages
+      unless params[:equipment_profile].nil? || params[:equipment_profile].empty?
+        @equipment_profile = EquipmentProfile.find(params[:equipment_profile].to_i)
       end
     end
 

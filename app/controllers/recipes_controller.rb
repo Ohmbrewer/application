@@ -12,7 +12,8 @@ class RecipesController < ApplicationController
   # == Routes ==
 
   def index
-    @recipes = type_class.paginate(page: params[:page])
+    @recipes = type_class.where(batch_id: nil)
+                         .paginate(page: params[:page])
   end
 
   def show
@@ -27,20 +28,16 @@ class RecipesController < ApplicationController
       redirect_to recipes_path
     else
       old_recipe = Recipe.find(params[:recipe_id].to_i)
-      @recipe = old_recipe.dup
-      @recipe.name = "#{@recipe.name} (Copy)"
+      @recipe = old_recipe.deep_dup
 
       msg = "Duplicated <strong>#{old_recipe.name}</strong>."
 
-      if @recipe.valid?
-        if @recipe.save
+      if @recipe.save(validate: false)
           flash[:success] = msg
           redirect_to recipe_type_path(@recipe.type)
-        else
-          render 'new'
-        end
       else
         flash[:warning] = "Tried to duplicate #{@recipe.name}, but something went wrong!"
+        render 'new'
       end
     end
   end

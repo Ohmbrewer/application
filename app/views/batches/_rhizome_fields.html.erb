@@ -1,0 +1,19 @@
+<div class="nested-fields form-inline">
+  <div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon glyphicon glyphicon-cog"></span>
+        <%= f.label :id, class: 'sr-only' %>
+        <%= f.select :id,
+                     Rhizome.all.map {|r| [r.name, r.id] },
+                     {include_blank: true, selected: (f.object.id.nil?  ? '' : f.object.id)},
+                     class: 'form-control' %>
+        <span class="input-group-btn">
+        <%= link_to_remove_association '',
+                                       f,
+                                       alt: 'Remove Rhizome',
+                                       title: 'Remove Rhizome',
+                                       class: 'btn btn-danger glyphicon glyphicon-minus' %>
+        </span>
+    </div>
+  </div>
+</div>

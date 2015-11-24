@@ -4,9 +4,8 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
 
   before_action :logged_in_user
   before_action :set_rims, only: [:show, :edit, :update, :destroy]
-  before_action :set_rhizome,
+  before_action :set_equipment_profile,
                 only: [:new, :create]
-
 
   def index
     @recirculating_infusion_mash_systems = RecirculatingInfusionMashSystem.paginate(page: params[:page])
@@ -29,11 +28,11 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
     @recirculating_infusion_mash_system = RecirculatingInfusionMashSystem.new(rims_params)
 
     if @recirculating_infusion_mash_system.valid?
-      @rhizome.recirculating_infusion_mash_systems << @recirculating_infusion_mash_system
-      msg = "RIMS successfully added to #{@rhizome.name}!"
+      @equipment_profile.recirculating_infusion_mash_systems << @recirculating_infusion_mash_system
+      msg = "RIMS successfully added to <strong>#{@equipment_profile.name}</strong>!"
       if @recirculating_infusion_mash_system.save
         flash[:success] = msg
-        redirect_to rhizomes_path
+        redirect_to equipment_profiles_path
       else
         render action: 'new'
       end
@@ -45,7 +44,7 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
   def update
     if @recirculating_infusion_mash_system.update(rims_params)
       flash[:success] = 'RIMS successfully updated!'
-      redirect_to @recirculating_infusion_mash_system
+      redirect_to equipment_profiles_path
     else
       render 'edit'
     end
@@ -53,10 +52,10 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
 
   def destroy
     if params[:id] != 'destroy_multiple'
-      msg = "RIMS removed from #{@recirculating_infusion_mash_system.rhizome.name}!"
+      msg = "RIMS removed from <strong>#{@recirculating_infusion_mash_system.equipment_profile.name}</strong>!"
       @recirculating_infusion_mash_system.destroy
       flash[:success] = msg
-      redirect_to rhizomes_path
+      redirect_to equipment_profiles_path
     else
       destroy_multiple
     end
@@ -64,6 +63,12 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
 
   def destroy_multiple
     pre = RecirculatingInfusionMashSystem.where(id: params[:recirculating_infusion_mash_systems])
+    landing_url = case
+                    when pre.all?{|e| !e.equipment_profile.nil? }
+                      equipment_profiles_url
+                    else
+                      recirculating_infusion_mash_systems_url
+                  end
     RecirculatingInfusionMashSystem.destroy_all(id: params[:recirculating_infusion_mash_systems])
     post = pre.where(id: params[:recirculating_infusion_mash_systems])
 
@@ -76,7 +81,7 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
         flash[:warning] = "Something strange happened... #{pre.length - post.length} pieces of RIMS equipment weren't removed."
     end
 
-    redirect_to rhizomes_url
+    redirect_to landing_url
   end
 
   private
@@ -84,28 +89,28 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
   def set_rims
     unless params[:id] == 'destroy_multiple'
       @recirculating_infusion_mash_system = RecirculatingInfusionMashSystem.find(params[:id]) unless params[:id].to_i.zero?
-      @rhizome = @recirculating_infusion_mash_system.rhizome
+      @equipment_profile = @recirculating_infusion_mash_system.equipment_profile
     end
   end
 
-  def set_rhizome
+  def set_equipment_profile
     # Coming from a RIMS page
     unless params[:recirculating_infusion_mash_system].nil?
-      unless params[:recirculating_infusion_mash_system][:rhizome].nil?
-        @rhizome = Rhizome.find(params[:recirculating_infusion_mash_system][:rhizome].to_i)
+      unless params[:recirculating_infusion_mash_system][:equipment_profile].nil? || params[:recirculating_infusion_mash_system][:equipment_profile].empty?
+        @equipment_profile = EquipmentProfile.find(params[:recirculating_infusion_mash_system][:equipment_profile].to_i)
       end
     end
 
-    # Coming from the Rhizome pages
-    unless params[:rhizome].nil?
-      @rhizome = Rhizome.find(params[:rhizome].to_i)
+    # Coming from the Equipment Profile pages
+    unless params[:equipment_profile].nil? || params[:equipment_profile].empty?
+      @equipment_profile = EquipmentProfile.find(params[:equipment_profile].to_i)
     end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def rims_params
     p = params.require(:recirculating_infusion_mash_system)
-            .permit(:rhizome,
+            .permit(:equipment_profile,
                     tube_attributes: [
                         :id,
                         sensor_attributes: [:id, :onewire_id, :data_pin],
@@ -113,13 +118,17 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
                     ],
                     safety_sensor_attributes: [:id, :onewire_id, :data_pin],
                     recirculation_pump_attributes: [:id, :control_pin, :power_pin])
-    unless p[:rhizome].nil?
-      unless p[:rhizome].is_a? Rhizome
-        p[:rhizome] = Rhizome.find(p[:rhizome])
-        p[:tube_attributes][:rhizome] = p[:rhizome]
-        p[:safety_sensor_attributes][:rhizome] = p[:rhizome]
-        p[:recirculation_pump_attributes][:rhizome] = p[:rhizome]
+    if !(p[:equipment_profile].nil? || p[:equipment_profile].empty?)
+      unless p[:equipment_profile].is_a? EquipmentProfile
+        p[:equipment_profile] = EquipmentProfile.find(p[:equipment_profile].to_i)
+        p[:tube_attributes][:equipment_profile] = p[:equipment_profile]
+        p[:tube_attributes][:sensor_attributes][:equipment_profile] = p[:equipment_profile]
+        p[:tube_attributes][:element_attributes][:equipment_profile] = p[:equipment_profile]
+        p[:safety_sensor_attributes][:equipment_profile] = p[:equipment_profile]
+        p[:recirculation_pump_attributes][:equipment_profile] = p[:equipment_profile]
       end
+    else
+      p.delete(:equipment_profile)
     end
     p
   end

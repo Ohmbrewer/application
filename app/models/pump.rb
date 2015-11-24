@@ -12,6 +12,7 @@ class Pump < Equipment
 
   store_accessor :pins, :power_pin
 
+  validates :power_pin, presence: true
   validate :power_pin_in_use_validation
 
   def destroy_disabled?

@@ -16,6 +16,7 @@ class HeatingElement < Equipment
   validate :pin_match_validation
   validate :control_pin_in_use_validation
   validate :power_pin_in_use_validation
+  validates :control_pin, presence: true
 
   def destroy_disabled?
     !thermostat.nil? ||

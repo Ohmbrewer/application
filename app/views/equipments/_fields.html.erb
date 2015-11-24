@@ -9,12 +9,12 @@
 <% if type != 'Equipment' %>
     <%= f.hidden_field :type, value: type %>
 <% end %>
-<% if rhizome.nil? %>
-    <%= f.label :rhizome %>
-    <%= f.select :rhizome,
-                 Rhizome.all.map { |r| [r.name, r.id] },
-                 {},
+<% if equipment_profile.nil? %>
+    <%= f.label :equipment_profile %>
+    <%= f.select :equipment_profile,
+                 EquipmentProfile.all.map { |ep| [ep.name, ep.id] },
+                 { include_blank: true, selected: (equipment_profile.nil? ? '' : equipment_profile.id)},
                  class: 'form-control' %>
 <% else %>
-    <%= f.hidden_field :rhizome, value: rhizome.id %>
+    <%= f.hidden_field :equipment_profile, value: equipment_profile.id %>
 <% end %>

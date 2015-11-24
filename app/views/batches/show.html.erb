@@ -1,0 +1,31 @@
+<% provide(:title, @batch.name) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="batch_info">
+      <h1>
+        <%= @batch.name %>
+      </h1>
+      <div>
+        [ Dashboard goes here ]
+      </div>
+    </section>
+    <%= link_to 'Edit',
+                edit_batch_path,
+                id: @batch.id,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Edit',
+                title: 'Edit' %>
+    <%= link_to 'Delete',
+                @batch,
+                method: :delete,
+                data: { confirm: 'You sure?' },
+                class: 'btn btn-sm btn-danger',
+                alt: 'Delete',
+                title: 'Delete' %>
+    <%= link_to 'Back',
+                batches_path,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Back',
+                title: 'Back' %>
+  </aside>
+</div>

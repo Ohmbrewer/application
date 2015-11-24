@@ -1,0 +1,29 @@
+<div class="modal fade" id="equipment_profile-<%= equipment_profile.id %>-<%= action %>" tabindex="-1" role="dialog" aria-labelledby="equipment_profile-<%= equipment_profile.id %>-<%= action %>-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header navbar-inverse">
+        <%= button_tag '', class: 'btn btn-sm btn-danger glyphicon glyphicon-remove', 'data-dismiss' => 'modal' %>
+        <h4 class="modal-title" id="equipment_profile-<%= equipment_profile.id %>-<%= action %>-label"><%= title %></h4>
+      </div>
+      <div class="modal-body equipment_profile-info">
+        <%= render "equipment_profiles/modals/#{action}", equipment_profile: equipment_profile %>
+      </div>
+      <div class="modal-footer">
+        <%= link_to 'Edit',
+                    edit_equipment_profile_path(id: equipment_profile.id),
+                    id: equipment_profile.id,
+                    class: 'btn btn-sm btn-primary',
+                    alt: 'Edit',
+                    title: 'Edit' %>
+        <%= link_to 'Delete',
+                    equipment_profile,
+                    id: "equipment_profile-#{equipment_profile.id}-destroy-from-show",
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete #{equipment_profile.name}?" },
+                    class: 'btn btn-sm btn-primary',
+                    alt: 'Delete',
+                    title: 'Delete' %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,12 +19,6 @@
         <%= render partial: 'schedules/task_list', locals: {schedule: schedule} %>
       </div>
       <div class="modal-footer">
-        <%= link_to 'Run',
-                    schedule_run_path(schedule),
-                    method: :post,
-                    class: "btn btn-sm btn-success#{schedule.runnable? ? '' : ' disabled'}",
-                    alt: "Run #{schedule.name}",
-                    title: "Run #{schedule.name}" %>
         <%= link_to 'Edit',
                     edit_schedule_path(id: schedule.id),
                     class: 'btn btn-sm btn-primary',

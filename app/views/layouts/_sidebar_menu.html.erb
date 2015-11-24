@@ -21,8 +21,8 @@
         <span class="glyphicon glyphicon-dashboard"></span> Batches
     <% end %>
     <div class="collapse in" id="batches-section">
-      <%= link_to 'Start a new batch', '#', class: 'list-group-item'  %>
-      <%= link_to 'What\'s Brewing?', '#', class: 'list-group-item'  %>
+      <%= link_to 'Start a new batch', new_batch_path, class: 'list-group-item'  %>
+      <%= link_to 'What\'s Brewing?', batches_path, class: 'list-group-item'  %>
       <%= link_to 'What\'s Distilling?', '#', class: 'list-group-item'  %>
       <%= link_to 'What\'s Fermenting?', '#', class: 'list-group-item'  %>
       <%= link_to 'What\'s Kegged?', '#', class: 'list-group-item'  %>
@@ -35,6 +35,7 @@
     <% end %>
     <div class="collapse in" id="configuration-section">
       <%= link_to 'Manage Rhizomes', rhizomes_path, class: 'list-group-item'  %>
+      <%= link_to 'Manage Equipment Profiles', equipment_profiles_path, class: 'list-group-item'  %>
       <%= link_to 'Manage Brewhouses', '#', class: 'list-group-item'  %>
       <%= link_to 'Manage Users', users_path, class: 'list-group-item' %>
     </div>

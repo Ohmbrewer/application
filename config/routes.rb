@@ -22,6 +22,23 @@ Rails.application.routes.draw do
     resources :hooks, only: [:index, :new, :create, :destroy]
   end
 
+  resources :equipment_profiles
+  resources :equipment_profiles do
+    post 'duplicate' => 'equipment_profiles#duplicate'
+    collection do
+      delete :destroy_multiple
+    end
+  end
+
+  # The user will never edit the Batch directly
+  resources :batches, only: [:index, :new, :create, :destroy]
+  resources :batches do
+    post 'start' => 'batches#start'
+    post 'stop'  => 'batches#stop'
+    get 'assign_rhizomes'  => 'batches#assign_rhizomes'
+    patch 'update_rhizomes'  => 'batches#update_rhizomes'
+  end
+
   resources :schedules
   resources :schedules do
     post 'duplicate' => 'schedules#duplicate'

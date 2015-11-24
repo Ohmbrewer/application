@@ -4,7 +4,7 @@ class Thermostat < ActiveRecord::Base
   include RhizomeInterfaces::ThermostatSprout
 
   has_one :sprout, as: :sproutable, dependent: :destroy
-  has_one :rhizome, through: :sprout
+  has_one :equipment_profile, through: :sprout
 
   has_one :element, class_name: 'HeatingElement',
                     validate: true,
@@ -22,24 +22,33 @@ class Thermostat < ActiveRecord::Base
   accepts_nested_attributes_for :element, update_only: true
   accepts_nested_attributes_for :sensor, update_only: true
 
-  validate :rhizome_must_match_validation
+  # == Validations ==
+  validate :ep_must_match_validation
   validates :element, presence: true
   validates :sensor, presence: true
 
-  def rhizome_must_match_validation
-    unless element.nil? || sensor.nil?
-      unless element.rhizome.nil? || sensor.rhizome.nil?
-        unless element.rhizome == sensor.rhizome
-          errors.add(:element, ' and Sensor must be registered as attached to the same Rhizome.')
+  def ep_must_match_validation
+    unless equipment_profile.nil?
+      unless element.nil? || sensor.nil?
+        unless element.equipment_profile.nil? || sensor.equipment_profile.nil?
+          unless element.equipment_profile == sensor.equipment_profile
+            errors.add(:element, ' and Sensor must be registered as attached to the same Equipment Profile.')
+          end
         end
       end
     end
   end
 
-  def rhizome=(r)
+  # The Rhizome the Equipment is currently attached to, if any.
+  # @return [Rhizome] The Rhizome the Equipment is currently attached to, if any.
+  def rhizome
+    equipment_profile.current_rhizome
+  end
+
+  def equipment_profile=(ep)
     super
-    element.rhizome = r unless element.nil?
-    sensor.rhizome = r unless sensor.nil?
+    element.equipment_profile = ep unless element.nil?
+    sensor.equipment_profile = ep unless sensor.nil?
   end
 
   def type
@@ -53,6 +62,13 @@ class Thermostat < ActiveRecord::Base
 
   def destroy_disabled?
     !rims.nil?
+  end
+
+  def deep_dup
+    new_thermostat = super
+    new_thermostat.sensor = sensor.deep_dup
+    new_thermostat.element = element.deep_dup
+    new_thermostat
   end
 
 end

@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123045557) do
+ActiveRecord::Schema.define(version: 20151201030515) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "batches", force: :cascade do |t|
+    t.datetime "start_time"
+    t.datetime "stop_time"
+    t.integer  "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",               default: 0, null: false
@@ -32,6 +40,12 @@ ActiveRecord::Schema.define(version: 20151123045557) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "equipment_profiles", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "equipment_statuses", force: :cascade do |t|
     t.integer  "equipment_id"
@@ -78,18 +92,38 @@ ActiveRecord::Schema.define(version: 20151123045557) do
     t.integer  "schedule_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "batch_id"
   end
+
+  add_index "recipes", ["batch_id"], name: "index_recipes_on_batch_id", using: :btree
 
   create_table "recirculating_infusion_mash_systems", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "rhizome_roles", force: :cascade do |t|
+    t.integer "batch_id"
+    t.integer "role_id"
+    t.integer "rhizome_id"
+  end
+
   create_table "rhizomes", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "batch_id"
   end
+
+  add_index "rhizomes", ["batch_id"], name: "index_rhizomes_on_batch_id", using: :btree
+
+  create_table "schedule_profiles", force: :cascade do |t|
+    t.integer "schedule_id"
+    t.integer "equipment_profile_id"
+  end
+
+  add_index "schedule_profiles", ["equipment_profile_id"], name: "index_schedule_profiles_on_equipment_profile_id", using: :btree
+  add_index "schedule_profiles", ["schedule_id"], name: "index_schedule_profiles_on_schedule_id", using: :btree
 
   create_table "schedules", force: :cascade do |t|
     t.string   "name"
@@ -99,11 +133,12 @@ ActiveRecord::Schema.define(version: 20151123045557) do
   end
 
   create_table "sprouts", force: :cascade do |t|
-    t.integer "rhizome_id"
     t.integer "sproutable_id"
     t.string  "sproutable_type"
+    t.integer "equipment_profile_id"
   end
 
+  add_index "sprouts", ["equipment_profile_id"], name: "index_sprouts_on_equipment_profile_id", using: :btree
   add_index "sprouts", ["sproutable_type", "sproutable_id"], name: "index_sprouts_on_sproutable_type_and_sproutable_id", using: :btree
 
   create_table "task_hierarchies", id: false, force: :cascade do |t|

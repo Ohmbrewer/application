@@ -1,0 +1,33 @@
+<tr>
+  <td><%= check_box_tag 'equipment_profiles[]', equipment_profile.id, false, class: 'equipment_profile_checkbox' %></td>
+  <td>
+    <%= link_to equipment_profile.name, '', 'data-toggle' => 'modal', 'data-target' => "#equipment_profile-#{equipment_profile.id}-show" %>
+    <%= render 'equipment_profiles/modals/show', equipment_profile: equipment_profile %>
+  </td>
+  <td>
+  <% if current_user.admin? %>
+        <%= link_to edit_equipment_profile_path(equipment_profile),
+                    class: 'btn btn-sm btn-info',
+                    alt: "Edit #{equipment_profile.name}",
+                    title: "Edit #{equipment_profile.name}" do %>
+            <span class="glyphicon glyphicon-wrench"></span>
+        <% end %>
+        <%= link_to equipment_profile_duplicate_path(equipment_profile),
+                    method: :post,
+                    class: 'btn btn-sm btn-primary',
+                    alt: "Copy #{equipment_profile.name}",
+                    title: "Copy #{equipment_profile.name}" do %>
+            <span class="glyphicon glyphicon-duplicate"></span>
+        <% end %>
+        <%= link_to equipment_profile,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete #{equipment_profile.name}?" },
+                    class: 'btn btn-sm btn-danger',
+                    id: "equipment_profile-#{equipment_profile.id}-destroy",
+                    alt: "Delete #{equipment_profile.name}",
+                    title: "Delete #{equipment_profile.name}" do %>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+  <% end %>
+  </td>
+</tr>
