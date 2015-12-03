@@ -1,0 +1,66 @@
+<tr>
+  <td>
+    <%= link_to batch.name, batch_path(batch) %>
+  </td>
+  <td>
+    <%= batch.recipe.type.titlecase %>
+  </td>
+  <td>
+    <span class="label label-<%= batch.status_label_color %>">
+        <%= batch.status.titlecase.upcase %>
+    </span>
+  </td>
+  <td>
+    <% if !batch.not_ready? && !batch.ready? %>
+        <%= batch.start_time %>
+    <% else %>
+        --
+    <% end %>
+  </td>
+  <td>
+    <% if !batch.not_ready? && !batch.ready? %>
+        <% if batch.stop_time.present? %>
+            <%= batch.stop_time %>
+        <% else %>
+            <%= batch.estimated_stop_time %>
+            <span class="glyphicon glyphicon-asterisk"></span>
+        <% end %>
+    <% else %>
+        --
+    <% end %>
+  </td>
+  <td>
+  <% if current_user.admin? %>
+        <%= link_to batch_assign_rhizomes_path(batch),
+                    class: "btn btn-sm btn-warning#{batch.not_ready? || batch.ready? ? '' : ' disabled'}",
+                    alt: "Assign Rhizomes to #{batch.name}",
+                    title: "Assign Rhizomes to #{batch.name}" do %>
+            <span class="glyphicon glyphicon-grain"></span>
+        <% end %>
+        <%= link_to batch_start_path(batch),
+                    method: :post,
+                    class: "btn btn-sm btn-success#{batch.may_start? ? '' : ' disabled'}",
+                    alt: "Start #{batch.name}",
+                    title: "Start #{batch.name}" do %>
+            <span class="glyphicon glyphicon-play"></span>
+        <% end %>
+        <%= link_to batch_stop_path(batch),
+                    method: :post,
+                    data: { confirm: "You sure you want to stop #{batch.name}? You will not be able to restart!" },
+                    class: "btn btn-sm btn-danger#{batch.running? ? '' : ' disabled'}",
+                    alt: "Stop #{batch.name}",
+                    title: "Stop #{batch.name}" do %>
+            <span class="glyphicon glyphicon-stop"></span>
+        <% end %>
+        <%= link_to batch,
+                    method: :delete,
+                    data: { confirm: "You sure you want to delete #{batch.name}? This will completely remove any records associated with the batch." },
+                    class: 'btn btn-sm btn-danger',
+                    id: "batch-#{batch.id}-destroy",
+                    alt: "Delete #{batch.name}",
+                    title: "Delete #{batch.name}" do %>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+  <% end %>
+  </td>
+</tr>

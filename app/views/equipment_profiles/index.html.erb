@@ -1,0 +1,40 @@
+<% provide(:title, 'Equipment Profiles') %>
+<h1>
+  Manage Your Equipment Profiles <%= link_to '',
+                                   new_equipment_profile_path,
+                                   class: 'btn btn-sm btn-primary glyphicon glyphicon-plus',
+                                   alt: 'Add an Equipment Profile',
+                                   title: 'Add an Equipment Profile' %>
+</h1>
+
+<%= form_for :equipment_profile,
+             url: destroy_multiple_equipment_profiles_path,
+             method: :delete,
+             id: 'bulk-delete bulk-delete-equipment_profiles-form' do %>
+<div class="table-responsive">
+    <%= will_paginate %>
+
+    <table class="equipment_profiles table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>
+            <%= button_tag '',
+                           type: :submit,
+                           id: 'destroy-multiple-equipment_profiles',
+                           data: { confirm: 'You sure you want to delete all of these?' },
+                           class: 'btn btn-sm btn-primary glyphicon glyphicon-trash',
+                           alt: 'Delete Selected',
+                           title: 'Delete Selected' %>
+          </th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      <%= render @equipment_profiles %>
+      </tbody>
+    </table>
+
+    <%= will_paginate %>
+</div>
+<% end %>

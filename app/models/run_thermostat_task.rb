@@ -15,7 +15,7 @@ class RunThermostatTask < Task
 
   # Ensures that the provided Sprout is a Thermostat
   def thermostat_sprout_validation
-    if sprout.nil? || !sprout.start_with?('Thermostat')
+    if sprout_name.nil? || !sprout_name.start_with?('Thermostat')
       errors.add(:sprout, 'must be a Thermostat.')
     end
   end

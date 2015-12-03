@@ -50,6 +50,8 @@ class ScheduleJob < ActiveJob::Base
 
     end
 
+    schedule.batch.finish! unless schedule.batch.nil?
+
     Rails.logger.info '======================================='
     Rails.logger.info "Finished Schedule \"#{schedule.name}\"!"
     Rails.logger.info '======================================='

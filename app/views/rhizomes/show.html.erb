@@ -1,16 +1,25 @@
 <% provide(:title, @rhizome.name) %>
 <div class="row">
-  <aside class="col-md-4">
+  <aside class="col-md-8">
     <section class="rhizome_info">
       <h1>
         <%= @rhizome.name %>
       </h1>
-      <ul>
-        <li><span class="rhizome show_info">Name:</span> <%= @rhizome.name %></li>
-        <li><span class="rhizome show_info">Device ID:</span> <%= @rhizome.particle_device.device_id %></li>
-        <li><span class="rhizome show_info">Access Token:</span> <%= @rhizome.particle_device.access_token %></li>
-        <!-- TODO: Add a way to display the Equipment attached to the Rhizome from its non-modal :show page -->
-      </ul>
+      <h3 class="center">Particle Device</h3>
+      <div class="table-responsive">
+        <table class="rhizome table table-hover">
+          <tbody>
+          <tr>
+            <td><span class="rhizome show_info">Device ID:</span></td>
+            <td><%= @rhizome.particle_device.device_id %></td>
+          </tr>
+          <tr>
+            <td><span class="rhizome show_info">Access Token:</span></td>
+            <td><%= @rhizome.particle_device.access_token %></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
     <%= link_to 'Edit',
                 edit_rhizome_path,
@@ -18,7 +27,6 @@
                 class: 'btn btn-sm btn-primary',
                 alt: 'Edit',
                 title: 'Edit' %>
-    <%= render partial: 'equipments/add_equipment_dropdown', locals: {rhizome: @rhizome} %>
     <%= link_to 'Delete',
                 @rhizome,
                 method: :delete,

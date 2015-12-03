@@ -1,7 +1,7 @@
 <tr>
   <td><%= check_box_tag 'thermostats[]', thermostat.id, false, class: 'thermostat_checkbox' %></td>
   <td><%= thermostat.type.titlecase %></td>
-  <td><%= render partial: 'pins_list', locals: {thermostat: @thermostat} %></td>
+  <td><%= render partial: 'pins_list', locals: {thermostat: thermostat} %></td>
   <td>
     <% if current_user.admin? %>
         <%= link_to edit_thermostat_path(thermostat),

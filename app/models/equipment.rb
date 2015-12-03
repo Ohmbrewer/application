@@ -1,7 +1,7 @@
 class Equipment < ActiveRecord::Base
 
   has_one :sprout, as: :sproutable, dependent: :destroy
-  has_one :rhizome, through: :sprout
+  has_one :equipment_profile, through: :sprout
 
   # == Subclass scopes ==
   # These scopes make so anything that references Equipment generally
@@ -14,6 +14,26 @@ class Equipment < ActiveRecord::Base
   # HashSerializer provides a way to convert the JSONB contents
   # of the :pins column into a Hash object
   serialize :pins, HashSerializer
+
+  # == Validations ==
+  validate :ep_or_rhizome_validation
+
+  def ep_or_rhizome_validation
+    if equipment_profile.nil? && rhizome.nil?
+      errors.add(:equipment_profile, 'or Rhizome must be specified.')
+    end
+    if !equipment_profile.nil? && !rhizome.nil?
+      errors.add(:rhizome, 'or Equipment Profile must be specified, but not both.')
+    end
+  end
+
+  # == Instance Methods ==
+
+  # The Rhizome the Equipment is currently attached to, if any.
+  # @return [Rhizome] The Rhizome the Equipment is currently attached to, if any.
+  def rhizome
+    equipment_profile.current_rhizome
+  end
 
   def attached?
     rhizome.nil?

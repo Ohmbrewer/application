@@ -1,0 +1,13 @@
+<% provide(:title, 'Edit Equipment Profile') %>
+<h1>Edit Equipment Profile</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@equipment_profile) do |f| %>
+        <%= render 'fields', f: f, object: @equipment_profile %>
+        <%= button_tag 'Save', type: :submit, class: 'btn btn-sm btn-primary' %>
+        <%= render partial: 'equipments/add_equipment_to_equipment_profile_dropdown', locals: {equipment_profile: @equipment_profile} %>
+        <%= link_to 'Cancel', equipment_profiles_path, class: 'btn btn-sm btn-primary btn-danger' %>
+    <% end %>
+  </div>
+</div>

@@ -6,7 +6,13 @@ class Rhizome < ActiveRecord::Base
   has_one :particle_device, inverse_of: :rhizome,
                             dependent: :destroy
 
-  has_many :sprouts, dependent: :destroy
+  belongs_to :batch
+
+  has_one :rhizome_role, ->(batch) { where(batch: batch) }
+  has_one :role, through: :rhizome_role
+  has_many :sprouts, through: :role
+
+  # Supported Sprouts
   has_many :equipments, -> { distinct },
                         through: :sprouts,
                         source: :sproutable,
@@ -73,6 +79,14 @@ class Rhizome < ActiveRecord::Base
     particle_device.connection
   end
 
+  # == Batch Management Methods ==
+
+  # Whether the Rhizome is currently being used by a Batch
+  # @return [TrueFalse] True if the Rhizome is in use
+  def in_use?
+    !batch.nil?
+  end
+
   # == Class Methods ==
   class << self
 
@@ -84,23 +98,6 @@ class Rhizome < ActiveRecord::Base
     def from_device_id(device_id)
       pd = ParticleDevice.where(device_id: device_id).first
       Rhizome.find(pd.rhizome.id)
-    end
-
-    # Provides a standardized option list of all the Tasks
-    # @return [Array] An option list array
-    def rhizome_options
-      all.collect do |r|
-        [
-          r.name,
-          (r.temperature_sensors.order('id ASC') +
-           r.heating_elements.order('id ASC') +
-           r.pumps.order('id ASC') +
-           r.thermostats.order('id ASC') +
-           r.recirculating_infusion_mash_systems.order('id ASC')).collect do |s|
-            ["#{s.type.titlecase} #{s.rhizome_eid}", "#{s.type}_#{s.id}"]
-          end
-        ]
-      end
     end
 
   end

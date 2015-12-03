@@ -16,6 +16,11 @@ class Task < ActiveRecord::Base
   belongs_to :recirculating_infusion_mash_system
   has_many :equipment_statuses, -> { order(created_at: :desc) }
 
+  # == Callbacks ==
+  after_save :add_eprofile_to_schedule
+  after_update :remove_eprofile_from_schedule
+  after_destroy :remove_eprofile_from_schedule
+
   # == Subclass scopes ==
   # These scopes make so anything that references Equipment generally
   # may also reference each of these subclasses specifically, automagically.
@@ -80,10 +85,61 @@ class Task < ActiveRecord::Base
 
   # == Instance Methods ==
 
+  def add_eprofile_to_schedule
+    # Only do this if there are no other Tasks from this Equipment Profile in the Schedule
+    unless equipment.nil? || schedule.equipment_profiles
+                                     .any? { |ep| ep == equipment.equipment_profile }
+      schedule.equipment_profiles << equipment.equipment_profile
+    end
+    unless thermostat.nil? ||
+           schedule.equipment_profiles
+                   .any? { |ep| ep == thermostat.equipment_profile }
+      schedule.equipment_profiles << thermostat.equipment_profile
+    end
+    unless recirculating_infusion_mash_system.nil? ||
+           schedule.equipment_profiles
+                   .any? { |ep| ep == recirculating_infusion_mash_system.equipment_profile }
+      schedule.equipment_profiles << recirculating_infusion_mash_system.equipment_profile
+    end
+  end
+
+  def remove_eprofile_from_schedule
+    unless equipment_id_was.nil?
+      # Only do this if there are no other Tasks from this Equipment Profile in the Schedule
+      old_ep = Equipment.find(equipment_id_was).equipment_profile
+      unless old_ep.nil? || schedule.tasks
+                                    .where
+                                    .not(id: id_was)
+                                    .any? { |t| t.sprout.equipment_profile == old_ep }
+        schedule.equipment_profiles.destroy(old_ep)
+      end
+    end
+    unless thermostat_id_was.nil?
+      # Only do this if there are no other Tasks from this Equipment Profile in the Schedule
+      old_ep = Thermostat.find(thermostat_id_was).equipment_profile
+      unless old_ep.nil? || schedule.tasks
+                                    .where
+                                    .not(id: id_was)
+                                    .any? { |t| t.sprout.equipment_profile == old_ep }
+        schedule.equipment_profiles.destroy(old_ep)
+      end
+    end
+    unless recirculating_infusion_mash_system_id_was.nil?
+      # Only do this if there are no other Tasks from this Equipment Profile in the Schedule
+      old_ep = RecirculatingInfusionMashSystem.find(recirculating_infusion_mash_system_id_was).equipment_profile
+      unless old_ep.nil? || schedule.tasks
+                                .where
+                                .not(id: id_was)
+                                .any? { |t| t.sprout.equipment_profile == old_ep }
+        schedule.equipment_profiles.destroy(old_ep)
+      end
+    end
+  end
+
   # Converts the Equipment and Thermostat associations connected to this Task
   # into the associated value used in the Sprout dropdown.
   # @return [String] The Sprout dropdown value, formatted as "TYPE_ID" or nil if there is none.
-  def sprout
+  def sprout_name
     case
       when !equipment.nil?
         "#{equipment.type}_#{equipment_id}"
@@ -95,6 +151,20 @@ class Task < ActiveRecord::Base
         nil
     end
   end
+
+  def sprout
+    case
+      when !equipment.nil?
+        equipment
+      when !thermostat.nil?
+        thermostat
+      when !recirculating_infusion_mash_system.nil?
+        recirculating_infusion_mash_system
+      else
+        nil
+    end
+  end
+
 
   # Converts the value from the Sprout dropdown into an actual Sprout association
   # @param [String] s The Sprout dropdown value, formatted as "TYPE_ID"

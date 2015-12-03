@@ -2,7 +2,7 @@
 <h1>
   Manage
   <%= @type == 'Equipment' ? @type : @type.titlecase.pluralize %>
-  <%= render partial: 'equipments/add_equipment_dropdown', locals: {rhizome: nil} %>
+  <%= render partial: 'equipments/add_equipment_to_rhizome_dropdown', locals: {rhizome: nil} %>
 </h1>
 
 <%= render partial: 'equipment_list', locals: {e: @equipments, t: @type} %>

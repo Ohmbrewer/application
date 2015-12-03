@@ -6,7 +6,7 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
 
   def index
-    @schedules = Schedule.paginate(page: params[:page])
+    @schedules = Schedule.non_batch_records.paginate(page: params[:page])
   end
 
   def show
@@ -24,25 +24,7 @@ class SchedulesController < ApplicationController
         redirect_to schedules_path
     else
       old_schedule = Schedule.find(params[:schedule_id].to_i)
-      @schedule = old_schedule.dup
-      @schedule.name = "#{@schedule.name} (Copy)"
-
-      # Now, carefully duplicate the Task hierarchy...
-      old_schedule.root_task.self_and_descendants.each do |t|
-        new_task = t.dup
-
-        unless t.parent.nil?
-          # Need to find the duplicate of the parent. Don't do this part for the Root Task, naturally.
-          pi = old_schedule.tasks.ids.find_index{ |a| a == t.parent.id }
-          new_task.parent = @schedule.tasks[pi]
-        end
-
-        # Add the Task to the list
-        @schedule.tasks << new_task
-
-        # Use the dup of the Root Task as the new Root Task
-        @schedule.root_task = @schedule.tasks.first if @schedule.tasks.length == 1
-      end
+      @schedule = old_schedule.deep_dup
 
       msg = "Duplicated <strong>#{old_schedule.name}</strong>."
 

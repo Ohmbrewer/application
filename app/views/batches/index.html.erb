@@ -1,0 +1,38 @@
+<% provide(:title, 'What\'s Brewing'.html_safe) %>
+<h1>
+  What's Brewing <%= link_to '',
+                                   new_batch_path,
+                                   class: 'btn btn-sm btn-primary glyphicon glyphicon-plus',
+                                   alt: 'Add a Batch',
+                                   title: 'Add a Batch' %>
+</h1>
+
+<div class="table-responsive">
+    <%= will_paginate %>
+
+    <table class="batches table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Batch</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      <%= render @batches %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6">
+            <h5><span class="label label-info">Notes:</span></h5>
+            <span class="glyphicon glyphicon-asterisk"></span> = End Time is estimated
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <%= will_paginate %>
+</div>

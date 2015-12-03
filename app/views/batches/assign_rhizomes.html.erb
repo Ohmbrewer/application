@@ -1,0 +1,36 @@
+<% provide(:title, 'Assign Rhizomes for the Batch') %>
+<h1>Assign Rhizomes for the Batch</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@batch, url: batch_update_rhizomes_path) do |f| %>
+        <%= render 'shared/error_messages', object: f.object  %>
+
+        <%= label :rhizome_roles, 'Roles' %>
+        <%= f.fields_for :rhizome_roles do |rf| %>
+        <div class="form-group">
+          <div class="input-group">
+              <span class="input-group-addon glyphicon glyphicon-grain"></span>
+            <%= rf.label :role_id, class: 'sr-only' %>
+            <%= rf.select :role_id,
+                         @batch.available_role_options,
+                         {
+                           selected: (rf.object.role.nil?  ? @batch.recipe.schedule.equipment_profiles[rf.index].id : rf.object.role.id)
+                         },
+                         class: 'form-control' %>
+            <%= rf.label :rhizome_id, class: 'sr-only' %>
+            <%= rf.select :rhizome_id,
+                         Rhizome.all.map {|r| [r.name, r.id] },
+                         {
+                           selected: (rf.object.rhizome.nil?  ? '' : rf.object.rhizome.id)
+                         },
+                         class: 'form-control' %>
+          </div>
+        </div>
+        <% end %>
+
+        <%= button_tag 'Assign', type: :submit, class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Skip', batches_path, class: 'btn btn-sm btn-danger' %>
+    <% end %>
+  </div>
+</div>

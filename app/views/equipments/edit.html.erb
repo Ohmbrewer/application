@@ -1,15 +1,15 @@
-<% provide(:title, "Edit #{@type.titlecase} #{rhizome_title_reference(@rhizome, :edit)}") %>
-<h1>Edit <%= @type.titlecase %> <%= rhizome_title_reference(@rhizome, :edit) %></h1>
+<% provide(:title, "Edit #{@type.titlecase} #{rhizome_title_reference(@equipment_profile, :edit)}") %>
+<h1>Edit <%= @type.titlecase %> <%= rhizome_title_reference(@equipment_profile, :edit) %></h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_for(@equipment) do |f| %>
-        <%= render partial: 'fields', locals: {f: f, object: @equipment, type: @type, rhizome: @rhizome} %>
+        <%= render partial: 'fields', locals: {f: f, object: @equipment, type: @type, equipment_profile: @equipment_profile} %>
         <% if @type != 'Equipment' %>
             <%= render partial: "#{@type.pluralize.underscore}/pins", locals: {f: f} %>
         <% end %>
         <%= button_tag 'Save', type: :submit, class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Cancel', rhizomes_path, class: 'btn btn-sm btn-primary btn-danger' %>
+        <%= link_to 'Cancel', equipment_profiles_path, class: 'btn btn-sm btn-primary btn-danger' %>
     <% end %>
   </div>
 </div>

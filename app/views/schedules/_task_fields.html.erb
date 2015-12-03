@@ -14,8 +14,8 @@
         <span class="input-group-addon"></span>
         <%= f.label :sprout, class: 'sr-only' %>
         <%= f.select :sprout,
-                     Rhizome.rhizome_options,
-                     {include_blank: true, selected: (f.object.sprout.nil?  ? '' : f.object.sprout)},
+                     EquipmentProfile.equipment_profile_options,
+                     {include_blank: true, selected: (f.object.sprout.nil?  ? '' : f.object.sprout_name)},
                      class: 'form-control' %>
 
         <span class="input-group-btn">

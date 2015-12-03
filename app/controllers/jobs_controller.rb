@@ -78,7 +78,7 @@ class JobsController < ApplicationController
                        'Make sure you have set a root task and that it saves with no errors.'
     end
 
-    redirect_to schedules_path
+    redirect_to batches_path
   end
 
   # Launches a TaskJob.

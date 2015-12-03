@@ -1,0 +1,41 @@
+<% completer = equipment_profile.nil? ? '' : "-to-#{equipment_profile.id}" %>
+<span class="dropdown">
+  <a id="add-equipment<%= completer %>"
+     class="dropdown-toggle btn btn-sm btn-primary"
+     data-target="#"
+     data-toggle="dropdown"
+     aria-haspopup="true"
+     aria-expanded="false">
+    <% if equipment_profile.nil? %>
+        <span class="glyphicon glyphicon-plus"></span>
+    <% else %>
+        Add Equipment <span class="caret"></span>
+    <% end %>
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="add-equipment<%= completer %>">
+    <% Equipment.equipment_types.each do |t| %>
+        <li>
+          <%= link_to t.titlecase,
+                      equipment_profile.nil? ? new_equipment_path(type: t) :
+                              new_equipment_path(equipment_profile: equipment_profile.id, type: t),
+                      alt: "Add #{t.titlecase}",
+                      title: "Add #{t.titlecase}" %>
+        </li>
+    <% end %>
+    <li class="divider"></li>
+    <li>
+      <%= link_to 'Thermostat',
+                  equipment_profile.nil? ? new_thermostat_path :
+                          new_thermostat_path(equipment_profile: equipment_profile.id),
+                  alt: 'Add Thermostat',
+                  title: 'Add Thermostat' %>
+    </li>
+    <li>
+      <%= link_to 'RIMS',
+                  equipment_profile.nil? ? new_recirculating_infusion_mash_system_path :
+                          new_recirculating_infusion_mash_system_path(equipment_profile: equipment_profile.id),
+                  alt: 'Add RIMS',
+                  title: 'Add RIMS' %>
+    </li>
+  </ul>
+</span>

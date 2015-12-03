@@ -1,7 +1,11 @@
 <span class="label label-default"><%= task.thermostat.type.titlecase %> #<%= task.thermostat.rhizome_eid %></span>
-at <span class="label label-warning"><%= task.target_temperature %> &deg;C</span>
+<% if task.type == 'ThermostatTask' %>
+    at <span class="label label-warning"><%= task.target_temperature %> &deg;C</span>
+<% end %>
 for <span class="label label-warning"><%= task.duration %> sec.</span>
-after ramping for <span class="label label-warning"><%= task.ramp_estimate %> sec.</span> or less
+<% if task.type == 'ThermostatTask' %>
+    after ramping for <span class="label label-warning"><%= task.ramp_estimate %> sec.</span> or less
+<% end %>
 <% unless task.parent.nil? %>
   after <span class="label label-primary">Task #<%= task.parent.id %></span>
   is <span class="label label-danger"><%= task.trigger_name_display %></span>

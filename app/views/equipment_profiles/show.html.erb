@@ -1,0 +1,30 @@
+<% provide(:title, @equipment_profile.name) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="equipment_profile_info">
+      <h1>
+        <%= @equipment_profile.name %>
+      </h1>
+    <!-- TODO: Add a way to display the Equipment attached to the Equipment Profile from its non-modal :show page -->
+    </section>
+    <%= link_to 'Edit',
+                edit_equipment_profile_path,
+                id: @equipment_profile.id,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Edit',
+                title: 'Edit' %>
+    <%= render partial: 'equipments/add_equipment_to_equipment_profile_dropdown', locals: {equipment_profile: @equipment_profile} %>
+    <%= link_to 'Delete',
+                @equipment_profile,
+                method: :delete,
+                data: { confirm: 'You sure?' },
+                class: 'btn btn-sm btn-danger',
+                alt: 'Delete',
+                title: 'Delete' %>
+    <%= link_to 'Back',
+                equipment_profiles_path,
+                class: 'btn btn-sm btn-primary',
+                alt: 'Back',
+                title: 'Back' %>
+  </aside>
+</div>
