@@ -9,7 +9,8 @@ class ParticleDevice < ActiveRecord::Base
 
   # Although undocumented, these seem to be the requirements for the Particle access variables
   validates :device_id, presence: true,
-                        length: { minimum: 24, maximum: 24 }
+                        length: { minimum: 24, maximum: 24 },
+                        uniqueness: true
   validates :access_token, length: { minimum: 40, maximum: 40 }
 
   # Provides the interface for connecting to the ParticleDevice

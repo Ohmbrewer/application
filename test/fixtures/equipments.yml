@@ -1,11 +1,49 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+---
+equipments_001:
+  id: '1'
+  type: HeatingElement
+  pins: '{"power_pin": "1", "control_pin": "0"}'
+  created_at: '2015-11-18 01:00:46.603584'
+  updated_at: '2015-11-18 01:00:46.603584'
+  thermostat_id: '1'
+  rims_id:
+equipments_002:
+  id: '2'
+  type: TemperatureSensor
+  pins: '{"data_pin": "2", "onewire_id": "1234"}'
+  created_at: '2015-11-18 01:00:46.630795'
+  updated_at: '2015-11-18 01:00:46.630795'
+  thermostat_id: '1'
+  rims_id:
+equipments_003:
+  id: '3'
+  type: TemperatureSensor
+  pins: '{"data_pin": "3", "onewire_id": "1234"}'
+  created_at: '2015-11-18 01:00:46.651676'
+  updated_at: '2015-11-18 01:00:46.651676'
+  thermostat_id:
+  rims_id: '1'
+equipments_004:
+  id: '4'
+  type: Pump
+  pins: '{"power_pin": "5", "control_pin": "4"}'
+  created_at: '2015-11-18 01:00:46.665151'
+  updated_at: '2015-11-18 01:00:46.665151'
+  thermostat_id:
+  rims_id: '1'
+equipments_005:
+  id: '5'
+  type: HeatingElement
+  pins: '{"power_pin": "1", "control_pin": "0"}'
+  created_at: '2015-11-18 01:19:28.488778'
+  updated_at: '2015-11-18 01:19:28.488778'
+  thermostat_id: '2'
+  rims_id:
+equipments_006:
+  id: '6'
+  type: TemperatureSensor
+  pins: '{"data_pin": "2", "onewire_id": "1234123"}'
+  created_at: '2015-11-18 01:19:28.498272'
+  updated_at: '2015-11-18 01:19:28.498272'
+  thermostat_id: '2'
+  rims_id:
