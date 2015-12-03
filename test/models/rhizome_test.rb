@@ -3,7 +3,8 @@ require 'test_helper'
 # FIXME: For some reason, attr_encrypted isn't playing nicely with minitest. These tests won't pass yet.
 class RhizomeTest < ActiveSupport::TestCase
   def setup
-    @rhizome = rhizomes(:zeus)
+    @rhizome = rhizomes(:rhizomes_001)
+    @second_rhizome = rhizomes(:rhizomes_002)
   end
 
   test 'should be valid' do
@@ -21,29 +22,28 @@ class RhizomeTest < ActiveSupport::TestCase
   end
 
   test 'device id should not be too long' do
-    @rhizome.device_id = 'a' * 24
+    @rhizome.particle_device.device_id = 'a' * 34
     assert_not @rhizome.valid?
   end
 
   test 'access token should not be too long' do
-    @rhizome.access_token = 'a' * 40
+    @rhizome.particle_device.access_token = 'a' * 41
     assert_not @rhizome.valid?
   end
 
   test 'device id should not be too short' do
-    @rhizome.device_id = 'a' * 22
+    @rhizome.particle_device.device_id = 'a' * 22
     assert_not @rhizome.valid?
   end
 
   test 'access token should not be too short' do
-    @rhizome.access_token = 'a' * 38
+    @rhizome.particle_device.access_token = 'a' * 38
     assert_not @rhizome.valid?
   end
 
   test 'device ids should be unique' do
-    duplicate_rhizome = @rhizome.dup
-    @rhizome.save
-    assert_not duplicate_rhizome.valid?
+    @rhizome.particle_device.device_id = @second_rhizome.particle_device.device_id
+    assert_not @rhizome.valid?
   end
 
 end

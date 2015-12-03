@@ -1,0 +1,51 @@
+---
+sprouts_001:
+  id: '1'
+  rhizome_id: '1'
+  sproutable_id: '1'
+  sproutable_type: RecirculatingInfusionMashSystem
+sprouts_002:
+  id: '2'
+  rhizome_id: '1'
+  sproutable_id: '1'
+  sproutable_type: RecirculatingInfusionMashSystem
+sprouts_003:
+  id: '3'
+  rhizome_id: '1'
+  sproutable_id: '1'
+  sproutable_type: Equipment
+sprouts_004:
+  id: '4'
+  rhizome_id: '1'
+  sproutable_id: '2'
+  sproutable_type: Equipment
+sprouts_005:
+  id: '5'
+  rhizome_id: '1'
+  sproutable_id: '3'
+  sproutable_type: Equipment
+sprouts_006:
+  id: '6'
+  rhizome_id: '1'
+  sproutable_id: '4'
+  sproutable_type: Equipment
+sprouts_007:
+  id: '7'
+  rhizome_id: '2'
+  sproutable_id: '2'
+  sproutable_type: Thermostat
+sprouts_008:
+  id: '8'
+  rhizome_id: '2'
+  sproutable_id: '2'
+  sproutable_type: Thermostat
+sprouts_009:
+  id: '9'
+  rhizome_id: '2'
+  sproutable_id: '5'
+  sproutable_type: Equipment
+sprouts_010:
+  id: '10'
+  rhizome_id: '2'
+  sproutable_id: '6'
+  sproutable_type: Equipment
