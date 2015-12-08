@@ -2,8 +2,8 @@ require 'test_helper'
 
 class EquipmentsControllerTest < ActionController::TestCase
   setup do
-    @rhizome = rhizomes(:rhizomes_001)
-    @rhizome_create = rhizomes(:rhizomes_003)
+    @equipment_profile = equipment_profiles(:equipment_profiles_001)
+    @equipment_profile_create = equipment_profiles(:equipment_profiles_003)
     @temp_sensor = equipments(:equipments_002)
     @pump =  equipments(:equipments_004)
     @user = users(:users_001)
@@ -27,8 +27,8 @@ class EquipmentsControllerTest < ActionController::TestCase
   end
 
   test "should not allow generic equipment" do
-    get :new, rhizome: @rhizome, type: 'Equipment'
-    assert_redirected_to rhizomes_path
+    get :new, equipment_profile: @equipment_profile, type: 'Equipment'
+    assert_redirected_to equipments_path
   end
 
   test "should get edit" do
@@ -38,13 +38,13 @@ class EquipmentsControllerTest < ActionController::TestCase
 
   test "should get create" do
     assert_difference('Equipment.count') do
-      post :create, equipment: {type: @heater.type, rhizome: @rhizome_create.id, control_pin: @heater.control_pin, power_pin: @heater.power_pin}
+      post :create, equipment: {type: @heater.type, equipment_profile: @equipment_profile_create.id, control_pin: @heater.control_pin, power_pin: @heater.power_pin}
     end
-    assert_redirected_to rhizomes_path
+    assert_redirected_to equipment_profiles_path
   end
 
   test "should get update" do
-    patch :update, id: @temp_sensor.id, equipment: {type: @temp_sensor.type, rhizome: @rhizome_create.id, onewire_id: "asdf", data_pin: @heater.power_pin}
+    patch :update, id: @temp_sensor.id, equipment: {type: @temp_sensor.type, equipment_profile: @equipment_profile_create.id, onewire_id: "asdf", data_pin: @heater.power_pin}
     assert @temp_sensor.onewire_id = "asdf"
   end
 
@@ -52,7 +52,7 @@ class EquipmentsControllerTest < ActionController::TestCase
     assert_difference('Equipment.count', -1) do
       delete :destroy, id: @temp_sensor
     end
-    assert_redirected_to rhizomes_path
+    assert_redirected_to equipment_profiles_path
   end
 
 end

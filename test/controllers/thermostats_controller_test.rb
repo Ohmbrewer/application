@@ -4,8 +4,8 @@ class ThermostatsControllerTest < ActionController::TestCase
   setup do
     @user = users(:users_001)
     log_in_as(@user)
-    @rhizome = rhizomes(:rhizomes_001)
-    @rhizome_create = rhizomes(:rhizomes_003)
+    @equipment_profile = equipment_profiles(:equipment_profiles_001)
+    @equipment_profile_create = equipment_profiles(:equipment_profiles_003)
     @thermostat = thermostats(:thermostats_001)
   end
   # TODO: investigate why this test fails - this is a problem in the app as well
@@ -31,14 +31,15 @@ class ThermostatsControllerTest < ActionController::TestCase
 
   test "should get create" do
     assert_difference('Thermostat.count') do
-      post :create, thermostat: {rhizome: @rhizome_create.id, element_attributes: {control_pin: "D0", power_pin: "D1"}, sensor_attributes: { data_pin: "D2", onewire_id: "a"}}
+      post :create, thermostat: {equipment_profile: @equipment_profile_create.id, element_attributes: {control_pin: "D0", power_pin: "D1"}, sensor_attributes: { data_pin: "D2", onewire_id: "a"}}
     end
-    assert_redirected_to rhizomes_path
+    assert_redirected_to equipment_profiles_path
   end
 
   test "should get update" do
-    patch :update, id:@thermostat, thermostat: {rhizome: @rhizome_create.id, element_attributes: {control_pin: "D2", power_pin: "D3"}, sensor_attributes: { data_pin: "D4", onewire_id: "a"}}
-    assert_redirected_to @thermostat
+    patch :update, id:@thermostat, thermostat: {equipment_profile: @equipment_profile_create.id, element_attributes: {control_pin: "D2", power_pin: "D3"}, sensor_attributes: { data_pin: "D4", onewire_id: "a"}}
+    assert @thermostat.element.control_pin = "D2"
+    assert_redirected_to equipment_profiles_path
   end
 
   # TODO: Fix this test. works in the app.
@@ -46,6 +47,6 @@ class ThermostatsControllerTest < ActionController::TestCase
   #   assert_difference('Thermostat.count', -1) do
   #     delete :destroy, id: @thermostat.id
   #   end
-  #   assert_redirected_to rhizomes_path
+  #   assert_redirected_to equipment_profiles_path
   # end
 end

@@ -16,9 +16,5 @@ class EquipmentTest < ActiveSupport::TestCase
     assert_not @eqp.is_basic_equipment?
   end
 
-  test 'should recognize no rhizome attached' do
-    assert_not @eqp.attached?
-
-  end
 
 end
