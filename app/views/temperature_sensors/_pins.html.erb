@@ -3,5 +3,8 @@
              Rhizome.digital_pins.map { |et| ["D#{et}", et] },
              {prompt: '--'},
              class: 'form-control' %>
-<%= f.label :onewire_id, 'OneWire ID' %>
-<%= f.text_field :onewire_id %>
+<%= f.label :onewire_index %>
+<%= f.select :onewire_index,
+             0..10,
+             {prompt: '--'},
+             class: 'form-control' %>

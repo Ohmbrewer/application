@@ -11,8 +11,7 @@
       <%= render partial: 'pins_list', locals: {rims: @recirculating_infusion_mash_system} %>
     </section>
     <%= link_to 'Edit',
-                edit_thermostat_path,
-                id: @recirculating_infusion_mash_system.id,
+                edit_recirculating_infusion_mash_system_path(@recirculating_infusion_mash_system),
                 class: 'btn btn-sm btn-primary',
                 alt: 'Edit',
                 title: 'Edit' %>

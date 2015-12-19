@@ -6,10 +6,6 @@ class HeatingElement < Equipment
   include RhizomeInterfaces::RelayValidations
 
   belongs_to :thermostat, validate: true, touch: true
-  belongs_to :recirculating_infusion_mash_system, validate: true,
-                                                  touch: true,
-                                                  foreign_key: :rims_id
-  alias_attribute :rims, :recirculating_infusion_mash_system
 
   store_accessor :pins, :control_pin, :power_pin, :voltage
 

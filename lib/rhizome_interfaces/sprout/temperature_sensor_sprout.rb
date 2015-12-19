@@ -33,7 +33,7 @@ module RhizomeInterfaces
 
     # == Instance Methods to Include ==
     def rhizome_eid
-      onewire_id
+      onewire_index.to_i
     end
 
     def rhizome_type_name
@@ -44,7 +44,7 @@ module RhizomeInterfaces
     # on the Rhizome expects for /add
     # @return [String] The argument string for /add
     def add_pin_args_str
-      "#{data_pin}"
+      "#{onewire_index}"
     end
 
   end
