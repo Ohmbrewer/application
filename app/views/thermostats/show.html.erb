@@ -12,8 +12,7 @@
       <%= render partial: 'pins_list', locals: {thermostat: @thermostat} %>
     </section>
     <%= link_to 'Edit',
-                edit_thermostat_path,
-                id: @thermostat.id,
+                edit_thermostat_path(@thermostat),
                 class: 'btn btn-sm btn-primary',
                 alt: 'Edit',
                 title: 'Edit' %>

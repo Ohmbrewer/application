@@ -100,7 +100,7 @@ class EquipmentsController < ApplicationController
     def equipment_params
       p = params.require(type.underscore.to_sym)
                 .permit(:type, :control_pin, :power_pin,
-                        :data_pin, :onewire_id, :equipment_profile)
+                        :data_pin, :onewire_index, :equipment_profile)
       if !(p[:equipment_profile].nil? || p[:equipment_profile].empty?)
         unless p[:equipment_profile].is_a? EquipmentProfile
           p[:equipment_profile] = EquipmentProfile.find(p[:equipment_profile])

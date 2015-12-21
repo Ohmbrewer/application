@@ -44,8 +44,8 @@ class EquipmentsControllerTest < ActionController::TestCase
   end
 
   test "should get update" do
-    patch :update, id: @temp_sensor.id, equipment: {type: @temp_sensor.type, rhizome: @rhizome_create.id, onewire_id: "asdf", data_pin: @heater.power_pin}
-    assert @temp_sensor.onewire_id = "asdf"
+    patch :update, id: @temp_sensor.id, equipment: {type: @temp_sensor.type, rhizome: @rhizome_create.id, onewire_index: "0", data_pin: @heater.power_pin}
+    assert @temp_sensor.onewire_index = "0"
   end
 
   test "should get destroy" do

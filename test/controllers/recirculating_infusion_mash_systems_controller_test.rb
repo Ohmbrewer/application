@@ -39,11 +39,11 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
                            control_pin: "0", power_pin: "1"
                        },
                        sensor_attributes: {
-                           data_pin: "2", onewire_id: "a"
+                           data_pin: "2", onewire_index: "0"
                        }
                    },
                    safety_sensor_attributes:{
-                       data_pin: "3", onewire_id: "b"
+                       data_pin: "3", onewire_index: "1"
                    }, recirculation_pump_attributes: {
 
                        power_pin: "5"
@@ -61,11 +61,11 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
                              control_pin: "2", power_pin: "3"
                          },
                          sensor_attributes: {
-                             data_pin: "4", onewire_id: "a"
+                             data_pin: "4", onewire_index: "0"
                          }
                      },
                      safety_sensor_attributes:{
-                         data_pin: "5", onewire_id: "b"
+                         data_pin: "5", onewire_index: "1"
                      }, recirculation_pump_attributes: {
 
                          power_pin: "1"

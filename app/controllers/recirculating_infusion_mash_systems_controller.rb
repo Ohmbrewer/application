@@ -96,13 +96,13 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
   def set_equipment_profile
     # Coming from a RIMS page
     unless params[:recirculating_infusion_mash_system].nil?
-      unless params[:recirculating_infusion_mash_system][:equipment_profile].nil? || params[:recirculating_infusion_mash_system][:equipment_profile].empty?
+      unless params[:recirculating_infusion_mash_system][:equipment_profile].blank?
         @equipment_profile = EquipmentProfile.find(params[:recirculating_infusion_mash_system][:equipment_profile].to_i)
       end
     end
 
     # Coming from the Equipment Profile pages
-    unless params[:equipment_profile].nil? || params[:equipment_profile].empty?
+    unless params[:equipment_profile].blank?
       @equipment_profile = EquipmentProfile.find(params[:equipment_profile].to_i)
     end
   end
@@ -113,12 +113,12 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
             .permit(:equipment_profile,
                     tube_attributes: [
                         :id,
-                        sensor_attributes: [:id, :onewire_id, :data_pin],
+                        sensor_attributes: [:id, :onewire_index, :data_pin],
                         element_attributes: [:id, :control_pin, :power_pin]
                     ],
-                    safety_sensor_attributes: [:id, :onewire_id, :data_pin],
+                    safety_sensor_attributes: [:id, :onewire_index, :data_pin],
                     recirculation_pump_attributes: [:id, :control_pin, :power_pin])
-    if !(p[:equipment_profile].nil? || p[:equipment_profile].empty?)
+    if p[:equipment_profile].present?
       unless p[:equipment_profile].is_a? EquipmentProfile
         p[:equipment_profile] = EquipmentProfile.find(p[:equipment_profile].to_i)
         p[:tube_attributes][:equipment_profile] = p[:equipment_profile]

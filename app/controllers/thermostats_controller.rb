@@ -113,7 +113,7 @@ class ThermostatsController < ApplicationController
   def thermostat_params
     p = params.require(:thermostat)
               .permit(:equipment_profile,
-                      sensor_attributes: [:id, :onewire_id, :data_pin],
+                      sensor_attributes: [:id, :onewire_index, :data_pin],
                       element_attributes: [:id, :control_pin, :power_pin])
     if !(p[:equipment_profile].nil? || p[:equipment_profile].empty?)
       unless p[:equipment_profile].is_a? EquipmentProfile
