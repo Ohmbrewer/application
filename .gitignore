@@ -55,6 +55,11 @@
 ehthumbs.db
 Thumbs.db
 
+# Documentation cache #
+#######################
+.yardoc
+doc
+
 # Ohmbrewer privileged configuration #
 ######################################
 config/rhizomes.yml
