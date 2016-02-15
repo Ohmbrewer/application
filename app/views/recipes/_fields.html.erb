@@ -18,7 +18,7 @@
 <%= f.label :schedule %>
     <div class="input-group">
         <%= f.select :schedule,
-                     Schedule.all.map { |r| [r.name, r.id] },
+                     Schedule.non_batch_records.map { |r| [r.name, r.id] },
                      {include_blank: 'Choose existing...', selected: (f.object.schedule.nil? ? '' : f.object.schedule.id)},
                      class: 'form-control' %>
         <div class="input-group-btn">
