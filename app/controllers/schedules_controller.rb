@@ -40,6 +40,10 @@ class SchedulesController < ApplicationController
   end
 
   def new
+    if EquipmentProfile.all.length.zero?
+      flash[:warning] = 'You may not create a Schedule until you have defined at least one Equipment Profile.'
+      redirect_to schedules_path
+    end
     msg = 'For now, you need to know the Task ID of the Task ' <<
           'you would like each task to follow. ' <<
           'You must save the Schedule first before each Task is assigned an ID.'
