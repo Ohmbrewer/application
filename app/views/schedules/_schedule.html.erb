@@ -1,8 +1,7 @@
 <tr>
   <td><%= check_box_tag 'schedules[]', schedule.id, false, class: 'schedule_checkbox' %></td>
   <td>
-    <%= link_to schedule.name, '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{schedule.id}-show" %>
-    <%= render 'schedules/modals/show', schedule: schedule %>
+    <%= link_to schedule.name, schedule_path(schedule) %>
   </td>
   <td>
     <% if current_user.admin? %>

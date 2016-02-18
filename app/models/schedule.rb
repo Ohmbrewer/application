@@ -137,4 +137,32 @@ class Schedule < ActiveRecord::Base
     end
   end
 
+  def timeline
+    self.root_task.self_and_descendants.collect do |task|
+      
+      unless task.sprout.nil?
+        rhizome_type = task.sprout.type.titlecase
+        number = task.sprout.rhizome_eid
+      end  
+
+      # this does not have the ramp up time for the thermostat included
+      [
+        "#{task.id}", 
+        "#{task.type_name_display} #{rhizome_type} #{number}", 
+        "#{rhizome_type}",
+        task.trigger_start*1000,
+        nil,
+        task.duration*1000,
+        nil,
+        ""  
+      ]
+    end 
+  end
+
 end
+
+
+
+
+
+
