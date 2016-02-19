@@ -1,29 +1,52 @@
-<ul>
-  <% if schedule.root_task.nil? %>
-      <li>No root task picked...</li>
-  <% else %>
-      <% schedule.root_task.self_and_descendants.each do |task| %>
-      <li>
-        <span class="label label-primary">
-        <%= link_to ' ',
-                    task_run_path(task),
-                    method: :post,
-                    class: 'text-danger glyphicon glyphicon-off',
-                    alt: "Run Task ##{task.id} Isolated",
-                    title: "Run Task ##{task.id} Isolated" %>
-          <% if task.id == schedule.root_task.id %>
-              <span class="glyphicon glyphicon-flash"></span>
-          <% end %>
-          Task #<%= task.id %>:
-        </span>
-        <br />
-        <span class="label label-success"><%= task.type_name_display %></span>
-        <% if !task.equipment.nil? %>
-            <%= render partial: 'schedules/equipment_task_details', locals: {task: task} %>
-        <% elsif !task.thermostat.nil? %>
-            <%= render partial: 'schedules/thermostat_task_details', locals: {task: task} %>
-        <% end %>
-      </li>
-      <% end %>
-  <% end %>
-</ul>
+<html>
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+
+    google.charts.load('current', {'packages':['gantt']});
+    google.charts.setOnLoadCallback(drawChart);
+    
+    function toMilliseconds(minutes) {
+      return minutes * 60 * 1000;
+    }
+
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      var timeline = <%= raw schedule.timeline.to_json %>
+
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('string', 'Resource');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+
+      for (i = 0; i < timeline.length; i++) {
+        var start_date = timeline[i][3];
+        timeline[i][3] = new Date(start_date);
+      }
+      data.addRows(timeline);
+      //need to translate ruby array task.trigger_start to new Date(milliseconds) for this to render correctly
+      var options = {
+        height: 275,
+        gantt: {
+          defaultStartDateMillis: new Date()
+        }
+      };
+
+      var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  <div id="chart_div", style="width: 80%"></div>
+</body>
+</html>
+
+
+

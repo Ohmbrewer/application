@@ -264,6 +264,22 @@ class Task < ActiveRecord::Base
     end
   end
 
+  # Returns time (in milliseconds) when task begins
+  def trigger_start
+    return 0 if self.root?
+
+    case
+    when on_started?
+      return self.parent.trigger_start
+    when on_done?
+      return (self.parent.trigger_start + self.parent.duration)
+    else
+      return "case not coded yet"
+    end
+
+  end
+
+
   # == Class Methods ==
   class << self
 
