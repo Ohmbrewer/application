@@ -35,6 +35,15 @@ class Schedule < ActiveRecord::Base
     tasks.all? { |t| t == root_task ? true : (!t.parent.nil?) }
   end
 
+  # Whether the Schedule is in a state where it can be charted as a Gantt Chart via Google Charts.
+  # So far, the requirements are:
+  # 1) Must be #runnable?
+  # 2) Must have at least one task with a duration greater than 0.
+  # @return [TrueFalse] True if the Schedule can be run
+  def chartable?
+    runnable? && tasks.any? { |t| t.duration > 0 }
+  end
+
   # The list of Tasks that are currently processing
   # @return [Array[Task]] The list of running tasks
   def running_tasks
@@ -138,28 +147,46 @@ class Schedule < ActiveRecord::Base
     end
   end
 
-  def timeline
-    return nil if root_task.nil?
-    
-    self.root_task.self_and_descendants.collect do |task|
-      
-      unless task.sprout.nil?
-        rhizome_type = task.sprout.type.titlecase
-        number = task.sprout.rhizome_eid
-      end  
+  # Provides a datatable representing the Schedule for use with a Google Chart Gantt chart
+  # @return [GoogleVisualr::DataTable] The datatable
+  def to_gantt_data
+    timeline = []
+    unless self.root_task.nil?
+      timeline = self.root_task.self_and_descendants.collect do |task|
+        task.to_gantt_data
+      end
+      timeline.flatten!(1)
+    end
 
-      # this does not have the ramp up time for the thermostat included
-      [
-        "#{task.id}", 
-        "#{task.type_name_display} #{rhizome_type} #{number}", 
-        "#{rhizome_type}",
-        task.trigger_start*1000,
-        nil,
-        task.duration*1000,
-        nil,
-        ""  
-      ]
-    end 
+    chart_data = GoogleVisualr::DataTable.new
+    chart_data.new_column('string', 'Target ID')
+    chart_data.new_column('string', 'Task Name')
+    chart_data.new_column('string', 'Resource')
+    chart_data.new_column('date', 'Start Date')
+    chart_data.new_column('date', 'End Date')
+    chart_data.new_column('number', 'Duration')
+    chart_data.new_column('number', 'Percent Complete')
+    chart_data.new_column('string', 'Dependencies')
+    chart_data.add_rows(timeline)
+    chart_data
+  end
+
+  # Provides a Google Chart object that can be inserted into the page
+  # @param [Hash] options Override of default options passed to the chart
+  # @return [GoogleVisualr::Interactive::Gantt] The Gantt chart
+  def to_gantt(options={})
+    data = self.to_gantt_data
+    track_height = 50
+    options = {
+        height: data.rows.length * (track_height + 5),
+        gantt: {
+            percentEnabled: false,
+            defaultStartDate: Date.new,
+            trackHeight: track_height
+        },
+        version: 'current'
+    }.merge!(options)
+    GoogleVisualr::Interactive::Gantt.new(data, options)
   end
 
   def assign_root

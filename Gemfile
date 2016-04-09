@@ -41,6 +41,9 @@ gem 'puma'
 # Twitter Bootstrap
 gem 'bootstrap-sass', '3.3.3'
 
+# Includes Google Charts via google_visualr
+gem 'google_visualr', git: 'https://github.com/kyleoliveira/google_visualr.git' #'~> 2.5', '>= 2.5.1'
+
 # Form fancification
 gem 'cocoon', '1.2.6'
 

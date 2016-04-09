@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/kyleoliveira/google_visualr.git
+  revision: 35ed31770d0a9aff767fc3c534844f4aaae24bda
+  specs:
+    google_visualr (2.5.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -245,6 +251,7 @@ DEPENDENCIES
   daemons
   delayed_job_active_record
   faker (= 1.4.2)
+  google_visualr!
   jbuilder (~> 2.0)
   jquery-rails
   particlerb

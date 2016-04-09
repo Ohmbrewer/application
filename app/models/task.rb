@@ -289,16 +289,54 @@ class Task < ActiveRecord::Base
     return 0 if self.root?
 
     case
-    when on_started?
-      return self.parent.trigger_start
-    when on_done?
-      return (self.parent.trigger_start + self.parent.duration)
-    else
-      return "case not coded yet"
+      when on_started?
+        return self.parent.trigger_start
+      when on_done?
+        return (self.parent.trigger_start + self.parent.duration)
+      when on_ramping?
+        return (self.parent.trigger_start + self.parent.ramp_estimate)
+      else
+        return 0
     end
 
   end
 
+  # Provides a datatable representing the Task for use with a Google Chart Gantt chart.
+  # When combining the results of this method into a single chart, use #flatten(1).
+  # @return [Array] The data necessary to construct a Gantt chart of just this task
+  def to_gantt_data
+    resource_id = "#{sprout.equipment_profile.name}, #{sprout.rhizome_type_name} #{sprout.rhizome_eid}"
+    dependency = parent.nil? ? '' : "#{parent.id}"
+
+    data = []
+
+    if ramps?
+      ramping_dependency = on_ramping? ? "#{dependency}_ramping" : dependency
+      data << [
+          "#{id}_ramping",
+          "Ramp up #{resource_id}",
+          resource_id,
+          nil,
+          nil,
+          duration*1000, # convert to milliseconds
+          nil,
+          ramping_dependency
+      ]
+    end
+
+    data << [
+      "#{id}",
+      "#{type_name_display} #{resource_id}",
+      resource_id,
+      nil,
+      nil,
+      (holds? ? duration : 0)*1000, # convert to milliseconds
+      nil,
+      ramps? ? "#{id}_ramping" : dependency
+    ]
+
+    data
+  end
 
   # == Class Methods ==
   class << self
