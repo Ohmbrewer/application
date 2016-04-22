@@ -34,7 +34,7 @@ class SchedulesController < ApplicationController
         redirect_to schedules_path
       else
         flash[:warning] = "Tried to duplicate #{@schedule.name}, but something went wrong!"
-        render 'new'
+        render :new
       end
     end
   end
@@ -49,6 +49,7 @@ class SchedulesController < ApplicationController
           'You must save the Schedule first before each Task is assigned an ID.'
     flash.now[:info] = msg
     @schedule = params[:schedule].nil? ? Schedule.new : Schedule.new(schedule_params)
+    @schedule.tasks.build
   end
 
   def edit
@@ -64,13 +65,15 @@ class SchedulesController < ApplicationController
     if @schedule.valid?
       msg = view_context.add_schedule_message(@schedule)
       if @schedule.save
+        @schedule.assign_root
+
         flash[:success] = msg
         redirect_to schedules_path
       else
-        render 'new'
+        render :new
       end
     else
-      render 'new'
+      render :new
     end
   end
 
@@ -79,7 +82,7 @@ class SchedulesController < ApplicationController
       flash[:success] = view_context.update_schedule_message(@schedule)
       redirect_to schedules_path
     else
-      render 'edit'
+      render :edit
     end
   end
 
@@ -110,6 +113,9 @@ class SchedulesController < ApplicationController
 
     redirect_to schedules_url
   end
+
+
+
 
   private
 

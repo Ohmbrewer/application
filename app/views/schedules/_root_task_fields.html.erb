@@ -1,0 +1,32 @@
+<div class="nested-fields form-inline">
+  <div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon glyphicon glyphicon-cog">&nbsp;</span>
+
+        <%= f.label :type, class: 'sr-only' %>
+        <%= f.select :type,
+                     Task.task_options,
+                     {},
+                     class: 'form-control' %>
+        <span class="input-group-addon"></span>
+        <%= f.label :sprout, class: 'sr-only' %>
+        <%= f.select :sprout,
+                     EquipmentProfile.equipment_profile_options,
+                     {include_blank: true, selected: (f.object.sprout.nil?  ? '' : f.object.sprout_name)},
+                     class: 'form-control' %>
+    </div>
+
+    <% if f.object.type == 'RunThermostatTask' %>
+        <%= render partial: 'schedules/run_thermostat_task_fields', locals: {f: f} %>
+    <% end %>
+
+    <div class="input-group">
+      <span class="input-group-addon">hold for</span>
+      <%= f.label :duration, class: 'sr-only' %>
+      <%= f.text_field :duration, class: 'form-control' %>
+      <span class="input-group-addon">sec.</span>
+
+
+    </div>
+  </div>
+</div>

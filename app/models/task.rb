@@ -74,7 +74,8 @@ class Task < ActiveRecord::Base
   validates_numericality_of :duration, { greater_than_or_equal_to: 0 }
   validates :sprout, presence: true
   validate :event_and_parent_validation
-
+  validate :parent_and_trigger_validation
+  
   # Ensures that the control pin and the power pin are set to different values or no value.
   def event_and_parent_validation
     if parent_id.nil? ^ trigger.nil?
@@ -82,6 +83,25 @@ class Task < ActiveRecord::Base
       errors.add(:parent_id, ' requires a trigger event.') if trigger.nil?
     end
   end
+
+  # Ensures that root task has no parent or trigger and non-root tasks have both
+  def parent_and_trigger_validation
+    # this isn't the best logic, but it's necessarily the root task if the schedule hasn't been created yet
+    if self.schedule.nil? || self.schedule.root_task_id == self.id
+      unless parent_id.nil?
+        errors.delete(:parent_id) unless errors.get(:parent_id).nil?
+        errors.add(:parent_id, ' parent id cannot be set for root task.')
+      end
+      unless trigger.nil?
+        errors.delete(:trigger) unless errors.get(:trigger).nil?
+        errors.add(:trigger, ' cannot be set for root task.')
+      end
+    elsif parent_id.nil? and trigger.nil?
+      errors.add(:parent_id, 'requires a parent.')
+      errors.add(:trigger, 'requires a trigger.')
+    end
+  end
+
 
   # == Instance Methods ==
 
