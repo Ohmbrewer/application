@@ -18,6 +18,7 @@ class Schedule < ActiveRecord::Base
                                              .pluck(:schedule_id)) }
 
   # == Validators ==
+  validates_presence_of :name
   validates :root_task, presence: true,
                         on: :update,
                         unless: 'tasks.empty? || tasks.none?{ |t| !t.id.nil? }'
@@ -138,6 +139,8 @@ class Schedule < ActiveRecord::Base
   end
 
   def timeline
+    return nil if root_task.nil?
+    
     self.root_task.self_and_descendants.collect do |task|
       
       unless task.sprout.nil?
@@ -159,10 +162,12 @@ class Schedule < ActiveRecord::Base
     end 
   end
 
+  def assign_root
+    if self.root_task.nil?
+      self.root_task = self.tasks.first
+      self.save
+    end
+  end
+
 end
-
-
-
-
-
 

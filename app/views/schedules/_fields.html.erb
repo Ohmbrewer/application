@@ -16,13 +16,15 @@
         <%= render 'task_fields', f: task %>
     <% end %>
     <div class="add-task-control">
-    <%= link_to_add_association '',
-                                f,
-                                :tasks,
-                                'data-association-insertion-method': :before,
-                                'data-association-insertion-traversal': :parent,
-                                alt: 'Add Task',
-                                title: 'Add Task',
-                                class: 'btn btn-sm btn-success glyphicon glyphicon-plus task' %>
+      <%= link_to_add_association '',
+                                  f,
+                                  :tasks,
+                                  'data-association-insertion-method': :before,
+                                  'data-association-insertion-traversal': :parent,
+                                  alt: 'Add Task',
+                                  title: 'Add Task',
+                                  class: 'btn btn-sm btn-success glyphicon glyphicon-plus task'  %>
+    
+
     </div>
 </div>
