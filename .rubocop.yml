@@ -1,0 +1,19 @@
+Metrics/LineLength:
+  Max: 120
+Style/Documentation:
+  Enabled: false
+
+AllCops:
+  TargetRubyVersion: 2.2
+  Exclude:
+    - 'db/migrate/*'
+    - 'lib/tasks/*'
+
+Rails:
+  Enabled: true 
+
+Style/Encoding:
+  EnforcedStyle: when_needed
+
+Style/IndentationConsistency:
+  EnforcedStyle: rails
