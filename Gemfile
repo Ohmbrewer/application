@@ -65,6 +65,7 @@ group :development, :test do
   gem 'cucumber-rails', :require => false
   gem 'test-factory', '~> 0.5.3'
   gem 'faker', '1.4.2'
+  gem 'rubocop', '~> 0.39.0', :require => false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
