@@ -76,14 +76,15 @@ t1 = TurnOnTask.create!(
   duration: 60,
   )
 
-t2 = TurnOnTask.create!(
-  status: :queued,
-  equipment_id: eq2.id,
-  schedule_id: sched.id,
-  duration: 15,
-  parent_id: t1.id,
-  trigger: :on_started
-  )
+# TODO: Fix this so that it doesn't cause db:setup to fail
+# t2 = TurnOnTask.create!(
+#   status: :queued,
+#   equipment_id: eq2.id,
+#   schedule_id: sched.id,
+#   duration: 15,
+#   parent_id: t1.id,
+#   trigger: :on_started
+#   )
 
 sched[:root_task_id] = t1.id
 sched.save
