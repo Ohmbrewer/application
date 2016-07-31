@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RhizomesControllerTest < ActionController::TestCase
   setup do
-    @user = users(:users_001)
+    @user = users(:georg_ohm)
     log_in_as(@user)
     @rhizome = rhizomes(:rhizomes_001)
   end
@@ -20,9 +20,15 @@ class RhizomesControllerTest < ActionController::TestCase
 
   test 'should create rhizome' do
     assert_difference('Rhizome.count') do
-      post :create, rhizome: {name: "test", particle_device_attributes: {device_id: "123456789012345678901234", access_token: "1234567890123456789012345678901234567890"}}
+      post :create,
+           rhizome: {
+             name: 'test',
+             particle_device_attributes: {
+               device_id: '123456789012345678901234',
+               access_token: '1234567890123456789012345678901234567890'
+             }
+           }
     end
-
     assert_redirected_to rhizomes_url
   end
 
@@ -38,7 +44,15 @@ class RhizomesControllerTest < ActionController::TestCase
 
   test 'should update rhizome' do
     @rhizome_to_update = rhizomes(:rhizomes_002)
-    patch :update, id: @rhizome_to_update, rhizome: {name: "test_update", particle_device_attributes: {device_id: "360018000347341137373739", access_token: "1234567890123456789012345678901234567890"}}
+    patch :update,
+          id: @rhizome_to_update,
+          rhizome: {
+            name: 'test_update',
+            particle_device_attributes: {
+              device_id: '360018000347341137373739',
+              access_token: '1234567890123456789012345678901234567890'
+            }
+          }
     assert_redirected_to rhizome_path(assigns(:rhizome))
   end
 

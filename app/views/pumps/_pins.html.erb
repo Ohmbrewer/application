@@ -1,5 +1,5 @@
 <%= f.label :control_pin %>
 <%= f.select :control_pin,
-             Rhizome.digital_pins.map { |et| ["D#{et}", et] },
+             EquipmentProfile.digital_pins.map { |et| ["D#{et}", et] },
              {prompt: '--'},
              class: 'form-control' %>

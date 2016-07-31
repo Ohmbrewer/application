@@ -1,9 +1,8 @@
 require 'test_helper'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
-
   def setup
-    @user = users(:users_001)
+    @user = users(:georg_ohm)
   end
 
   test 'login with invalid information' do
@@ -19,7 +18,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   test 'login with valid information' do
     get login_path
     post login_path, session: { email: @user.email, password: 'password' }
-    assert is_logged_in?
+    assert logged_in?
     assert_redirected_to home_path
     follow_redirect!
     assert_template 'home'
@@ -27,7 +26,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', user_path(@user)
     delete logout_path
-    assert_not is_logged_in?
+    assert_not logged_in?
     assert_redirected_to root_url
     # Simulate a user clicking logout in a second window.
     delete logout_path
@@ -46,5 +45,4 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     log_in_as(@user, remember_me: '0')
     assert_nil cookies['remember_token']
   end
-
 end

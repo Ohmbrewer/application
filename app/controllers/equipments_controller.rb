@@ -61,7 +61,10 @@ class EquipmentsController < ApplicationController
 
   def destroy
     if params[:id] != 'destroy_multiple'
-      msg = "#{@type.titlecase} removed from #{@equipment.equipment_profile.name}!"
+      msg = "#{@type.titlecase} removed"
+      unless @equipment.equipment_profile.nil?
+        msg = "#{msg} from #{@equipment.equipment_profile.name}!"
+      end
       @equipment.destroy
       flash[:success] = msg
       redirect_to equipment_profiles_path

@@ -1,5 +1,4 @@
 module PumpsHelper
-
   def pump_group_column(pump)
     content_tag(:td) do
       unless pump.recirculating_infusion_mash_system.nil?
@@ -13,5 +12,4 @@ module PumpsHelper
       link_to "RIMS #{rims.rhizome_eid}", rims
     end
   end
-
 end

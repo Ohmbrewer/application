@@ -14,7 +14,7 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Returns true if a test user is logged in.
-  def is_logged_in?
+  def logged_in?
     !session[:user_id].nil?
   end
 
@@ -35,9 +35,8 @@ class ActiveSupport::TestCase
 
   private
 
-  # Returns true inside an integration test.
-  def integration_test?
-    defined?(post_via_redirect)
-  end
-
+    # Returns true inside an integration test.
+    def integration_test?
+      defined?(post_via_redirect)
+    end
 end

@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UserMailerTest < ActionMailer::TestCase
-
   test 'welcome email is sent' do
     # Send the email, then test that it got queued
     email = UserMailer.follow_up_email('me@example.com').deliver_now
@@ -13,5 +12,4 @@ class UserMailerTest < ActionMailer::TestCase
     assert_email_subject_matches 'Yo yo yo! Sup dawg! Bling bling!', email
     assert_email_body_matches read_fixture('welcome.text.erb').join, email
   end
-
 end
