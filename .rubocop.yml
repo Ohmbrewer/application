@@ -17,3 +17,9 @@ Style/Encoding:
 
 Style/IndentationConsistency:
   EnforcedStyle: rails
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+
+Metrics/MethodLength:
+  Max: 20

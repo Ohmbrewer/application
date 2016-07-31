@@ -2,10 +2,8 @@ require 'test_helper'
 
 class EquipmentTest < ActiveSupport::TestCase
   def setup
-
-    @eqp = equipments(:equipments_001)
-    @eqp_two = equipments(:equipments_003)
-
+    @eqp = equipments(:heating_element_1pin)
+    @eqp_two = equipments(:temperature_sensor_3)
   end
 
   test 'should be valid' do
@@ -18,7 +16,5 @@ class EquipmentTest < ActiveSupport::TestCase
 
   test 'should recognize no rhizome attached' do
     assert_not @eqp.attached?
-
   end
-
 end

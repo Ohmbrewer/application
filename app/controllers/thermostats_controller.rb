@@ -54,7 +54,10 @@ class ThermostatsController < ApplicationController
 
   def destroy
     if params[:id] != 'destroy_multiple'
-      msg = "Thermostat removed from <strong>#{@thermostat.equipment_profile.name}</strong>!"
+      msg = 'Thermostat removed'
+      unless @thermostat.equipment_profile.nil?
+        msg = "#{msg} from <strong>#{@thermostat.equipment_profile.name}</strong>!"
+      end
       @thermostat.destroy
       flash[:success] = msg
       redirect_to equipment_profiles_path

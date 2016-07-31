@@ -1,5 +1,4 @@
 module TasksHelper
-
   def task_li(task)
     content_tag(:li) do
       content_tag(:ul) do
@@ -17,10 +16,9 @@ module TasksHelper
   end
 
   def subhash_tasks_list(subhash)
-    subhash.each do |t, sh|
+    subhash.each do |t, _|
       task_li(t)
       concat subhash_tasks_list(subhash)
     end
   end
-
 end

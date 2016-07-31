@@ -1,5 +1,4 @@
 module SharedMailerTests
-
   def assert_email_subject_matches(matcher, email)
     assert_match matcher, email.subject
   end
@@ -21,5 +20,4 @@ module SharedMailerTests
       assert_match matcher, email.body.to_s
     end
   end
-
 end

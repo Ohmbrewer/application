@@ -1,6 +1,5 @@
 require 'test_helper'
 
-# FIXME: For some reason, attr_encrypted isn't playing nicely with minitest. These tests won't pass yet.
 class RhizomeTest < ActiveSupport::TestCase
   def setup
     @rhizome = rhizomes(:rhizomes_001)
@@ -45,5 +44,4 @@ class RhizomeTest < ActiveSupport::TestCase
     @rhizome.particle_device.device_id = @second_rhizome.particle_device.device_id
     assert_not @rhizome.valid?
   end
-
 end

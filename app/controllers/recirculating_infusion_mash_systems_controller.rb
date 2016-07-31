@@ -52,7 +52,10 @@ class RecirculatingInfusionMashSystemsController < ApplicationController
 
   def destroy
     if params[:id] != 'destroy_multiple'
-      msg = "RIMS removed from <strong>#{@recirculating_infusion_mash_system.equipment_profile.name}</strong>!"
+      msg = 'RIMS removed'
+      unless @recirculating_infusion_mash_system.equipment_profile.nil?
+        msg = "#{msg} from <strong>#{@recirculating_infusion_mash_system.equipment_profile.name}</strong>!"
+      end
       @recirculating_infusion_mash_system.destroy
       flash[:success] = msg
       redirect_to equipment_profiles_path

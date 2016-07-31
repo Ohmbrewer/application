@@ -1,5 +1,4 @@
 module TemperatureSensorsHelper
-
   def temperature_sensor_group_column(temperature_sensor)
     if temperature_sensor.thermostat.nil?
       if temperature_sensor.recirculating_infusion_mash_system.nil?
@@ -19,7 +18,6 @@ module TemperatureSensorsHelper
         end
       end
     end
-
   end
 
   def thermostat_link(thermostat)
@@ -33,5 +31,4 @@ module TemperatureSensorsHelper
       link_to "RIMS #{rims.rhizome_eid}", rims
     end
   end
-
 end

@@ -1,9 +1,8 @@
 require 'test_helper'
 
 class UsersEditTest < ActionDispatch::IntegrationTest
-
   def setup
-    @user = users(:users_001)
+    @user = users(:georg_ohm)
   end
 
   test 'unsuccessful edit' do
@@ -33,5 +32,4 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_equal @user.name,  name
     assert_equal @user.email, email
   end
-
 end

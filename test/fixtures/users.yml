@@ -1,24 +1,23 @@
-users_001:
+georg_ohm:
   name: Georg Ohm
   email: gohm@example.com
   password_digest: <%= User.digest('password') %>
   admin: true
 
-users_002:
+james_watt:
   name: James Watt
   email: jwatt@example.com
   password_digest: <%= User.digest('password') %>
 
-users_003:
+louis_pasteur:
   name: Louis Pasteur
   email: lpasteur@example.com
   password_digest: <%= User.digest('password') %>
 
-users_004:
+john_palmer:
   name: John Palmer
   email: jpalmer@example.com
   password_digest: <%= User.digest('password') %>
-
 
 <% 30.times do |n| %>
 users_<%= n+4 %>:
