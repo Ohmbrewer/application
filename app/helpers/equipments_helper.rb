@@ -33,7 +33,7 @@ module EquipmentsHelper
         content_tag(:li, 'Not Set')
       else
         equipment.pins.each do |k, v|
-          unless v.nil? || v.empty?
+          unless v.nil?
             concat content_tag(:li, "#{k.titlecase}: #{v}")
           end
         end
