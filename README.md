@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Ohmbrewer/ohmbrewer.svg?branch=master)](https://travis-ci.org/Ohmbrewer/ohmbrewer)
 # Ohmbrewer
 The web application for a happy brew day.
 
