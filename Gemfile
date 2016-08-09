@@ -42,7 +42,7 @@ gem 'puma'
 gem 'bootstrap-sass', '3.3.3'
 
 # Includes Google Charts via google_visualr
-gem 'google_visualr', git: 'https://github.com/kyleoliveira/google_visualr.git' # '~> 2.5', '>= 2.5.1'
+gem 'google_visualr', git: 'https://github.com/kyleoliveira/google_visualr.git' # , '~> 2.5', # '>= 2.5.1'
 
 # Form fancification
 gem 'cocoon', '1.2.6'
@@ -61,7 +61,6 @@ gem 'closure_tree', '6.0.0'
 group :development, :test do
   gem 'binding_of_caller', '0.7.3.pre1'
   gem 'byebug',      '3.4.0'
-  gem 'web-console', '~> 2.0'
   gem 'cucumber-rails', require: false
   gem 'test-factory', '~> 0.5.3'
   gem 'faker', '1.4.2'
@@ -69,6 +68,7 @@ group :development, :test do
   gem 'simplecov', '0.12.0', require: false
   gem 'knapsack', '1.11.1'
 end
+gem 'web-console', '~> 2.0', group: :development
 gem 'codeclimate-test-reporter', '0.6.0', group: :test, require: nil
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
