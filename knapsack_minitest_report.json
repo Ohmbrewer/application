@@ -1,0 +1,19 @@
+{
+  "test/controllers/equipments_controller_test.rb": 7.506300926208496,
+  "test/integration/users_login_test.rb": 0.2052922248840332,
+  "test/controllers/sessions_controller_test.rb": 0.008071422576904297,
+  "test/integration/users_index_test.rb": 0.12989258766174316,
+  "test/helpers/sessions_helper_test.rb": 0.015198230743408203,
+  "test/controllers/rhizomes_controller_test.rb": 0.13486766815185547,
+  "test/mailers/user_mailer_test.rb": 0.1713705062866211,
+  "test/controllers/static_pages_controller_test.rb": 0.019465208053588867,
+  "test/integration/site_layout_test.rb": 0.03239750862121582,
+  "test/integration/users_signup_test.rb": 0.06684994697570801,
+  "test/models/equipment_test.rb": 0.006937980651855469,
+  "test/models/rhizome_test.rb": 0.03416895866394043,
+  "test/controllers/thermostats_controller_test.rb": 0.2285909652709961,
+  "test/controllers/users_controller_test.rb": 0.04182243347167969,
+  "test/integration/users_edit_test.rb": 0.0799875259399414,
+  "test/models/user_test.rb": 0.0694878101348877,
+  "test/controllers/recirculating_infusion_mash_systems_controller_test.rb": 0.3633458614349365
+}
