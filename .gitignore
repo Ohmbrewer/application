@@ -60,6 +60,10 @@ Thumbs.db
 .yardoc
 doc
 
+# Testing reports #
+###################
+coverage
+
 # Ohmbrewer privileged configuration #
 ######################################
 config/rhizomes.yml
