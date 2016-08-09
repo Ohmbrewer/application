@@ -42,3 +42,8 @@ class ActiveSupport::TestCase
       defined?(post_via_redirect)
     end
 end
+
+require 'knapsack'
+
+knapsack_adapter = Knapsack::Adapters::MinitestAdapter.bind
+knapsack_adapter.set_test_helper_path(__FILE__)
