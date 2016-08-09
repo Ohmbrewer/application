@@ -69,6 +69,7 @@ group :development, :test do
   gem 'simplecov', '0.12.0', :require => false
   gem 'knapsack', '1.11.1'
 end
+gem 'codeclimate-test-reporter', '0.6.0', group: :test, require: nil
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
