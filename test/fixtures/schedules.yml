@@ -1,6 +1,5 @@
 ---
-one: {}
-# column: value
-#
+one:
+  name: 'Schedule one'
 two: {}
 #  column: value

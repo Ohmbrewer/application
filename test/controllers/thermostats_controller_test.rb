@@ -8,27 +8,27 @@ class ThermostatsControllerTest < ActionController::TestCase
     @thermostat = thermostats(:thermostats_001)
   end
 
-  test 'should get index' do
+  test 'should get thermostats index' do
     get :index
     assert_response :success
   end
 
-  test 'should get show' do
+  test 'should get show thermostat' do
     get :show, id: @thermostat
     assert_response :success
   end
 
-  test 'should get new' do
+  test 'should get new thermostat' do
     get :new
     assert_response :success
   end
 
-  test 'should get edit' do
+  test 'should get edit thermostat' do
     get :edit, id: @thermostat
     assert_response :success
   end
 
-  test 'should get create' do
+  test 'should get create thermostat' do
     assert_difference('Thermostat.count') do
       post :create,
            thermostat: {
@@ -46,7 +46,25 @@ class ThermostatsControllerTest < ActionController::TestCase
     assert_redirected_to equipment_profiles_path
   end
 
-  test 'should get update' do
+  test 'should not create thermostat' do
+    assert_no_difference('Thermostat.count') do
+      post :create,
+           thermostat: {
+             equipment_profile: @equipment_profile.id,
+             element_attributes: {
+               control_pin: '',
+               power_pin: ''
+             },
+             sensor_attributes: {
+               data_pin: '',
+               onewire_index: ''
+             }
+           }
+    end
+    assert_template :new
+  end
+
+  test 'should get update thermostat' do
     patch :update,
           id: @thermostat,
           thermostat: {
@@ -63,7 +81,24 @@ class ThermostatsControllerTest < ActionController::TestCase
     assert_redirected_to equipment_profiles_path
   end
 
-  test 'should get destroy' do
+  test 'should not update thermostat' do
+    patch :update,
+          id: @thermostat,
+          thermostat: {
+            rhizome: @equipment_profile.id,
+            element_attributes: {
+              control_pin: '',
+              power_pin: ''
+            },
+            sensor_attributes: {
+              data_pin: '',
+              onewire_index: ''
+            }
+          }
+    assert_template :edit
+  end
+
+  test 'should get destroy thermostat' do
     assert_difference('Thermostat.count', -1) do
       delete :destroy, id: @thermostat.id
     end

@@ -15,6 +15,8 @@ class Recipe < ActiveRecord::Base
 
   accepts_nested_attributes_for :schedule
 
+  validates :name, presence: true
+
   def is_basic_recipe?
     type == 'Recipe'
   end

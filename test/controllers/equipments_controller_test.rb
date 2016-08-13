@@ -15,12 +15,12 @@ class EquipmentsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should get show' do
+  test 'should get equipment show' do
     get :show, id: @pump.id
     assert_response :success
   end
 
-  test 'should get new' do
+  test 'should get new equipment' do
     get :new, rhizome: @rhizome, type: @temp_sensor.type
     assert_response :success
   end
@@ -30,12 +30,12 @@ class EquipmentsControllerTest < ActionController::TestCase
     assert_redirected_to equipments_path
   end
 
-  test 'should get edit' do
+  test 'should get edit equipment' do
     get :edit, id: @temp_sensor
     assert_response :success
   end
 
-  test 'should get create' do
+  test 'should get create equipment' do
     assert_difference('Equipment.count') do
       post :create,
            equipment: {
@@ -48,7 +48,20 @@ class EquipmentsControllerTest < ActionController::TestCase
     assert_redirected_to equipment_profiles_path
   end
 
-  test 'should get update' do
+  test 'should not create equipment' do
+    assert_no_difference('Equipment.count') do
+      post :create,
+           equipment: {
+             type: @heater.type,
+             equipment_profile: @equipment_profile.id,
+             control_pin: '',
+             power_pin: ''
+           }
+    end
+    assert_template :new
+  end
+
+  test 'should get update equipment' do
     new_onewire_index = '5'
     patch :update, id: @temp_sensor.id, equipment: { type: @temp_sensor.type, onewire_index: new_onewire_index }
     assert_redirected_to equipment_profiles_path
@@ -56,12 +69,22 @@ class EquipmentsControllerTest < ActionController::TestCase
     assert_equal new_onewire_index, @temp_sensor.onewire_index
   end
 
-  test 'should update equipment profile' do
+  test 'should not update equipment' do
+    patch :update,
+          id: @temp_sensor.id,
+          equipment: {
+            type: @temp_sensor.type,
+            onewire_index: ''
+          }
+    assert_template :edit
+  end
+
+  test 'should update equipment\'s equipment profile' do
     patch :update, id: @temp_sensor.id, equipment: { type: @temp_sensor.type, equipment_profile: @equipment_profile.id }
     assert_equal @equipment_profile.id, @temp_sensor.equipment_profile.id
   end
 
-  test 'should get destroy' do
+  test 'should get destroy equipment' do
     assert_difference('Equipment.count', -1) do
       delete :destroy, id: @temp_sensor
     end

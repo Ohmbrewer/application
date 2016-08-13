@@ -1,6 +1,7 @@
 ---
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+beer:
+  name: 'Ma beer'
+  type: 'BeerRecipe'
+distilling:
+  name: 'Absinto'
+  type: 'DistillingRecipe'
