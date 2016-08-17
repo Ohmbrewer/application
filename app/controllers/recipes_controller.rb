@@ -109,12 +109,8 @@ class RecipesController < ApplicationController
   private
 
   def recipe_params
-    p = params.require(type.underscore.to_sym)
+    params.require(type.underscore.to_sym)
           .permit(:type, :name, :schedule)
-    unless p[:schedule].nil? || p[:schedule].to_i.zero?
-      p[:schedule] = Schedule.find(p[:schedule].to_i)
-    end
-    p
   end
 
   def set_recipe

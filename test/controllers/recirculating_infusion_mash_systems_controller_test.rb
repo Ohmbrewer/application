@@ -8,27 +8,27 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
     @rims = recirculating_infusion_mash_systems(:rims_1)
   end
 
-  test 'should get index' do
+  test 'should get RIMS index' do
     get :index
     assert_response :success
   end
 
-  test 'should get show' do
+  test 'should get RIMS show' do
     get :show, id: @rims
     assert_response :success
   end
 
-  test 'should get new' do
+  test 'should get new RIMS' do
     get :new, rhizome: @rhizome
     assert_response :success
   end
 
-  test 'should get edit' do
+  test 'should get edit RIMS' do
     get :edit, id: @rims
     assert_response :success
   end
 
-  test 'should get create' do
+  test 'should get create RIMS' do
     assert_difference('RecirculatingInfusionMashSystem.count') do
       patch :create,
             recirculating_infusion_mash_system: {
@@ -55,11 +55,38 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
     assert_redirected_to equipment_profiles_path
   end
 
-  test 'should get update' do
+  test 'should not create RIMS' do
+    assert_no_difference('RecirculatingInfusionMashSystem.count') do
+      patch :create,
+            recirculating_infusion_mash_system: {
+              equipment_profile: @equipment_profile,
+              tube_attributes: {
+                element_attributes: {
+                  control_pin: '',
+                  power_pin: ''
+                },
+                sensor_attributes: {
+                  data_pin: '',
+                  onewire_index: ''
+                }
+              },
+              safety_sensor_attributes: {
+                data_pin: '',
+                onewire_index: ''
+              },
+              recirculation_pump_attributes: {
+                control_pin: ''
+              }
+            }
+    end
+    assert_template :new
+  end
+
+  test 'should get update RIMS' do
     patch :update,
           id: @rims,
           recirculating_infusion_mash_system: {
-            rhizome: @rhizome_create,
+            rhizome: @equipment_profile,
             tube_attributes: {
               element_attributes: {
                 control_pin: '2',
@@ -81,7 +108,33 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
     assert_redirected_to equipment_profiles_path
   end
 
-  test 'should get destroy' do
+  test 'should not update RIMS' do
+    patch :update,
+          id: @rims,
+          recirculating_infusion_mash_system: {
+            rhizome: @rhizome_create,
+            tube_attributes: {
+              element_attributes: {
+                control_pin: '',
+                power_pin: ''
+              },
+              sensor_attributes: {
+                data_pin: '',
+                onewire_index: ''
+              }
+            },
+            safety_sensor_attributes: {
+              data_pin: '',
+              onewire_index: ''
+            },
+            recirculation_pump_attributes: {
+              control_pin: ''
+            }
+          }
+    assert_template :edit
+  end
+
+  test 'should get destroy RIMS' do
     assert_difference('RecirculatingInfusionMashSystem.count', -1) do
       get :destroy, id: @rims
     end

@@ -7,13 +7,13 @@ class RhizomesControllerTest < ActionController::TestCase
     @rhizome = rhizomes(:rhizomes_001)
   end
 
-  test 'should get index' do
+  test 'should get rhizomes index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:rhizomes)
   end
 
-  test 'should get new' do
+  test 'should get new rhizome' do
     get :new
     assert_response :success
   end
@@ -32,12 +32,22 @@ class RhizomesControllerTest < ActionController::TestCase
     assert_redirected_to rhizomes_url
   end
 
+  test 'should not create rhizome' do
+    assert_no_difference('Rhizome.count') do
+      post :create,
+           rhizome: {
+             name: ''
+           }
+    end
+    assert_template :new
+  end
+
   test 'should show rhizome' do
     get :show, id: @rhizome
     assert_response :success
   end
 
-  test 'should get edit' do
+  test 'should get edit rhizome' do
     get :edit, id: @rhizome
     assert_response :success
   end
@@ -54,6 +64,16 @@ class RhizomesControllerTest < ActionController::TestCase
             }
           }
     assert_redirected_to rhizome_path(assigns(:rhizome))
+  end
+
+  test 'should not update rhizome' do
+    @rhizome_to_update = rhizomes(:rhizomes_002)
+    patch :update,
+          id: @rhizome_to_update,
+          rhizome: {
+            name: ''
+          }
+    assert_template :edit
   end
 
   test 'should destroy rhizome' do
