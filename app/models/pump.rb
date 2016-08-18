@@ -5,9 +5,11 @@ class Pump < Equipment
   include RhizomeInterfaces::PumpSprout
   include RhizomeInterfaces::RelayValidations
 
-  belongs_to :recirculating_infusion_mash_system, validate: true,
-                                                  touch: true,
-                                                  foreign_key: :rims_id
+  belongs_to :recirculating_infusion_mash_system,
+             validate: true,
+             touch: true,
+             inverse_of: :recirculation_pump,
+             foreign_key: :rims_id
   alias_attribute :rims, :recirculating_infusion_mash_system
 
   store_accessor :pins, :control_pin

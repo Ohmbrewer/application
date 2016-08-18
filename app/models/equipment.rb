@@ -2,6 +2,11 @@ class Equipment < ActiveRecord::Base
 
   has_one :sprout, as: :sproutable, dependent: :destroy
   has_one :equipment_profile, through: :sprout
+  belongs_to :thermostat,
+             touch: true
+  belongs_to :recirculating_infusion_mash_system,
+             touch: true,
+             foreign_key: :rims_id
 
   # == Subclass scopes ==
   # These scopes make so anything that references Equipment generally

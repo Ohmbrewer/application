@@ -3,7 +3,6 @@ require 'test_helper'
 class EquipmentTest < ActiveSupport::TestCase
   def setup
     @eqp = equipments(:heating_element_1pin)
-    @eqp_two = equipments(:temperature_sensor_3)
   end
 
   test 'should be valid' do

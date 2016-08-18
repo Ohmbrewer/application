@@ -4,7 +4,7 @@ class RhizomesControllerTest < ActionController::TestCase
   setup do
     @user = users(:georg_ohm)
     log_in_as(@user)
-    @rhizome = rhizomes(:rhizomes_001)
+    @rhizome = rhizomes(:northern_brewer)
   end
 
   test 'should get rhizomes index' do
@@ -53,7 +53,7 @@ class RhizomesControllerTest < ActionController::TestCase
   end
 
   test 'should update rhizome' do
-    @rhizome_to_update = rhizomes(:rhizomes_002)
+    @rhizome_to_update = rhizomes(:centennial)
     patch :update,
           id: @rhizome_to_update,
           rhizome: {
@@ -67,7 +67,7 @@ class RhizomesControllerTest < ActionController::TestCase
   end
 
   test 'should not update rhizome' do
-    @rhizome_to_update = rhizomes(:rhizomes_002)
+    @rhizome_to_update = rhizomes(:centennial)
     patch :update,
           id: @rhizome_to_update,
           rhizome: {

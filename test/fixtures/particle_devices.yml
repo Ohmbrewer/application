@@ -1,22 +1,13 @@
 ---
-particle_devices_001:
-  id: '1'
+northern_brewer_photon:
   device_id: '360018000347343337373739'
-  encrypted_access_token: '<%= ParticleDevice.encrypt(:access_token, "d154e6c68722ab58d2ac007ccbcb667d5a5f5555") %>'
-  created_at: '2015-10-10 14:31:17.800748'
-  updated_at: '2015-10-10 14:31:17.800748'
-  rhizome_id: '1'
-particle_devices_002:
-  id: '2'
-  device_id: 54ff6d066667515117151666
-  encrypted_access_token: '<%= ParticleDevice.encrypt(:access_token, "d154e6c68722ab58d2ac007ccbcb667d5a5f5555") %>'
-  created_at: '2015-11-18 01:19:05.306044'
-  updated_at: '2015-11-18 01:19:05.306044'
-  rhizome_id: '2'
-particle_devices_003:
-  id: '3'
-  device_id: 360018000347343337373710
-  encrypted_access_token: '<%= ParticleDevice.encrypt(:access_token, "d154e6c68722ab58d2ac007ccbcb667d5a5f5555") %>'
-  created_at: '2015-11-18 01:19:05.306044'
-  updated_at: '2015-11-18 01:19:05.306044'
-  rhizome_id: '3'
+  encrypted_access_token: '<%= ParticleDevice.encrypt(:access_token, 'd154e6c68722ab58d2ac007ccbcb667d5a5f5555') %>'
+  rhizome: northern_brewer
+centennial_photon:
+  device_id: '54ff6d066667515117151666'
+  encrypted_access_token: '<%= ParticleDevice.encrypt(:access_token, 'd154e6c68722ab58d2ac007ccbcb667d5a5f5555') %>'
+  rhizome: centennial
+zeus_photon:
+  device_id: '360018000347343337373710'
+  encrypted_access_token: '<%= ParticleDevice.encrypt(:access_token, 'd154e6c68722ab58d2ac007ccbcb667d5a5f5555') %>'
+  rhizome: zeus

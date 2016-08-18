@@ -1,16 +1,7 @@
 ---
-rhizomes_001:
-  id: '1'
+northern_brewer:
   name: HopsOnMyMind
-  created_at: '2015-10-10 14:31:17.791804'
-  updated_at: '2015-10-10 14:31:17.791804'
-rhizomes_002:
-  id: '2'
+centennial:
   name: test
-  created_at: '2015-11-18 01:19:05.300538'
-  updated_at: '2015-11-18 01:19:05.300538'
-rhizomes_003:
-  id: '3'
+zeus:
   name: creator
-  created_at: '2015-11-18 01:19:05.300538'
-  updated_at: '2015-11-18 01:19:05.300538'
