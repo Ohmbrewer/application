@@ -1,21 +1,25 @@
 class Schedule < ActiveRecord::Base
 
   belongs_to :root_task, class_name: 'Task'
-  has_many :tasks, -> {order(created_at: :asc)}, dependent: :destroy
+  has_many :tasks, -> { order(created_at: :asc) }, dependent: :destroy
   has_many :schedule_profiles, dependent: :destroy
   has_many :equipment_profiles, through: :schedule_profiles
 
   accepts_nested_attributes_for :tasks, reject_if: :all_blank, allow_destroy: true
 
   # == Scopes ==
-  scope :non_batch_records, -> { where.not(id: Recipe.where
+  scope :non_batch_records, -> {
+                                 where.not(id: Recipe.where
                                                      .not(batch_id: nil)
                                                      .joins(:schedule)
-                                                     .pluck(:schedule_id)) }
-  scope :batch_records, -> { where(id: Recipe.where
+                                                     .pluck(:schedule_id))
+                               }
+  scope :batch_records, -> {
+                             where(id: Recipe.where
                                              .not(batch_id: nil)
                                              .joins(:schedule)
-                                             .pluck(:schedule_id)) }
+                                             .pluck(:schedule_id))
+                           }
 
   # == Validators ==
   validates_presence_of :name
@@ -105,7 +109,7 @@ class Schedule < ActiveRecord::Base
 
       unless t.parent.nil?
         # Need to find the duplicate of the parent. Don't do this part for the Root Task, naturally.
-        pi = tasks.ids.find_index{ |a| a == t.parent.id }
+        pi = tasks.ids.find_index { |a| a == t.parent.id }
         new_task.parent = new_schedule.tasks[pi]
       end
 
@@ -113,7 +117,7 @@ class Schedule < ActiveRecord::Base
       new_schedule.tasks << new_task
 
       # Use the dup of the Root Task as the new Root Task
-      new_schedule.root_task = new_schedule.tasks.first if new_schedule.tasks.length == 1
+      new_schedule.root_task = new_schedule.tasks.first unless new_schedule.tasks.length.zero?
     end
 
     new_schedule
@@ -130,7 +134,6 @@ class Schedule < ActiveRecord::Base
   # Used when the job is destroyed, essentially for
   # when we want a full stop.
   def clean_up_task_jobs
-
     # Kill any running tasks
     tasks.each do |task|
       Delayed::Job.where(queue: task.queue_name).destroy_all
@@ -178,14 +181,14 @@ class Schedule < ActiveRecord::Base
     data = self.to_gantt_data
     track_height = 50
     options = {
-        height: data.rows.length * (track_height + 5),
-        gantt: {
-            percentEnabled: false,
-            defaultStartDate: Date.new,
-            trackHeight: track_height
-        },
-        version: 'current'
-    }.merge!(options)
+                height: data.rows.length * (track_height + 5),
+                gantt: {
+                  percentEnabled: false,
+                  defaultStartDate: Date.new,
+                  trackHeight: track_height
+                },
+                version: 'current'
+              }.merge!(options)
     GoogleVisualr::Interactive::Gantt.new(data, options)
   end
 
@@ -195,6 +198,5 @@ class Schedule < ActiveRecord::Base
       self.save
     end
   end
-
 end
 

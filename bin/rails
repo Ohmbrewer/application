@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
-if ENV['RAILS_ENV'] == 'test'
-  require 'simplecov'
-end
+require 'simplecov' if ENV['RAILS_ENV'] == 'test'
 
 APP_PATH = File.expand_path('../../config/application', __FILE__)
 require_relative '../config/boot'

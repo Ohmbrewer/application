@@ -1,5 +1,4 @@
 class Rhizome < ActiveRecord::Base
-
   # == Each Rhizome has a one-to-one relationship with a Particle. ==
   # This sets up that relationship and makes it so we can pass Particle attribute changes through the
   # Rhizome's controller rather than building a full, separate controller just for the associated Particle.
@@ -89,7 +88,6 @@ class Rhizome < ActiveRecord::Base
 
   # == Class Methods ==
   class << self
-
     # The digital pins supported by the Rhizome.
     def digital_pins
       [0, 1, 2, 3, 4, 5]
@@ -99,7 +97,6 @@ class Rhizome < ActiveRecord::Base
       pd = ParticleDevice.where(device_id: device_id).first
       Rhizome.find(pd.rhizome.id)
     end
-
   end
 
 end

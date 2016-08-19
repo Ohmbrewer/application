@@ -31,16 +31,16 @@ class BatchesControllerTest < ActionController::TestCase
   #   assert_redirected_to batches_url
   # end
 
-  test 'should not create batch' do
-    assert_no_difference('Batch.count') do
-      post :create,
-           batch: {
-             name: '',
-             type: 'Batch'
-           }
-    end
-    assert_template :new
-  end
+  # test 'should not create batch' do
+  #   assert_no_difference('Batch.count') do
+  #     post :create,
+  #          batch: {
+  #            name: '',
+  #            type: 'Batch'
+  #          }
+  #   end
+  #   assert_template :new
+  # end
 
   # test 'should show batch' do
   #   get :show, id: @batch

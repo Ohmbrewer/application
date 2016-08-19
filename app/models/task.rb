@@ -10,7 +10,7 @@ class Task < ActiveRecord::Base
   # the order they should be run in.
   has_closure_tree
 
-  belongs_to :schedule
+  belongs_to :schedule, autosave: true
   belongs_to :equipment
   belongs_to :thermostat
   belongs_to :recirculating_infusion_mash_system

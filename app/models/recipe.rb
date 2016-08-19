@@ -1,6 +1,8 @@
 class Recipe < ActiveRecord::Base
 
   belongs_to :schedule, dependent: :destroy
+  belongs_to :batch,
+             inverse_of: :recipe
 
   # == Subclass scopes ==
   # These scopes make so anything that references Recipe generally
@@ -17,7 +19,7 @@ class Recipe < ActiveRecord::Base
 
   validates :name, presence: true
 
-  def is_basic_recipe?
+  def basic_recipe?
     type == 'Recipe'
   end
 
@@ -43,5 +45,4 @@ class Recipe < ActiveRecord::Base
     end
 
   end
-
 end
