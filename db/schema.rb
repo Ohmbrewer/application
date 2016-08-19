@@ -26,15 +26,15 @@ ActiveRecord::Schema.define(version: 20151201030515) do
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",               default: 0, null: false
-    t.integer  "attempts",               default: 0, null: false
-    t.text     "handler",                            null: false
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
     t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
-    t.string   "locked_by",  limit: 255
-    t.string   "queue",      limit: 255
+    t.string   "locked_by"
+    t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -180,13 +180,13 @@ ActiveRecord::Schema.define(version: 20151201030515) do
   add_index "thermostats", ["rims_id"], name: "index_thermostats_on_rims_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",            limit: 255
-    t.string   "email",           limit: 255
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
-    t.string   "password_digest", limit: 255
-    t.string   "remember_digest", limit: 255
-    t.boolean  "admin",                       default: false
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "password_digest"
+    t.string   "remember_digest"
+    t.boolean  "admin",           default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -5,7 +5,7 @@ class ThermostatsControllerTest < ActionController::TestCase
     @user = users(:georg_ohm)
     log_in_as(@user)
     @equipment_profile = equipment_profiles(:one)
-    @thermostat = thermostats(:thermostats_001)
+    @thermostat = thermostats(:without_rims)
   end
 
   test 'should get thermostats index' do

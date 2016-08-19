@@ -5,10 +5,15 @@ class TemperatureSensor < Equipment
   include RhizomeInterfaces::TemperatureSensorSprout
   include RhizomeInterfaces::OneWireValidations
 
-  belongs_to :thermostat, validate: true, touch: true
-  belongs_to :recirculating_infusion_mash_system, validate: true,
-                                                  touch: true,
-                                                  foreign_key: :rims_id
+  belongs_to :thermostat,
+             validate: true,
+             touch: true,
+             inverse_of: :sensor
+  belongs_to :recirculating_infusion_mash_system,
+             validate: true,
+             touch: true,
+             inverse_of: :safety_sensor,
+             foreign_key: :rims_id
   alias_method :rims, :recirculating_infusion_mash_system
 
   store_accessor :pins, :data_pin, :onewire_index

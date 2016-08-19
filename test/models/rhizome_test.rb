@@ -2,8 +2,8 @@ require 'test_helper'
 
 class RhizomeTest < ActiveSupport::TestCase
   def setup
-    @rhizome = rhizomes(:rhizomes_001)
-    @second_rhizome = rhizomes(:rhizomes_002)
+    @rhizome = rhizomes(:northern_brewer)
+    @second_rhizome = rhizomes(:centennial)
   end
 
   test 'should be valid' do

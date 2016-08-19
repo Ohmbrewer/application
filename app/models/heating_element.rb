@@ -5,7 +5,10 @@ class HeatingElement < Equipment
   include RhizomeInterfaces::HeatingElementSprout
   include RhizomeInterfaces::RelayValidations
 
-  belongs_to :thermostat, validate: true, touch: true
+  belongs_to :thermostat,
+             validate: true,
+             touch: true,
+             inverse_of: :element
 
   store_accessor :pins, :control_pin, :power_pin, :voltage
 

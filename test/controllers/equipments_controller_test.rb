@@ -3,8 +3,8 @@ require 'test_helper'
 class EquipmentsControllerTest < ActionController::TestCase
   setup do
     @equipment_profile = equipment_profiles(:one)
-    @temp_sensor = equipments(:temperature_sensor_2)
-    @pump = equipments(:pump)
+    @temp_sensor = equipments(:good_rims_therm_sensor)
+    @pump = equipments(:good_pump)
     @user = users(:georg_ohm)
     log_in_as(@user)
     @heater = equipments(:heating_element_2pin)

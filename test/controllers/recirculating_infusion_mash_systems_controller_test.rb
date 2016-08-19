@@ -5,7 +5,7 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
     @user = users(:georg_ohm)
     log_in_as(@user)
     @equipment_profile = equipment_profiles(:one)
-    @rims = recirculating_infusion_mash_systems(:rims_1)
+    @rims = recirculating_infusion_mash_systems(:good_rims)
   end
 
   test 'should get RIMS index' do
