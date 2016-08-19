@@ -1,10 +1,10 @@
 class BatchesController < ApplicationController
-
   # == Enabled Before Filters ==
 
   before_action :logged_in_user
   before_action :set_batch, only: [:show, :assign_rhizomes, :update_rhizomes,
                                    :start, :stop, :destroy]
+  before_action :create_dup_recipe, only: [:create]
 
   def index
     @batches = Batch.paginate(page: params[:page])
@@ -21,7 +21,7 @@ class BatchesController < ApplicationController
   def assign_rhizomes
     if @batch.not_ready? || @batch.ready?
       unless @batch.rhizome_roles.length == @batch.recipe.schedule.equipment_profiles.length
-        @batch.recipe.schedule.equipment_profiles.each_index do |i|
+        @batch.recipe.schedule.equipment_profiles.each do
           @batch.rhizome_roles.build
         end
       end
@@ -36,31 +36,15 @@ class BatchesController < ApplicationController
   end
 
   def create
-    @batch = Batch.new(batch_params)
-    recipe = @batch.recipe.deep_dup
+    @batch = Batch.new(batch_params.merge(recipe: @recipe))
 
-    unless recipe.present?
-      @batch.errors.add(:recipe, 'may not be blank.')
-      render 'new'
-      return
-    end
+    if @batch.save
+      @batch.reload
 
-    if recipe.save(validate: false)
-      recipe.reload
-      recipe.schedule.name.gsub!('Copy', "##{recipe.id}")
-      recipe.name.gsub!('Copy', "##{recipe.id}")
-      @batch.recipe = recipe
-
-      if @batch.save
-        @batch.reload
-        flash[:success] = "Added <strong>#{@batch.name.html_safe}</strong>!"
-        redirect_to batch_assign_rhizomes_path(@batch)
-      else
-        recipe.destroy
-        render 'new'
-      end
+      flash[:success] = "Added <strong>#{@batch.name.html_safe}</strong>!"
+      redirect_to batch_assign_rhizomes_path(@batch)
     else
-      flash[:danger] = 'Failed to prepare the recipe for the batch!'
+      @recipe.destroy
       render 'new'
     end
   end
@@ -100,24 +84,33 @@ class BatchesController < ApplicationController
   end
 
   def destroy
-      if @batch.nil?
-        flash[:danger] = 'No Batch selected!'
-      else
-        name = @batch.name.html_safe
-        @batch.destroy
-        flash[:success] = "Deleted <strong>#{name}</strong>"
-      end
+    if @batch.nil?
+      flash[:danger] = 'No Batch selected!'
+    else
+      name = @batch.name.html_safe
+      @batch.destroy
+      flash[:success] = "Deleted <strong>#{name}</strong>"
+    end
 
-      redirect_to batches_url
+    redirect_to batches_url
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_batch
       @batch = Batch.find(params[:id]) unless params[:id].to_i.zero?
       @batch = Batch.find(params[:batch_id]) unless params[:batch_id].to_i.zero?
     end
-  
+
+    def create_dup_recipe
+      recipe_to_dup = batch_params[:recipe]
+      @recipe = recipe_to_dup.deep_dup
+      @recipe.schedule.name.gsub!('Copy', "##{Recipe.count}")
+      @recipe.name.gsub!('Copy', "##{Recipe.count}")
+      @recipe.save(validate: false)
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def batch_params
       p = params.require(:batch).permit(:recipe,
@@ -130,9 +123,9 @@ class BatchesController < ApplicationController
       p
     end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def assign_rhizomes_params
-    params.require(:batch)
-          .permit(rhizome_roles_attributes: [:id, :rhizome_id, :role_id])
-  end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def assign_rhizomes_params
+      params.require(:batch)
+            .permit(rhizome_roles_attributes: [:id, :rhizome_id, :role_id])
+    end
 end

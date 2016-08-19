@@ -9,45 +9,46 @@ require 'rhizome_interfaces/errors/rhizome_argument_error'
 # rhizome_type : The Equipment Type of the Equipment instance on the Rhizome side
 #
 # The combination of the Rhizome and the Equipment ID represent a unique key that identifies the
-# particular piece of Equipment amongst all Equipment that Ohmbrewer knows of. This information makes it fairly simple to
-# determine the appropriate endpoint(s) to connect to.
+# particular piece of Equipment amongst all Equipment that Ohmbrewer knows of. This information
+# makes it fairly simple to determine the appropriate endpoint(s) to connect to.
 module RhizomeInterfaces
   module Sprout
-
     def self.included(base)
       base.extend(ClassMethods)
     end
 
     # == Class Methods to Include ==
     module ClassMethods
-
       # Locates the Equipment subclass, Thermostat, or RIMS instance associated with a
       # given Rhizome Sprout ID.
       # @param rhizome [Rhizome] The Rhizome with the desired Sprout
       # @param rhizome_eid [Integer] The Rhizome Sprout ID / Equipment ID
       # @return [Equipment|Thermostat|Recirculating_Infusion_Mash_System] The sprout instance
       def find_by_rhizome_eid(rhizome, rhizome_eid)
-        raise NotImplementedError, "This method probably needs to get implemented in RhizomeInterfaces::Sprout::#{type}Sprout"
+        raise NotImplementedError,
+              "This method probably needs to get implemented in RhizomeInterfaces::Sprout::#{type}Sprout"
       end
 
       # Formats a String of additional arguments to supplement the defaults in #to_update_args_str
       # @abstract This method must be implemented to pass those extra arguments.
       # @param extra [Hash] Hash of extra arguments
       # @return [String] The extra arguments, ready for appending
-      def parse_extra_args(extra={})
-        raise NotImplementedError, "This Rhizome Equipment Type (#{type}) does not have extra arguments"
+      def parse_extra_args(extra = {})
+        raise NotImplementedError,
+              "This Rhizome Equipment Type (#{type}) does not have extra arguments"
       end
-
     end
 
     # Provides the expected identifier on the Rhizome's side for the Equipment
     def rhizome_eid
-      raise NotImplementedError, 'No Rhizome Equipment ID method provided!'
+      raise NotImplementedError,
+            'No Rhizome Equipment ID method provided!'
     end
 
     # Provides the expected identifier on the Rhizome's side for the Equipment Type name
     def rhizome_type_name
-      raise NotImplementedError, 'No Rhizome Equipment Type method provided!'
+      raise NotImplementedError,
+            'No Rhizome Equipment Type method provided!'
     end
 
     # Uniquely identifies the Sprout on the Rhizome
@@ -59,7 +60,7 @@ module RhizomeInterfaces
     # Produces a String of arguments formatted in the way that the Particle Function on the Rhizome expects
     def to_update_args_str(args = {})
       extra_args = self.class.parse_extra_args(args)
-      extra_args.prepend(',') if extra_args.length > 0
+      extra_args.prepend(',') unless extra_args.empty?
       "#{rhizome_unique_id},#{args[:current_task]},#{args[:state]},#{args[:stop_time]}#{extra_args}"
     end
 
@@ -67,7 +68,7 @@ module RhizomeInterfaces
     # @see #add_pin_args_str
     # @return [String] The argument string for /add
     def to_add_args_str
-      "#{rhizome_unique_id},#{add_pin_args_str}"
+      add_pin_args_str.to_s
     end
 
     # Produces a String of arguments for the Sprout's pins, formatted in the way that the Particle Function
@@ -82,14 +83,14 @@ module RhizomeInterfaces
     # @return [TrueFalse] Whether the update was successfully sent
     def send_add
       Rails.logger.info "Sending a message to #{rhizome.name}/add of: " <<
-                        "#{to_add_args_str}"
+                        to_add_args_str
 
       result = -1
       begin
         result = rhizome.particle
                         .function 'add',
                                   to_add_args_str
-      rescue Particle::BadRequest => e
+      rescue Particle::BadRequest
         msg = 'Lost contact with Rhizome or the Rhizome doesn\'t support ' <<
               'the "add" function! Check your equipment!'
         Rails.logger.error msg
@@ -108,14 +109,14 @@ module RhizomeInterfaces
     # @return [TrueFalse] Whether the update was successfully sent
     def send_remove
       Rails.logger.info "Sending a message to #{rhizome.name}/remove of: " <<
-                        "#{rhizome_unique_id}"
+                        rhizome_unique_id
 
       result = -1
       begin
         result = rhizome.particle
                         .function 'remove',
                                   rhizome_unique_id
-      rescue Particle::BadRequest => e
+      rescue Particle::BadRequest
         msg = 'Lost contact with Rhizome or the Rhizome doesn\'t support ' <<
               'the "remove" function! Check your equipment!'
         Rails.logger.error msg
@@ -133,13 +134,12 @@ module RhizomeInterfaces
     # Sends the provided information to the Rhizome's appropriate Particle Function endpoint.
     # @return [TrueFalse] Whether the update was successfully sent
     def send_update(args = {})
-      Rails.logger.info "Sending a message to #{rhizome.name}/update of: " <<
-                        "#{to_update_args_str(args)}"
+      Rails.logger.info "Sending a message to #{rhizome.name}/update of: #{to_update_args_str(args)}"
       begin
         rhizome.particle
                .function 'update',
                          to_update_args_str(args)
-      rescue Particle::BadRequest => e
+      rescue Particle::BadRequest
         msg = 'Lost contact with Rhizome or the Rhizome doesn\'t support ' <<
               'the "update" function! Check your equipment!'
         Rails.logger.error msg
@@ -147,6 +147,5 @@ module RhizomeInterfaces
       end
       true
     end
-
   end
 end

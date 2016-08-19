@@ -1,9 +1,9 @@
 require 'scheduler/state_machines/batch_state_machine'
 class Batch < ActiveRecord::Base
-
   include Scheduler::StateMachines::BatchStateMachine
 
-  has_one  :recipe, dependent: :nullify
+  has_one  :recipe,
+           inverse_of: :batch
   has_many :rhizome_roles
   has_many :rhizomes, through: :rhizome_roles
 
@@ -52,7 +52,7 @@ class Batch < ActiveRecord::Base
   end
 
   def profiles_assigned?
-    rhizome_roles.length == recipe.schedule.equipment_profiles.length && rhizome_roles.none?{|r| r.rhizome.nil?}
+    rhizome_roles.length == recipe.schedule.equipment_profiles.length && rhizome_roles.none? { |r| r.rhizome.nil? }
   end
 
   def remove_recipe
@@ -86,7 +86,10 @@ class Batch < ActiveRecord::Base
     if recipe.schedule.runnable?
 
       if rhizomes_in_use?
-        [:danger, "Could not start <strong>#{name.html_safe}</strong> It appears the requested Rhizomes are currently in use!"]
+        [
+          :danger,
+          "Could not start <strong>#{name.html_safe}</strong> It appears the requested Rhizomes are currently in use!"
+        ]
       else
         rhizomes.each do |r|
           r.batch = self
@@ -107,10 +110,12 @@ class Batch < ActiveRecord::Base
       end
 
     else
-      [:danger, "Could not start <strong>#{name.html_safe}</strong>! " <<
-          'There is something wrong with the Batch\'s schedule that ' <<
-          'needs to be fixed first. ' <<
-          'Make sure you have set a root task and that it saves with no errors, then try again.']
+      [
+        :danger,
+        "Could not start <strong>#{name.html_safe}</strong>! " <<
+          'There is something wrong with the Batch\'s schedule that needs to be fixed first. ' <<
+          'Make sure you have set a root task and that it saves with no errors, then try again.'
+      ]
     end
   end
 
@@ -129,31 +134,28 @@ class Batch < ActiveRecord::Base
 
   def status_label_color
     case
-      when running?
-        'danger'
-      when ready?
-        'success'
-      when not_ready?
-        'warning'
-      when stopped?
-        'info'
-      when error?
-        'default'
-      else
-        'primary'
+    when running?
+      'danger'
+    when ready?
+      'success'
+    when not_ready?
+      'warning'
+    when stopped?
+      'info'
+    when error?
+      'default'
+    else
+      'primary'
     end
   end
 
   # == Class Methods ==
   class << self
-
     def brewable_options
       {
           Beer: BeerRecipe.available_recipes_options,
           Distilling: DistillingRecipe.available_recipes_options
       }
     end
-
   end
-
 end

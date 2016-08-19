@@ -42,7 +42,7 @@ gem 'puma'
 gem 'bootstrap-sass', '3.3.3'
 
 # Includes Google Charts via google_visualr
-gem 'google_visualr', git: 'https://github.com/kyleoliveira/google_visualr.git' #'~> 2.5', '>= 2.5.1'
+gem 'google_visualr', git: 'https://github.com/kyleoliveira/google_visualr.git' # '~> 2.5', '>= 2.5.1'
 
 # Form fancification
 gem 'cocoon', '1.2.6'
@@ -62,11 +62,11 @@ group :development, :test do
   gem 'binding_of_caller', '0.7.3.pre1'
   gem 'byebug',      '3.4.0'
   gem 'web-console', '~> 2.0'
-  gem 'cucumber-rails', :require => false
+  gem 'cucumber-rails', require: false
   gem 'test-factory', '~> 0.5.3'
   gem 'faker', '1.4.2'
-  gem 'rubocop', '~> 0.39.0', :require => false
-  gem 'simplecov', '0.12.0', :require => false
+  gem 'rubocop', '~> 0.39.0', require: false
+  gem 'simplecov', '0.12.0', require: false
   gem 'knapsack', '1.11.1'
 end
 gem 'codeclimate-test-reporter', '0.6.0', group: :test, require: nil
