@@ -41,12 +41,12 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Adds the Rhizomes
-  config.x.rhizomes = config_for(:rhizomes) if File.exists?("#{File.dirname(__FILE__)}../rhizomes.yml")
+  config.x.rhizomes = config_for(:rhizomes) if File.exist?("#{File.dirname(__FILE__)}../rhizomes.yml")
 
   # Provide custom encryption keys
   config.keys = {
     particle: {
-      access_token: 'test token'
+      access_token: 'test token123456789012345678901234567890'
     }
   }
 end
