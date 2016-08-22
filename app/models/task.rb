@@ -15,6 +15,7 @@ class Task < ActiveRecord::Base
   belongs_to :thermostat
   belongs_to :recirculating_infusion_mash_system
   has_many :equipment_statuses, -> { order(created_at: :desc) }
+  alias_attribute :statuses, :equipment_statuses
 
   # == Callbacks ==
   after_save :add_eprofile_to_schedule

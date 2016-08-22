@@ -4,7 +4,7 @@ class SchedulesControllerTest < ActionController::TestCase
   setup do
     @user = users(:georg_ohm)
     log_in_as(@user)
-    @schedule = schedules(:one)
+    @schedule = schedules(:good_schedule)
   end
 
   test 'should get schedules index' do
@@ -49,17 +49,19 @@ class SchedulesControllerTest < ActionController::TestCase
   end
 
   test 'should update schedule' do
-    @schedule_to_update = schedules(:two)
+    new_name = 'test_update'
     patch :update,
-          id: @schedule_to_update,
+          id: @schedule,
           schedule: {
-            name: 'test_update'
+            name: new_name
           }
     assert_redirected_to schedules_path
+    @schedule.reload
+    assert_equal new_name, @schedule.name
   end
 
   test 'should not update schedule' do
-    @schedule_to_update = schedules(:two)
+    @schedule_to_update = schedules(:good_schedule)
     patch :update,
           id: @schedule_to_update,
           schedule: {

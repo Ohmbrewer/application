@@ -5,6 +5,8 @@ class TemperatureSensor < Equipment
   include RhizomeInterfaces::TemperatureSensorSprout
   include RhizomeInterfaces::OneWireValidations
 
+  has_many :temperature_sensor_statuses,
+           foreign_key: :equipment_id
   belongs_to :thermostat,
              validate: true,
              touch: true,

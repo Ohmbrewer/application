@@ -3,7 +3,7 @@
     <%= link_to batch.name, batch_path(batch) %>
   </td>
   <td>
-    <%= batch.recipe.type.titlecase %>
+    <%= batch.recipe.nil? ? 'ERROR: No Recipe' : batch.recipe.type.titlecase %>
   </td>
   <td>
     <span class="label label-<%= batch.status_label_color %>">

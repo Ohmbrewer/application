@@ -1,7 +1,13 @@
 class Equipment < ActiveRecord::Base
+  has_many :equipment_statuses,
+           inverse_of: :equipment
+  alias_attribute :statuses, :equipment_statuses
 
-  has_one :sprout, as: :sproutable, dependent: :destroy
-  has_one :equipment_profile, through: :sprout
+  has_one :sprout,
+          as: :sproutable,
+          dependent: :destroy
+  has_one :equipment_profile,
+          through: :sprout
   belongs_to :thermostat,
              touch: true
   belongs_to :recirculating_infusion_mash_system,

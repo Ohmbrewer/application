@@ -5,9 +5,9 @@ class Rhizome < ActiveRecord::Base
   has_one :particle_device, inverse_of: :rhizome,
                             dependent: :destroy
 
-  belongs_to :batch
+  belongs_to :batch, inverse_of: :rhizomes
 
-  has_one :rhizome_role, ->(batch) { where(batch: batch) }
+  has_one :rhizome_role, ->(rhizome) { where(batch: rhizome.batch) }
   has_one :role, through: :rhizome_role
   has_many :sprouts, through: :role
 

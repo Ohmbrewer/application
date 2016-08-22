@@ -5,6 +5,8 @@ class Pump < Equipment
   include RhizomeInterfaces::PumpSprout
   include RhizomeInterfaces::RelayValidations
 
+  has_many :pump_statuses,
+           foreign_key: :equipment_id
   belongs_to :recirculating_infusion_mash_system,
              validate: true,
              touch: true,

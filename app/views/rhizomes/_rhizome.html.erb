@@ -6,7 +6,11 @@
   </td>
   <td>
     <% if rhizome.in_use? %>
-        <span class="label label-danger">IN USE</span>
+        <%= link_to 'IN USE',
+                    batch_path(rhizome.batch),
+                    class: 'label label-danger',
+                    alt: "In use by #{rhizome.batch.name}",
+                    title: "In use by #{rhizome.batch.name}" %>
     <% else %>
         <span class="label label-success">AVAILABLE</span>
     <% end %>

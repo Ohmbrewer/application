@@ -1,5 +1,6 @@
 class TemperatureSensorStatus < EquipmentStatus
-
+  belongs_to :temperature_sensor,
+             inverse_of: :temperature_sensor_statuses
   store_accessor :data, :temperature, :last_read_time
 
   # == Validators ==
