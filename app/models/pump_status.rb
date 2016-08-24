@@ -1,5 +1,6 @@
 class PumpStatus < EquipmentStatus
-
+  belongs_to :pump,
+             inverse_of: :pump_statuses
   store_accessor :data, :speed
 
   class << self
@@ -17,5 +18,4 @@ class PumpStatus < EquipmentStatus
     # end
 
   end
-
 end

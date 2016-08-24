@@ -46,7 +46,7 @@ Rails.application.configure do
   # Provide custom encryption keys
   config.keys = {
     particle: {
-      access_token: 'test token123456789012345678901234567890'
+      access_token: 'test token'
     }
   }
 end

@@ -1,6 +1,5 @@
 ---
-one: {}
-# column: value
-#
-two: {}
+good_beer_batch: {}
+#  recipe: beer
+bad_beer_batch: {}
 #  column: value

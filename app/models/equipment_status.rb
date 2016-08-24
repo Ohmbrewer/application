@@ -1,6 +1,6 @@
 class EquipmentStatus < ActiveRecord::Base
-
-  belongs_to :equipment
+  belongs_to :equipment,
+             inverse_of: :equipment_statuses
   belongs_to :task
 
   # == States ==
@@ -129,5 +129,4 @@ class EquipmentStatus < ActiveRecord::Base
     # def notify_state_change
     #   EquipmentStatus.connection.execute "NOTIFY #{EquipmentStatus.table_name}, '#{to_sse_json}'"
     # end
-
 end

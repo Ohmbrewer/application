@@ -1,5 +1,6 @@
 class HeatingElementStatus < EquipmentStatus
-
+  belongs_to :heating_element,
+             inverse_of: :heating_element_statuses
   store_accessor :data, :voltage
 
   class << self
@@ -17,5 +18,4 @@ class HeatingElementStatus < EquipmentStatus
     # end
 
   end
-
 end

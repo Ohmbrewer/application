@@ -1,7 +1,15 @@
 ---
 beer:
-  name: 'Ma beer'
-  type: 'BeerRecipe'
+  name: Ma beer
+  type: BeerRecipe
+  batch: good_beer_recipe
+  schedule: good_schedule
 distilling:
-  name: 'Absinto'
-  type: 'DistillingRecipe'
+  name: Absinto
+  type: DistillingRecipe
+cider:
+  name: Mmmm cider
+  type: CiderRecipe
+wine:
+  name: Old Vine Zin
+  type: WineRecipe

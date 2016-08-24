@@ -44,7 +44,7 @@ class BatchesController < ApplicationController
       flash[:success] = "Added <strong>#{@batch.name.html_safe}</strong>!"
       redirect_to batch_assign_rhizomes_path(@batch)
     else
-      @recipe.destroy
+      @recipe.destroy unless @recipe.nil?
       render 'new'
     end
   end
@@ -105,10 +105,12 @@ class BatchesController < ApplicationController
 
     def create_dup_recipe
       recipe_to_dup = batch_params[:recipe]
-      @recipe = recipe_to_dup.deep_dup
-      @recipe.schedule.name.gsub!('Copy', "##{Recipe.count}")
-      @recipe.name.gsub!('Copy', "##{Recipe.count}")
-      @recipe.save(validate: false)
+      unless recipe_to_dup.nil?
+        @recipe = recipe_to_dup.deep_dup
+        @recipe.schedule.name.gsub!('Copy', "##{Recipe.count}")
+        @recipe.name.gsub!('Copy', "##{Recipe.count}")
+        @recipe.save(validate: false)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

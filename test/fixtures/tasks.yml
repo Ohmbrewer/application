@@ -1,6 +1,79 @@
 ---
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+# TurnOnTasks
+turn_on_no_rims_therm_sensor:
+  type: TurnOnTask
+  status: 0
+  update_data: '{"state": "ON"}'
+  equipment: no_rims_therm_sensor
+  schedule: good_schedule
+  duration: 70
+  ramp_estimate: 0
+
+turn_on_good_pump:
+  type: TurnOnTask
+  status: 0
+  update_data: '{"state": "ON"}'
+  equipment: good_pump
+  schedule: good_schedule
+  duration: 60
+  ramp_estimate: 0
+  parent: turn_on_no_rims_therm_sensor
+
+turn_on_heating_element_2pin:
+  type: TurnOnTask
+  status: 0
+  update_data: '{"state": "ON"}'
+  equipment: heating_element_2pin
+  schedule: good_schedule
+  duration: 60
+  ramp_estimate: 0
+  parent: turn_on_good_pump
+
+turn_on_single_pump:
+  type: TurnOnTask
+  status: 0
+  update_data: '{"state": "ON"}'
+  equipment: single_pump
+  schedule: bad_schedule
+  duration: 120
+  ramp_estimate: 0
+
+# TurnOffTasks
+turn_off_no_rims_therm_sensor:
+  type: TurnOffTask
+  status: 0
+  update_data: '{"state": "OFF"}'
+  equipment: no_rims_therm_sensor
+  schedule: good_schedule
+  duration: 0
+  ramp_estimate: 0
+  parent: turn_off_good_pump
+
+turn_off_good_pump:
+  type: TurnOffTask
+  status: 0
+  update_data: '{"state": "OFF"}'
+  equipment: good_pump
+  schedule: good_schedule
+  duration: 0
+  ramp_estimate: 0
+  parent: turn_off_heating_element_2pin
+
+turn_off_heating_element_2pin:
+  type: TurnOffTask
+  status: 0
+  update_data: '{"state": "OFF"}'
+  equipment: heating_element_2pin
+  schedule: good_schedule
+  duration: 0
+  ramp_estimate: 0
+  parent: turn_on_heating_element_2pin
+
+turn_off_single_pump:
+  type: TurnOffTask
+  status: 0
+  update_data: '{"state": "OFF"}'
+  equipment: single_pump
+  schedule: small_schedule
+  duration: 0
+  ramp_estimate: 0

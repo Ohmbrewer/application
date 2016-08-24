@@ -5,6 +5,8 @@ class HeatingElement < Equipment
   include RhizomeInterfaces::HeatingElementSprout
   include RhizomeInterfaces::RelayValidations
 
+  has_many :heating_element_statuses,
+           foreign_key: :equipment_id
   belongs_to :thermostat,
              validate: true,
              touch: true,

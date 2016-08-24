@@ -27,6 +27,9 @@ good_pump:
 bad_pump:
   type: Pump
   pins: '{"power_pin": "5", "control_pin": ""}'
+single_pump:
+  type: Pump
+  pins: '{"power_pin": "1", "control_pin": "2"}'
 
 # Heating Elements
 heating_element_2pin:

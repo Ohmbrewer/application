@@ -5,7 +5,7 @@ class RecipesControllerTest < ActionController::TestCase
     @user = users(:georg_ohm)
     log_in_as(@user)
     @recipe = recipes(:beer)
-    @schedule = schedules(:one)
+    @schedule = schedules(:good_schedule)
   end
 
   test 'should get recipes index' do
@@ -17,6 +17,41 @@ class RecipesControllerTest < ActionController::TestCase
   test 'should get new recipe' do
     get :new, type: 'BeerRecipe'
     assert_response :success
+  end
+
+  test 'should not allow generic recipe' do
+    get :new, type: 'Recipe'
+    assert_redirected_to recipes_path
+  end
+
+  test 'should get new beer recipe' do
+    get :new, type: 'BeerRecipe'
+    assert_response :success
+    assert_equal request.path, new_beer_recipe_path
+  end
+
+  test 'should get new cider recipe' do
+    get :new, type: 'CiderRecipe'
+    assert_response :success
+    assert_equal request.path, new_cider_recipe_path
+  end
+
+  test 'should get new wine recipe' do
+    get :new, type: 'WineRecipe'
+    assert_response :success
+    assert_equal request.path, new_wine_recipe_path
+  end
+
+  test 'should get new mead recipe' do
+    get :new, type: 'MeadRecipe'
+    assert_response :success
+    assert_equal request.path, new_mead_recipe_path
+  end
+
+  test 'should get new distilling recipe' do
+    get :new, type: 'DistillingRecipe'
+    assert_response :success
+    assert_equal request.path, new_distilling_recipe_path
   end
 
   test 'should create recipe' do
@@ -53,13 +88,16 @@ class RecipesControllerTest < ActionController::TestCase
   end
 
   test 'should update recipe' do
-    @recipe_to_update = recipes(:beer)
+    new_name = 'test_update'
+    recipe_to_update = recipes(:beer)
     patch :update,
-          id: @recipe_to_update,
+          id: recipe_to_update,
           recipe: {
-            name: 'test_update'
+            name: new_name
           }
     assert_redirected_to recipes_path
+    recipe_to_update.reload
+    assert_equal new_name, recipe_to_update.name
   end
 
   test 'should not update recipe' do

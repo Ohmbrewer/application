@@ -4,14 +4,19 @@ class Batch < ActiveRecord::Base
 
   has_one  :recipe,
            inverse_of: :batch
-  has_many :rhizome_roles
-  has_many :rhizomes, through: :rhizome_roles
+  has_many :rhizome_roles,
+           dependent: :destroy
+  has_many :rhizomes,
+           through: :rhizome_roles,
+           inverse_of: :batch,
+           dependent: :nullify
 
   accepts_nested_attributes_for :rhizome_roles
 
   # == Callbacks ==
   before_save :make_ready,
               if: Proc.new { |b| b.not_ready? && b.profiles_assigned? }
+  after_update :claim_rhizomes
   after_destroy :remove_recipe
 
   # Enumerates the states a Batch may go through
@@ -69,7 +74,7 @@ class Batch < ActiveRecord::Base
   # Provides a human-readable name for the Batch
   # @return [String] Batch name
   def name
-    recipe.name
+    recipe.nil? ? 'ERROR: No Recipe' : recipe.name
   end
 
   def queue_name
@@ -78,6 +83,13 @@ class Batch < ActiveRecord::Base
 
   def available_role_options
     recipe.schedule.equipment_profiles.map { |et| [et.name, et.id] }
+  end
+
+  def claim_rhizomes
+    rhizomes.each do |r|
+      r.batch_id = id
+      r.save
+    end
   end
 
   # Tries to start the Batch
