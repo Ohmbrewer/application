@@ -35,12 +35,11 @@ class ThermostatsController < ApplicationController
       if @thermostat.save
         flash[:success] = msg
         redirect_to equipment_profiles_path
-      else
-        render action: 'new'
+        return
       end
-    else
-      render action: 'new'
     end
+
+    render :new
   end
 
   def update

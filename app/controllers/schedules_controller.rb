@@ -69,12 +69,11 @@ class SchedulesController < ApplicationController
 
         flash[:success] = msg
         redirect_to schedules_path
-      else
-        render :new
+        return
       end
-    else
-      render :new
     end
+
+    render :new
   end
 
   def update

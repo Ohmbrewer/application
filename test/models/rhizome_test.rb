@@ -6,6 +6,15 @@ class RhizomeTest < ActiveSupport::TestCase
     @second_rhizome = rhizomes(:centennial)
   end
 
+  test 'should recognize various collections' do
+    assert_equal @rhizome.attached,
+                 [@rhizome.equipments, @rhizome.thermostats, @rhizome.recirculating_infusion_mash_systems].flatten
+  end
+
+  test 'should look up Rhizome from Device ID' do
+    assert_equal @rhizome, Rhizome::from_device_id(@rhizome.particle_device.device_id)
+  end
+
   test 'should be valid' do
     assert @rhizome.valid?
   end

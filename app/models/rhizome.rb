@@ -69,7 +69,7 @@ class Rhizome < ActiveRecord::Base
   # Is the Rhizome's Particle device connected to the cloud?
   # @return [TrueFalse] True if the device is connected, false otherwise
   def connected?
-    particle_device.connection.connected?
+    particle.connected?
   end
 
   # A shortcut to the interesting part of the Rhizome's internal ParticleDevice object
@@ -98,5 +98,4 @@ class Rhizome < ActiveRecord::Base
       Rhizome.find(pd.rhizome.id)
     end
   end
-
 end
