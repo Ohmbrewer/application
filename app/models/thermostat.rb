@@ -42,7 +42,7 @@ class Thermostat < ActiveRecord::Base
   # The Rhizome the Equipment is currently attached to, if any.
   # @return [Rhizome] The Rhizome the Equipment is currently attached to, if any.
   def rhizome
-    equipment_profile.current_rhizome
+    equipment_profile.nil? ? nil : equipment_profile.current_rhizome
   end
 
   def equipment_profile=(ep)

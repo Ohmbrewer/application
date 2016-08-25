@@ -1,12 +1,11 @@
 ---
-# TODO: Add necessary data entries
 # Temperature Sensor Statuses
 no_rims_therm_sensor_on:
   type: TemperatureSensorStatus
   equipment: no_rims_therm_sensor
   state: 2
   stop_time: <%= Time.now %>
-  data: '{}'
+  data: '{"temperature": "40","last_read_time": "<%= (Time.now - 10).to_i %>"}'
   task: turn_on_no_rims_therm_sensor
 
 no_rims_therm_sensor_off:
@@ -14,7 +13,7 @@ no_rims_therm_sensor_off:
   equipment: no_rims_therm_sensor
   state: 1
   stop_time: <%= Time.now %>
-  data: '{}'
+  data: '{"temperature": "65","last_read_time": "<%= Time.now.to_i %>"}'
   task: turn_off_no_rims_therm_sensor
 
 # Pump Statuses
@@ -23,7 +22,7 @@ good_pump_on:
   equipment: good_pump
   state: 2
   stop_time: <%= Time.now %>
-  data: '{}'
+  data: '{"speed": ""}'
   task: turn_on_good_pump
 
 good_pump_off:
@@ -31,7 +30,7 @@ good_pump_off:
   equipment: good_pump
   state: 2
   stop_time: <%= Time.now %>
-  data: '{}'
+  data: '{"speed": ""}'
   task: turn_off_good_pump
 
 # Heating Element Statuses
@@ -40,7 +39,7 @@ heating_element_2pin_on:
   equipment: heating_element_2pin
   state: 2
   stop_time: <%= Time.now %>
-  data: '{}'
+  data: '{"voltage": ""}'
   task: turn_on_heating_element_2pin
 
 heating_element_2pin_off:
@@ -48,5 +47,5 @@ heating_element_2pin_off:
   equipment: heating_element_2pin
   state: 2
   stop_time: <%= Time.now %>
-  data: '{}'
+  data: '{"voltage": ""}'
   task: turn_off_heating_element_2pin

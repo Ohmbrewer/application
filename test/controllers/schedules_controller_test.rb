@@ -28,6 +28,14 @@ class SchedulesControllerTest < ActionController::TestCase
     assert_redirected_to schedules_url
   end
 
+  test 'should not create schedule when no EquipmentProfiles' do
+    EquipmentProfile.all.each(&:delete)
+
+    get :new
+    assert_redirected_to schedules_url
+    assert_equal 'You may not create a Schedule until you have defined at least one Equipment Profile.', flash[:warning]
+  end
+
   test 'should not create schedule' do
     assert_no_difference('Schedule.count') do
       post :create,

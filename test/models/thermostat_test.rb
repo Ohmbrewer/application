@@ -13,4 +13,8 @@ class ThermostatTest < ActiveSupport::TestCase
   test 'should be valid without rims' do
     assert @without_rims.valid?
   end
+
+  test 'should recognize no rhizome attached' do
+    assert @without_rims.rhizome.nil?
+  end
 end

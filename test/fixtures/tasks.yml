@@ -77,3 +77,20 @@ turn_off_single_pump:
   schedule: small_schedule
   duration: 0
   ramp_estimate: 0
+
+# RunThermostatTasks
+run_thermostat_without_rims:
+  type: RunThermostatTask
+  status: 0
+  update_data: '{"target_temperature": "100"}'
+  thermostat: without_rims
+  schedule: small_schedule
+  duration: 10
+  ramp_estimate: 10
+  parent: turn_off_single_pump
+run_thermostat_invalid:
+  type: RunThermostatTask
+  status: 0
+  update_data: '{"target_temperature": ""}'
+  duration: 10
+  ramp_estimate: 10

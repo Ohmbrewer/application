@@ -1,6 +1,5 @@
 require 'rhizome_interfaces/sprout/sprout'
 class TurnOffTask < Task
-
   # == Instance Methods ==
 
   # We always want this Task to try to turn the Equipment off
@@ -18,4 +17,11 @@ class TurnOffTask < Task
     true
   end
 
+  def on?
+    state == 'ON'
+  end
+
+  def off?
+    state == 'OFF'
+  end
 end
