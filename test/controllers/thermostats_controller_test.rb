@@ -4,7 +4,7 @@ class ThermostatsControllerTest < ActionController::TestCase
   setup do
     @user = users(:georg_ohm)
     log_in_as(@user)
-    @equipment_profile = equipment_profiles(:one)
+    @equipment_profile = equipment_profiles(:equipment_profile_one)
     @thermostat = thermostats(:without_rims)
   end
 
@@ -68,7 +68,7 @@ class ThermostatsControllerTest < ActionController::TestCase
     patch :update,
           id: @thermostat,
           thermostat: {
-            rhizome: @equipment_profile.id,
+            equipment_profile: @equipment_profile,
             element_attributes: {
               control_pin: 'D2',
               power_pin: 'D3'
@@ -85,7 +85,7 @@ class ThermostatsControllerTest < ActionController::TestCase
     patch :update,
           id: @thermostat,
           thermostat: {
-            rhizome: @equipment_profile.id,
+            equipment_profile: @equipment_profile,
             element_attributes: {
               control_pin: '',
               power_pin: ''

@@ -1,7 +1,6 @@
 ---
-one:
+equipment_profile_one:
   name: 'Equipment Profile 1'
-
-two:
+equipment_profile_two:
   name: 'Equipment Profile 2'
 

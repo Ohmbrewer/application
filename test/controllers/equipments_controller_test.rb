@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EquipmentsControllerTest < ActionController::TestCase
   setup do
-    @equipment_profile = equipment_profiles(:one)
+    @equipment_profile = equipment_profiles(:equipment_profile_one)
     @temp_sensor = equipments(:good_rims_therm_sensor)
     @pump = equipments(:good_pump)
     @user = users(:georg_ohm)
@@ -53,7 +53,7 @@ class EquipmentsControllerTest < ActionController::TestCase
       post :create,
            equipment: {
              type: @heater.type,
-             equipment_profile: @equipment_profile.id,
+             equipment_profile: @equipment_profile,
              control_pin: '',
              power_pin: ''
            }
@@ -63,7 +63,13 @@ class EquipmentsControllerTest < ActionController::TestCase
 
   test 'should get update equipment' do
     new_onewire_index = '5'
-    patch :update, id: @temp_sensor.id, equipment: { type: @temp_sensor.type, onewire_index: new_onewire_index }
+    patch :update,
+          id: @temp_sensor.id,
+          equipment: {
+            equipment_profile: @equipment_profile,
+            type: @temp_sensor.type,
+            onewire_index: new_onewire_index
+          }
     assert_redirected_to equipment_profiles_path
     @temp_sensor.reload
     assert_equal new_onewire_index, @temp_sensor.onewire_index

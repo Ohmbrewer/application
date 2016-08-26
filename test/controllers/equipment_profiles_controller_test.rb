@@ -4,7 +4,7 @@ class EquipmentProfilesControllerTest < ActionController::TestCase
   setup do
     @user = users(:georg_ohm)
     log_in_as(@user)
-    @equipment_profile = equipment_profiles(:one)
+    @equipment_profile = equipment_profiles(:equipment_profile_one)
   end
 
   test 'should get equipment profiles index' do
@@ -49,7 +49,7 @@ class EquipmentProfilesControllerTest < ActionController::TestCase
   end
 
   test 'should update equipment profile' do
-    @equipment_profile_to_update = equipment_profiles(:two)
+    @equipment_profile_to_update = equipment_profiles(:equipment_profile_two)
     patch :update,
           id: @equipment_profile_to_update,
           equipment_profile: {
@@ -59,7 +59,7 @@ class EquipmentProfilesControllerTest < ActionController::TestCase
   end
 
   test 'should not update equipment profile' do
-    @equipment_profile_to_update = equipment_profiles(:two)
+    @equipment_profile_to_update = equipment_profiles(:equipment_profile_two)
     patch :update,
           id: @equipment_profile_to_update,
           equipment_profile: {
