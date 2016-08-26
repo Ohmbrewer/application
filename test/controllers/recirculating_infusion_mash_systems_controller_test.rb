@@ -4,8 +4,9 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
   setup do
     @user = users(:georg_ohm)
     log_in_as(@user)
-    @equipment_profile = equipment_profiles(:one)
+    @equipment_profile = equipment_profiles(:equipment_profile_one)
     @rims = recirculating_infusion_mash_systems(:good_rims)
+    @rims.sprout = sprouts(:ep1_to_good_rims)
   end
 
   test 'should get RIMS index' do
@@ -82,28 +83,20 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
     assert_template :new
   end
 
-  test 'should get update RIMS' do
+  test 'should update RIMS' do
     patch :update,
           id: @rims,
           recirculating_infusion_mash_system: {
-            rhizome: @equipment_profile,
+            equipment_profile: @equipment_profile,
             tube_attributes: {
               element_attributes: {
                 control_pin: '2',
                 power_pin: '3'
               },
-              sensor_attributes: {
-                data_pin: '4',
-                onewire_index: '0'
-              }
+              sensor_attributes: {}
             },
-            safety_sensor_attributes: {
-              data_pin: '5',
-              onewire_index: '1'
-            },
-            recirculation_pump_attributes: {
-              control_pin: '1'
-            }
+            safety_sensor_attributes: {},
+            recirculation_pump_attributes: {}
           }
     assert_redirected_to equipment_profiles_path
   end
@@ -112,21 +105,12 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
     patch :update,
           id: @rims,
           recirculating_infusion_mash_system: {
-            rhizome: @rhizome_create,
+            equipment_profile: @equipment_profile,
             tube_attributes: {
-              element_attributes: {
-                control_pin: '',
-                power_pin: ''
-              },
-              sensor_attributes: {
-                data_pin: '',
-                onewire_index: ''
-              }
+              element_attributes: {},
+              sensor_attributes: {}
             },
-            safety_sensor_attributes: {
-              data_pin: '',
-              onewire_index: ''
-            },
+            safety_sensor_attributes: {},
             recirculation_pump_attributes: {
               control_pin: ''
             }

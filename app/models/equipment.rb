@@ -27,16 +27,7 @@ class Equipment < ActiveRecord::Base
   serialize :pins, HashSerializer
 
   # == Validations ==
-  validate :ep_or_rhizome_validation
-
-  def ep_or_rhizome_validation
-    if equipment_profile.nil? && rhizome.nil?
-      errors.add(:equipment_profile, 'or Rhizome must be specified.')
-    end
-    if !equipment_profile.nil? && !rhizome.nil?
-      errors.add(:rhizome, 'or Equipment Profile must be specified, but not both.')
-    end
-  end
+  validates :equipment_profile, presence: true
 
   # == Instance Methods ==
 
@@ -50,18 +41,15 @@ class Equipment < ActiveRecord::Base
     rhizome.nil?
   end
 
-  def is_basic_equipment?
+  def basic_equipment?
     type == 'Equipment'
   end
 
   class << self
-
     # TODO: Move this out into a table of available Equipment Types
     # The list of supported Equipment types
     def equipment_types
       %w(Pump HeatingElement TemperatureSensor)
     end
-
   end
-
 end

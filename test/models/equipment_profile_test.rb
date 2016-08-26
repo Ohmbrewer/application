@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EquipmentProfileTest < ActiveSupport::TestCase
   def setup
-    @equipment_profile = equipment_profiles(:one)
+    @equipment_profile = equipment_profiles(:equipment_profile_one)
   end
 
   test 'should recognize various collections' do
