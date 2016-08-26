@@ -12,22 +12,21 @@ class Rhizome < ActiveRecord::Base
   has_many :sprouts, through: :role
 
   # Supported Sprouts
-  has_many :equipments, -> { distinct },
-                        through: :sprouts,
-                        source: :sproutable,
-                        source_type: 'Equipment'
+  has_many :equipments,
+           -> { distinct },
+           through: :sprouts,
+           source: :sproutable,
+           source_type: 'Equipment'
   delegate :pumps, :heating_elements, :temperature_sensors,
            to: :equipments
   has_many :thermostats, -> { distinct },
            through: :sprouts,
            source: :sproutable,
-           source_type: 'Thermostat',
-           after_add: :add_thermostat_children
+           source_type: 'Thermostat'
   has_many :recirculating_infusion_mash_systems, -> { distinct },
            through: :sprouts,
            source: :sproutable,
-           source_type: 'RecirculatingInfusionMashSystem',
-           after_add: :add_rims_children
+           source_type: 'RecirculatingInfusionMashSystem'
 
   accepts_nested_attributes_for :particle_device, update_only: true
 
@@ -43,25 +42,6 @@ class Rhizome < ActiveRecord::Base
   # when you add a new type.
   def attached
     [equipments, thermostats, recirculating_infusion_mash_systems].flatten
-  end
-
-  # Associates the subsystems of the given Thermostat as Equipment of the Rhizome
-  # @param therm [Thermostat] The Thermostat
-  def add_thermostat_children(therm)
-    if therm.is_a? Thermostat
-      equipments << therm.element
-      equipments << therm.sensor
-    end
-  end
-
-  # Associates the subsystems of the given RIMS as Equipment of the Rhizome
-  # @param rims [RecirculatingInfusionMashSystem] The RIMS
-  def add_rims_children(rims)
-    if rims.is_a? RecirculatingInfusionMashSystem
-      add_thermostat_children(rims.tube)
-      equipments << rims.safety_sensor
-      equipments << rims.recirculation_pump
-    end
   end
 
   # == Particle Device Shortcuts ==
