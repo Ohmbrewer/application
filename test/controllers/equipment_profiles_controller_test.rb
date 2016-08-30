@@ -75,4 +75,13 @@ class EquipmentProfilesControllerTest < ActionController::TestCase
 
     assert_redirected_to equipment_profiles_path
   end
+
+  test 'should destroy multiple equipment profiles' do
+    equipment_profile_2 = equipment_profiles(:equipment_profile_two)
+    assert_difference('EquipmentProfile.count', -2) do
+      delete :destroy_multiple,
+             equipment_profiles: [@equipment_profile, equipment_profile_2]
+    end
+    assert_redirected_to equipment_profiles_path
+  end
 end

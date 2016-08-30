@@ -1,5 +1,4 @@
 module EquipmentsHelper
-
   def sti_equipment_type_path(type = 'equipment', equipment = nil, action = nil)
     send "#{format_sti(action, type, equipment)}_path", equipment
   end
@@ -41,4 +40,15 @@ module EquipmentsHelper
     end
   end
 
+  def thermostat_link(thermostat)
+    content_tag(:p) do
+      link_to "Thermostat #{thermostat.rhizome_eid}", thermostat
+    end
+  end
+
+  def rims_link(rims)
+    content_tag(:p) do
+      link_to "RIMS #{rims.rhizome_eid}", rims
+    end
+  end
 end

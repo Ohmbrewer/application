@@ -117,4 +117,14 @@ class RecipesControllerTest < ActionController::TestCase
 
     assert_redirected_to recipes_path
   end
+
+  test 'should destroy multiple recipes' do
+    recipe_2 = recipes(:cider)
+    assert_difference('Recipe.count', -2) do
+      delete :destroy_multiple,
+             beer_recipes: [@recipe],
+             cider_recipes: [recipe_2]
+    end
+    assert_redirected_to recipes_path
+  end
 end

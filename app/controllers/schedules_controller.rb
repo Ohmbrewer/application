@@ -103,11 +103,11 @@ class SchedulesController < ApplicationController
 
     case post.length
       when 0
-        flash[:success] = view_context.delete_multiple_schedule_success_message
+        flash[:success] = view_context.delete_multiple_schedules_success_message
       when pre.length
-        flash[:danger] = view_context.delete_multiple_schedule_fail_message
+        flash[:danger] = view_context.delete_multiple_schedules_fail_message
       else
-        flash[:warning] = view_context.delete_multiple_schedule_mix_message(pre.length, post.length)
+        flash[:warning] = view_context.delete_multiple_schedules_mix_message(pre.length, post.length)
     end
 
     redirect_to schedules_url
