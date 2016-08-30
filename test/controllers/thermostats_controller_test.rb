@@ -104,4 +104,13 @@ class ThermostatsControllerTest < ActionController::TestCase
     end
     assert_redirected_to equipment_profiles_path
   end
+
+  test 'should destroy multiple thermostats' do
+    thermostat_2 = thermostats(:with_rims)
+    assert_difference('Thermostat.count', -2) do
+      delete :destroy_multiple,
+             thermostats: [@thermostat, thermostat_2]
+    end
+    assert_redirected_to thermostats_path
+  end
 end

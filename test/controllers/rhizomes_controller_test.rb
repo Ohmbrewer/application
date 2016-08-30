@@ -83,4 +83,13 @@ class RhizomesControllerTest < ActionController::TestCase
 
     assert_redirected_to rhizomes_path
   end
+
+  test 'should destroy multiple rhizomes' do
+    rhizome_2 = rhizomes(:zeus)
+    assert_difference('Rhizome.count', -2) do
+      delete :destroy_multiple,
+             rhizomes: [@rhizome, rhizome_2]
+    end
+    assert_redirected_to rhizomes_path
+  end
 end

@@ -19,16 +19,4 @@ module TemperatureSensorsHelper
       end
     end
   end
-
-  def thermostat_link(thermostat)
-    content_tag(:p) do
-      link_to "Thermostat #{thermostat.rhizome_eid}", thermostat
-    end
-  end
-
-  def rims_link(rims)
-    content_tag(:p) do
-      link_to "RIMS #{rims.rhizome_eid}", rims
-    end
-  end
 end

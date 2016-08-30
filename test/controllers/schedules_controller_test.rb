@@ -85,4 +85,13 @@ class SchedulesControllerTest < ActionController::TestCase
 
     assert_redirected_to schedules_path
   end
+
+  test 'should destroy multiple schedules' do
+    schedule_2 = schedules(:small_schedule)
+    assert_difference('Schedule.count', -2) do
+      delete :destroy_multiple,
+             schedules: [@schedule, schedule_2]
+    end
+    assert_redirected_to schedules_path
+  end
 end

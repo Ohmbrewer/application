@@ -124,4 +124,11 @@ class RecirculatingInfusionMashSystemsControllerTest < ActionController::TestCas
     end
     assert_redirected_to equipment_profiles_path
   end
+
+  test 'should destroy multiple RIMS' do
+    assert_difference('RecirculatingInfusionMashSystem.count', -1) do
+      delete :destroy_multiple, recirculating_infusion_mash_systems: [@rims]
+    end
+    assert_redirected_to equipment_profiles_path
+  end
 end

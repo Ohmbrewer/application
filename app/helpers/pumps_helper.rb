@@ -6,10 +6,4 @@ module PumpsHelper
       end
     end
   end
-
-  def rims_link(rims)
-    content_tag(:p) do
-      link_to "RIMS #{rims.rhizome_eid}", rims
-    end
-  end
 end

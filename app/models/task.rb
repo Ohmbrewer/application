@@ -105,6 +105,9 @@ class Task < ActiveRecord::Base
 
 
   # == Instance Methods ==
+  def stop_time
+    Time.at(super.to_i)
+  end
 
   def add_eprofile_to_schedule
     # Only do this if there are no other Tasks from this Equipment Profile in the Schedule
