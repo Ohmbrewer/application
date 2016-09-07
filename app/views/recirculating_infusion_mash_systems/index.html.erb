@@ -8,8 +8,7 @@
 </h1>
 
 <%= form_for :recirculating_infusion_mash_system,
-             url: destroy_multiple_recirculating_infusion_mash_systems_path,
-             method: :delete,
+             url: { action: :destroy_multiple },
              id: 'bulk-delete bulk-delete-rims-form' do %>
     <div class="table-responsive">
       <%= will_paginate %>

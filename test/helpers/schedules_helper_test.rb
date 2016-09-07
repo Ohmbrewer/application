@@ -8,7 +8,7 @@ class SchedulesHelperTest < ActionView::TestCase
   end
 
   test 'creates an unsuccessful multiple delete message' do
-    assert_equal 'Schedules were not deleted!', delete_multiple_schedules_fail_message
+    assert_equal 'No Schedules were deleted. Did you select any?', delete_multiple_schedules_fail_message
   end
 
   test 'creates a somewhat successful multiple delete message' do

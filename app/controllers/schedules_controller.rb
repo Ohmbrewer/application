@@ -1,5 +1,4 @@
 class SchedulesController < ApplicationController
-
   # == Enabled Before Filters ==
 
   before_action :logged_in_user
@@ -9,19 +8,15 @@ class SchedulesController < ApplicationController
     @schedules = Schedule.non_batch_records.paginate(page: params[:page])
   end
 
-  def show
-    if params[:id] == 'destroy_multiple'
-      destroy_multiple
-    end
-  end
+  def show; end
 
   def duplicate
     if params[:schedule_id].nil?
       flash[:danger] = 'Could not duplicate Schedule. No Schedule identified!'
       redirect_to schedules_path
     elsif Schedule.find(params[:schedule_id].to_i).root_task.nil?
-        flash[:danger] = 'Could not duplicate Schedule. No Root Task specified!'
-        redirect_to schedules_path
+      flash[:danger] = 'Could not duplicate Schedule. No Root Task specified!'
+      redirect_to schedules_path
     else
       old_schedule = Schedule.find(params[:schedule_id].to_i)
       @schedule = old_schedule.deep_dup
@@ -54,8 +49,8 @@ class SchedulesController < ApplicationController
 
   def edit
     msg = 'For now, you need to know the Task ID of the Task ' <<
-        'you would like each task to follow. ' <<
-        'You must save the Schedule first before each Task is assigned an ID.'
+          'you would like each task to follow. ' <<
+          'You must save the Schedule first before each Task is assigned an ID.'
     flash.now[:info] = msg
   end
 
@@ -86,14 +81,10 @@ class SchedulesController < ApplicationController
   end
 
   def destroy
-    if params[:id] != 'destroy_multiple'
-      msg = view_context.delete_schedule_message(@schedule)
-      @schedule.destroy
-      flash[:success] = msg
-      redirect_to schedules_path
-    else
-      destroy_multiple
-    end
+    msg = view_context.delete_schedule_message(@schedule)
+    @schedule.destroy
+    flash[:success] = msg
+    redirect_to schedules_path
   end
 
   def destroy_multiple
@@ -102,30 +93,24 @@ class SchedulesController < ApplicationController
     post = pre.where(id: params[:schedules])
 
     case post.length
-      when 0
-        flash[:success] = view_context.delete_multiple_schedules_success_message
-      when pre.length
-        flash[:danger] = view_context.delete_multiple_schedules_fail_message
-      else
-        flash[:warning] = view_context.delete_multiple_schedules_mix_message(pre.length, post.length)
+    when pre.length
+      flash[:danger] = view_context.delete_multiple_schedules_fail_message
+    when 0
+      flash[:success] = view_context.delete_multiple_schedules_success_message
+    else
+      flash[:warning] = view_context.delete_multiple_schedules_mix_message(pre.length, post.length)
     end
 
     redirect_to schedules_url
   end
 
-
-
-
   private
 
     # Use callbacks to share common setup or constraints between actions.
     def set_schedule
-      unless params[:id] == 'destroy_multiple'
-        @schedule = Schedule.find(params[:id]) unless params[:id].to_i.zero?
-      end
+      @schedule = Schedule.find(params[:id]) unless params[:id] == 'destroy_multiple' || params[:id].to_i.zero?
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def schedule_params
       params.require(:schedule)
             .permit(:name,
@@ -133,5 +118,4 @@ class SchedulesController < ApplicationController
                     tasks_attributes: [:id, :type, :sprout, :equipment, :duration, :trigger,
                                        :target_temperature, :ramp_estimate, :parent_id, :_destroy])
     end
-  
 end

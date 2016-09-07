@@ -28,7 +28,7 @@ module RecipesHelper
   end
 
   def delete_multiple_recipes_fail_message
-    'Recipes were not deleted!'
+    'No Recipes were deleted! Did you select any?'
   end
 
   def delete_multiple_recipes_mix_message(pre, post)

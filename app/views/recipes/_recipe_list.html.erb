@@ -1,6 +1,5 @@
 <%= form_for :recipe,
-             url: destroy_multiple_recipes_path,
-             method: :delete,
+             url: { action: :destroy_multiple },
              id: 'bulk-delete bulk-delete-recipes-form' do %>
     <div class="table-responsive">
       <%= will_paginate %>

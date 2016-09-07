@@ -1,5 +1,4 @@
 class EquipmentsController < ApplicationController
-
   # == Enabled Before Filters ==
 
   before_action :logged_in_user
@@ -17,11 +16,7 @@ class EquipmentsController < ApplicationController
     @equipments = type_class.paginate(page: params[:page])
   end
 
-  def show
-    if params[:id] == 'destroy_multiple'
-      destroy_multiple
-    end
-  end
+  def show; end
 
   def new
     if @type == 'Equipment'
@@ -59,39 +54,36 @@ class EquipmentsController < ApplicationController
   end
 
   def destroy
-    if params[:id] != 'destroy_multiple'
-      msg = "#{@type.titlecase} removed"
-      unless @equipment.equipment_profile.nil?
-        msg = "#{msg} from #{@equipment.equipment_profile.name}!"
-      end
-      @equipment.destroy
-      flash[:success] = msg
-      redirect_to equipment_profiles_path
-    else
-      destroy_multiple
+    msg = "#{@type.titlecase} removed"
+    unless @equipment.equipment_profile.nil?
+      msg = "#{msg} from #{@equipment.equipment_profile.name}!"
     end
+    @equipment.destroy
+    flash[:success] = msg
+    redirect_to equipment_profiles_path
   end
 
   def destroy_multiple
     ids = Equipment.equipment_types
                    .collect { |t| params[t.pluralize.underscore] }
+                   .flatten
     pre = Equipment.where(id: ids)
     landing_url = case
-                    when pre.all?{|e| !e.equipment_profile.nil? }
-                      equipment_profiles_url
-                    else
-                      equipments_url
+                  when pre.all? { |e| !e.equipment_profile.nil? }
+                    equipment_profiles_url
+                  else
+                    equipments_url
                   end
     Equipment.destroy_all(id: ids)
     post = pre.where(id: ids)
 
     case post.length
-      when 0
-        flash[:success] = 'Equipment removed!'
-      when pre.length
-        flash[:danger] = 'Equipment removal failed!'
-      else
-        flash[:warning] = "Something strange happened... #{pre.length - post.length} pieces of Equipment weren't removed."
+    when pre.length
+      flash[:danger] = 'No Equipment were removed. Did you select any?'
+    when 0
+      flash[:success] = 'Equipment removed!'
+    else
+      flash[:warning] = "Something strange happened... #{pre.length - post.length} pieces of Equipment weren't removed."
     end
 
     redirect_to landing_url
@@ -127,7 +119,8 @@ class EquipmentsController < ApplicationController
     def set_equipment_profile
       # Coming from an Equipment page
       unless params[type.underscore.to_sym].nil?
-        unless params[type.underscore.to_sym][:equipment_profile].nil? || params[type.underscore.to_sym][:equipment_profile].empty?
+        unless params[type.underscore.to_sym][:equipment_profile].nil? ||
+               params[type.underscore.to_sym][:equipment_profile].empty?
           @equipment_profile = EquipmentProfile.find(params[type.underscore.to_sym][:equipment_profile].to_i)
         end
       end
@@ -145,5 +138,4 @@ class EquipmentsController < ApplicationController
     def type_class
       type.constantize
     end
-
 end

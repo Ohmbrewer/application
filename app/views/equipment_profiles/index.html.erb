@@ -8,8 +8,7 @@
 </h1>
 
 <%= form_for :equipment_profile,
-             url: destroy_multiple_equipment_profiles_path,
-             method: :delete,
+             url: { action: :destroy_multiple },
              id: 'bulk-delete bulk-delete-equipment_profiles-form' do %>
 <div class="table-responsive">
     <%= will_paginate %>

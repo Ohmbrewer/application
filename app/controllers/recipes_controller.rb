@@ -1,5 +1,4 @@
 class RecipesController < ApplicationController
-
   # == Enabled Before Filters ==
 
   before_action :logged_in_user
@@ -16,11 +15,7 @@ class RecipesController < ApplicationController
                          .paginate(page: params[:page])
   end
 
-  def show
-    if params[:id] == 'destroy_multiple'
-      destroy_multiple
-    end
-  end
+  def show; end
 
   def duplicate
     if params[:recipe_id].nil?
@@ -33,8 +28,8 @@ class RecipesController < ApplicationController
       msg = "Duplicated <strong>#{old_recipe.name}</strong>."
 
       if @recipe.save(validate: false)
-          flash[:success] = msg
-          redirect_to recipe_type_path(@recipe.type)
+        flash[:success] = msg
+        redirect_to recipe_type_path(@recipe.type)
       else
         flash[:warning] = "Tried to duplicate #{@recipe.name}, but something went wrong!"
         render 'new'
@@ -76,30 +71,27 @@ class RecipesController < ApplicationController
   end
 
   def destroy
-    if params[:id] != 'destroy_multiple'
-      msg = view_context.delete_recipe_message(@recipe)
-      @recipe.destroy
-      flash[:success] = msg
-      redirect_to recipe_type_path
-    else
-      destroy_multiple
-    end
+    msg = view_context.delete_recipe_message(@recipe)
+    @recipe.destroy
+    flash[:success] = msg
+    redirect_to recipe_type_path
   end
 
   def destroy_multiple
     ids = Recipe.recipe_types
-              .collect { |t| params[t.pluralize.underscore] }
+                .collect { |t| params[t.pluralize.underscore] }
+                .flatten
     pre = Recipe.where(id: ids)
     Recipe.destroy_all(id: ids)
     post = pre.where(id: ids)
 
     case post.length
-      when 0
-        flash[:success] = view_context.delete_multiple_recipes_success_message
-      when pre.length
-        flash[:danger] = view_context.delete_multiple_recipes_fail_message
-      else
-        flash[:warning] = view_context.delete_multiple_recipes_mix_message(pre.length, post.length)
+    when pre.length
+      flash[:danger] = view_context.delete_multiple_recipes_fail_message
+    when 0
+      flash[:success] = view_context.delete_multiple_recipes_success_message
+    else
+      flash[:warning] = view_context.delete_multiple_recipes_mix_message(pre.length, post.length)
     end
 
     redirect_to recipes_url
@@ -107,31 +99,28 @@ class RecipesController < ApplicationController
 
   private
 
-  def recipe_params
-    params.require(type.underscore.to_sym)
-          .permit(:type, :name, :schedule)
-  end
-
-  def set_recipe
-    unless params[:id] == 'destroy_multiple'
-      @recipe = type_class.find(params[:id])
+    def recipe_params
+      params.require(type.underscore.to_sym)
+            .permit(:type, :name, :schedule, :schedule_id)
     end
-  end
 
-  def set_type
-    @type = type
-  end
+    def set_recipe
+      @recipe = type_class.find(params[:id]) unless params[:id] == 'destroy_multiple'
+    end
 
-  def type
-    Recipe.recipe_types.include?(params[:type]) ? params[:type] : 'Recipe'
-  end
+    def set_type
+      @type = type
+    end
 
-  def type_class
-    type.constantize
-  end
+    def type
+      Recipe.recipe_types.include?(params[:type]) ? params[:type] : 'Recipe'
+    end
 
-  def recipe_type_path(type=nil)
-    view_context.sti_recipe_type_path(type.nil? ? @type : type)
-  end
-  
+    def type_class
+      type.constantize
+    end
+
+    def recipe_type_path(type = nil)
+      view_context.sti_recipe_type_path(type.nil? ? @type : type)
+    end
 end

@@ -1,5 +1,4 @@
 class EquipmentProfilesController < ApplicationController
-
   # == Enabled Before Filters ==
 
   before_action :logged_in_user
@@ -56,8 +55,6 @@ class EquipmentProfilesController < ApplicationController
       end
 
       redirect_to equipment_profiles_url
-    else
-      destroy_multiple
     end
   end
 
@@ -71,8 +68,7 @@ class EquipmentProfilesController < ApplicationController
 
       msg = "Duplicated <strong>#{old_equipment_profile.name}</strong>."
 
-      if @equipment_profile.save #(validate: false)
-        # We'll assume that validation has passed before duplication.
+      if @equipment_profile.save
         flash[:success] = msg
         redirect_to equipment_profiles_path
       else
@@ -88,18 +84,19 @@ class EquipmentProfilesController < ApplicationController
     post = pre.where(id: params[:equipment_profiles])
 
     case post.length
-      when 0
-        flash[:success] = 'Equipment Profiles deleted'
-      when pre.length
-        flash[:danger] = 'Deletion failed!'
-      else
-        flash[:warning] = "Something strange happened... #{pre.length - post.length} Equipment Profiles weren't deleted."
+    when pre.length
+      flash[:danger] = 'No Equipment Profiles were deleted. Did you select any?'
+    when 0
+      flash[:success] = 'Equipment Profiles deleted'
+    else
+      flash[:warning] = "Something strange happened... #{pre.length - post.length} Equipment Profiles weren't deleted."
     end
 
     redirect_to equipment_profiles_url
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_equipment_profile
       @equipment_profile = EquipmentProfile.find(params[:id]) unless params[:id].to_i.zero?
@@ -109,5 +106,4 @@ class EquipmentProfilesController < ApplicationController
     def equipment_profile_params
       params.require(:equipment_profile).permit(:name)
     end
-
 end

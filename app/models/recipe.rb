@@ -1,6 +1,5 @@
 class Recipe < ActiveRecord::Base
-
-  belongs_to :schedule, dependent: :destroy
+  belongs_to :schedule
   belongs_to :batch,
              inverse_of: :recipe
 
@@ -33,7 +32,6 @@ class Recipe < ActiveRecord::Base
   end
 
   class << self
-
     # TODO: Move this out into a table of available Recipe Types
     # The list of supported Recipe types
     def recipe_types
@@ -43,6 +41,5 @@ class Recipe < ActiveRecord::Base
     def available_recipes_options
       non_batch_records.map { |et| [et.name, et.id] }
     end
-
   end
 end

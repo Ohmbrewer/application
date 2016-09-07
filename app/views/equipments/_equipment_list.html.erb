@@ -1,6 +1,5 @@
 <%= form_for :equipment,
-             url: destroy_multiple_equipments_path,
-             method: :delete,
+             url: { action: :destroy_multiple },
              id: 'bulk-delete bulk-delete-equipments-form' do %>
     <div class="table-responsive">
       <%= will_paginate %>
