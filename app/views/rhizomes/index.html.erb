@@ -8,8 +8,7 @@
 </h1>
 
 <%= form_for :rhizome,
-             url: destroy_multiple_rhizomes_path,
-             method: :delete,
+             url: { action: :destroy_multiple },
              id: 'bulk-delete bulk-delete-rhizomes-form' do %>
 <div class="table-responsive">
     <%= will_paginate %>

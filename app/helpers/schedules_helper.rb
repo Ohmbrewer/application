@@ -1,5 +1,4 @@
 module SchedulesHelper
-
   def add_schedule_message(schedule)
     "Schedule <strong>#{schedule.name}</strong> successfully added!"
   end
@@ -17,11 +16,10 @@ module SchedulesHelper
   end
 
   def delete_multiple_schedules_fail_message
-    'Schedules were not deleted!'
+    'No Schedules were deleted. Did you select any?'
   end
 
   def delete_multiple_schedules_mix_message(pre, post)
     "Something strange happened... #{pre - post} Schedules weren't deleted."
   end
-  
 end

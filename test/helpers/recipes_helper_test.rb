@@ -8,7 +8,7 @@ class RecipesHelperTest < ActionView::TestCase
   end
 
   test 'creates an unsuccessful multiple delete message' do
-    assert_equal 'Recipes were not deleted!', delete_multiple_recipes_fail_message
+    assert_equal 'No Recipes were deleted! Did you select any?', delete_multiple_recipes_fail_message
   end
 
   test 'creates a somewhat successful multiple delete message' do

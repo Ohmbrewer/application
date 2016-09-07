@@ -1,5 +1,4 @@
 class RhizomesController < ApplicationController
-
   # == Enabled Before Filters ==
 
   before_action :logged_in_user
@@ -45,9 +44,10 @@ class RhizomesController < ApplicationController
   def destroy
     if !params[:heating_elements].nil? || !params[:temperature_sensors].nil? ||
        !params[:pumps].nil? || !params[:equipments].nil?
-      redirect_to controller: :equipments, action: :destroy_multiple, params: params
+      redirect_to controller: :equipments,
+                  action: :destroy_multiple,
+                  params: params
     elsif params[:rhizomes].nil?
-
       if @rhizome.nil?
         flash[:danger] = 'No Rhizome selected!'
       else
@@ -57,8 +57,6 @@ class RhizomesController < ApplicationController
       end
 
       redirect_to rhizomes_url
-    else
-      destroy_multiple
     end
   end
 
@@ -68,26 +66,24 @@ class RhizomesController < ApplicationController
     post = pre.where(id: params[:rhizomes])
 
     case post.length
-      when 0
-        flash[:success] = 'Rhizomes deleted'
-      when pre.length
-        flash[:danger] = 'Deletion failed!'
-      else
-        flash[:warning] = "Something strange happened... #{pre.length - post.length} Rhizomes weren't deleted."
+    when pre.length
+      flash[:danger] = 'No Rhizomes were deleted. Did you select any?'
+    when 0
+      flash[:success] = 'Rhizomes deleted!'
+    else
+      flash[:warning] = "Something strange happened... #{pre.length - post.length} Rhizomes weren't deleted."
     end
 
     redirect_to rhizomes_url
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_rhizome
       @rhizome = Rhizome.find(params[:id]) unless params[:id].to_i.zero?
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def rhizome_params
       params.require(:rhizome).permit(:name, particle_device_attributes: [:device_id, :access_token])
     end
-
 end

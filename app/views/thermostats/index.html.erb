@@ -8,8 +8,7 @@
 </h1>
 
 <%= form_for :thermostat,
-             url: destroy_multiple_thermostats_path,
-             method: :delete,
+             url: { action: :destroy_multiple },
              id: 'bulk-delete bulk-delete-thermostats-form' do %>
     <div class="table-responsive">
       <%= will_paginate %>
