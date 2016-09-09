@@ -74,16 +74,17 @@ class EquipmentsController < ApplicationController
                   else
                     equipments_url
                   end
+    pre = pre.length
     Equipment.destroy_all(id: ids)
-    post = pre.where(id: ids)
+    post = Equipment.where(id: ids).length
 
-    case post.length
-    when pre.length
+    case post
+    when pre
       flash[:danger] = 'No Equipment were removed. Did you select any?'
     when 0
       flash[:success] = 'Equipment removed!'
     else
-      flash[:warning] = "Something strange happened... #{pre.length - post.length} pieces of Equipment weren't removed."
+      flash[:warning] = "Something strange happened... #{pre - post} pieces of Equipment weren't removed."
     end
 
     redirect_to landing_url

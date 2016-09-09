@@ -81,17 +81,17 @@ class RecipesController < ApplicationController
     ids = Recipe.recipe_types
                 .collect { |t| params[t.pluralize.underscore] }
                 .flatten
-    pre = Recipe.where(id: ids)
+    pre = Recipe.where(id: ids).length
     Recipe.destroy_all(id: ids)
-    post = pre.where(id: ids)
+    post = Recipe.where(id: ids).length
 
-    case post.length
-    when pre.length
+    case post
+    when pre
       flash[:danger] = view_context.delete_multiple_recipes_fail_message
     when 0
       flash[:success] = view_context.delete_multiple_recipes_success_message
     else
-      flash[:warning] = view_context.delete_multiple_recipes_mix_message(pre.length, post.length)
+      flash[:warning] = view_context.delete_multiple_recipes_mix_message(pre, post)
     end
 
     redirect_to recipes_url

@@ -17,4 +17,11 @@ class ThermostatTest < ActiveSupport::TestCase
   test 'should recognize no rhizome attached' do
     assert @without_rims.rhizome.nil?
   end
+
+  test 'should duplicate' do
+    duplicate_therm = @without_rims.deep_dup
+
+    assert_equal @without_rims.sensor.pins, duplicate_therm.sensor.pins
+    assert_equal @without_rims.element.pins, duplicate_therm.element.pins
+  end
 end

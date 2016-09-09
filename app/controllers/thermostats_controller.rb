@@ -64,16 +64,17 @@ class ThermostatsController < ApplicationController
                   else
                     thermostats_url
                   end
+    pre = pre.length
     Thermostat.destroy_all(id: params[:thermostats])
-    post = pre.where(id: params[:thermostats])
+    post = Thermostat.where(id: params[:thermostats]).length
 
-    case post.length
-    when pre.length
+    case post
+    when pre
       flash[:danger] = 'No Thermostats were removed. Did you select any?'
     when 0
       flash[:success] = 'Thermostats removed!'
     else
-      flash[:warning] = "Something strange happened... #{pre.length - post.length} Thermostats weren't removed."
+      flash[:warning] = "Something strange happened... #{pre - post} Thermostats weren't removed."
     end
 
     redirect_to landing_url

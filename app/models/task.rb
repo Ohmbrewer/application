@@ -2,7 +2,6 @@ require 'rhizome_interfaces/sprout/sprout'
 require 'rhizome_interfaces/equipment/equipment_states'
 require 'scheduler/state_machines/task_state_machine'
 class Task < ActiveRecord::Base
-
   include RhizomeInterfaces::EquipmentStates
   include Scheduler::StateMachines::TaskStateMachine
 
@@ -76,7 +75,7 @@ class Task < ActiveRecord::Base
   validates :sprout, presence: true
   validate :event_and_parent_validation
   validate :parent_and_trigger_validation
-  
+
   # Ensures that the control pin and the power pin are set to different values or no value.
   def event_and_parent_validation
     if parent_id.nil? ^ trigger.nil?
@@ -97,12 +96,11 @@ class Task < ActiveRecord::Base
         errors.delete(:trigger) unless errors.get(:trigger).nil?
         errors.add(:trigger, ' cannot be set for root task.')
       end
-    elsif parent_id.nil? and trigger.nil?
+    elsif parent_id.nil? && trigger.nil?
       errors.add(:parent_id, 'requires a parent.')
       errors.add(:trigger, 'requires a trigger.')
     end
   end
-
 
   # == Instance Methods ==
   def stop_time
@@ -113,17 +111,19 @@ class Task < ActiveRecord::Base
     # Only do this if there are no other Tasks from this Equipment Profile in the Schedule
     unless equipment.nil? || schedule.equipment_profiles
                                      .any? { |ep| ep == equipment.equipment_profile }
-      schedule.equipment_profiles << equipment.equipment_profile
+      schedule.equipment_profiles << equipment.equipment_profile unless equipment.equipment_profile.nil?
     end
     unless thermostat.nil? ||
            schedule.equipment_profiles
                    .any? { |ep| ep == thermostat.equipment_profile }
-      schedule.equipment_profiles << thermostat.equipment_profile
+      schedule.equipment_profiles << thermostat.equipment_profile unless thermostat.equipment_profile.nil?
     end
     unless recirculating_infusion_mash_system.nil? ||
            schedule.equipment_profiles
                    .any? { |ep| ep == recirculating_infusion_mash_system.equipment_profile }
-      schedule.equipment_profiles << recirculating_infusion_mash_system.equipment_profile
+      unless recirculating_infusion_mash_system.equipment_profile.nil?
+        schedule.equipment_profiles << recirculating_infusion_mash_system.equipment_profile
+      end
     end
   end
 
@@ -152,9 +152,9 @@ class Task < ActiveRecord::Base
       # Only do this if there are no other Tasks from this Equipment Profile in the Schedule
       old_ep = RecirculatingInfusionMashSystem.find(recirculating_infusion_mash_system_id_was).equipment_profile
       unless old_ep.nil? || schedule.tasks
-                                .where
-                                .not(id: id_was)
-                                .any? { |t| t.sprout.equipment_profile == old_ep }
+                                    .where
+                                    .not(id: id_was)
+                                    .any? { |t| t.sprout.equipment_profile == old_ep }
         schedule.equipment_profiles.destroy(old_ep)
       end
     end
@@ -165,30 +165,29 @@ class Task < ActiveRecord::Base
   # @return [String] The Sprout dropdown value, formatted as "TYPE_ID" or nil if there is none.
   def sprout_name
     case
-      when !equipment.nil?
-        "#{equipment.type}_#{equipment_id}"
-      when !thermostat.nil?
-        "Thermostat_#{thermostat_id}"
-      when !recirculating_infusion_mash_system.nil?
-        "RIMS_#{recirculating_infusion_mash_system_id}"
-      else
-        nil
+    when !equipment.nil?
+      "#{equipment.type}_#{equipment_id}"
+    when !thermostat.nil?
+      "Thermostat_#{thermostat_id}"
+    when !recirculating_infusion_mash_system.nil?
+      "RIMS_#{recirculating_infusion_mash_system_id}"
+    else
+      nil
     end
   end
 
   def sprout
     case
-      when !equipment.nil?
-        equipment
-      when !thermostat.nil?
-        thermostat
-      when !recirculating_infusion_mash_system.nil?
-        recirculating_infusion_mash_system
-      else
-        nil
+    when !equipment.nil?
+      equipment
+    when !thermostat.nil?
+      thermostat
+    when !recirculating_infusion_mash_system.nil?
+      recirculating_infusion_mash_system
+    else
+      nil
     end
   end
-
 
   # Converts the value from the Sprout dropdown into an actual Sprout association
   # @param [String] s The Sprout dropdown value, formatted as "TYPE_ID"
@@ -197,17 +196,17 @@ class Task < ActiveRecord::Base
     self.equipment = nil
     self.thermostat = nil
     case
-      when s.empty?
-        # Don't do anything
-      when s.start_with?('Thermostat')
-        # Set the Thermostat
-        self.thermostat = Thermostat.find(s.split('_').last.to_i)
-      when s.start_with?('RIMS')
-        # Set the RIMS
-        self.recirculating_infusion_mash_system = RecirculatingInfusionMashSystem.find(s.split('_').last.to_i)
-      else
-        # Easier than enumerating all the Equipment types
-        self.equipment = Equipment.find(s.split('_').last.to_i)
+    when s.empty?
+      # Don't do anything
+    when s.start_with?('Thermostat')
+      # Set the Thermostat
+      self.thermostat = Thermostat.find(s.split('_').last.to_i)
+    when s.start_with?('RIMS')
+      # Set the RIMS
+      self.recirculating_infusion_mash_system = RecirculatingInfusionMashSystem.find(s.split('_').last.to_i)
+    else
+      # Easier than enumerating all the Equipment types
+      self.equipment = Equipment.find(s.split('_').last.to_i)
     end
   end
 
@@ -273,7 +272,7 @@ class Task < ActiveRecord::Base
   # The last status update sent for this Task
   # @param [Integer] window Number of seconds ago to include in the scan (optional, defaults to 30)
   # @return [EquipmentStatus] The last status found or nil if no statuses have been sent in that window
-  def last_update(window=30, status_type=equipment_statuses)
+  def last_update(window = 30, status_type = equipment_statuses)
     status_type.updated_after(updated_at - window).last
   end
 
@@ -293,16 +292,15 @@ class Task < ActiveRecord::Base
     return 0 if self.root?
 
     case
-      when on_started?
-        return self.parent.trigger_start
-      when on_done?
-        return (self.parent.trigger_start + self.parent.duration)
-      when on_ramping?
-        return (self.parent.trigger_start + self.parent.ramp_estimate)
-      else
-        return 0
+    when on_started?
+      return self.parent.trigger_start
+    when on_done?
+      return (self.parent.trigger_start + self.parent.duration)
+    when on_ramping?
+      return (self.parent.trigger_start + self.parent.ramp_estimate)
+    else
+      return 0
     end
-
   end
 
   # Provides a datatable representing the Task for use with a Google Chart Gantt chart.
@@ -334,7 +332,7 @@ class Task < ActiveRecord::Base
       resource_id,
       nil,
       nil,
-      (holds? ? duration : 0)*1000, # convert to milliseconds
+      (holds? ? duration : 0) * 1000, # convert to milliseconds
       nil,
       ramps? ? "#{id}_ramping" : dependency
     ]
@@ -344,7 +342,6 @@ class Task < ActiveRecord::Base
 
   # == Class Methods ==
   class << self
-
     # TODO: Move this out into a table of available Task Types
     # The list of supported Equipment types
     def task_types
@@ -371,7 +368,5 @@ class Task < ActiveRecord::Base
     def trigger_options
       triggers.map { |t, _| [t.gsub('on_', '').titlecase, t] }
     end
-
   end
-
 end

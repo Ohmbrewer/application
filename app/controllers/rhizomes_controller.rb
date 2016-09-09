@@ -61,17 +61,17 @@ class RhizomesController < ApplicationController
   end
 
   def destroy_multiple
-    pre = Rhizome.where(id: params[:rhizomes])
+    pre = Rhizome.where(id: params[:rhizomes]).length
     Rhizome.destroy_all(id: params[:rhizomes])
-    post = pre.where(id: params[:rhizomes])
+    post = Rhizome.where(id: params[:rhizomes]).length
 
-    case post.length
-    when pre.length
+    case post
+    when pre
       flash[:danger] = 'No Rhizomes were deleted. Did you select any?'
     when 0
       flash[:success] = 'Rhizomes deleted!'
     else
-      flash[:warning] = "Something strange happened... #{pre.length - post.length} Rhizomes weren't deleted."
+      flash[:warning] = "Something strange happened... #{pre - post} Rhizomes weren't deleted."
     end
 
     redirect_to rhizomes_url

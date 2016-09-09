@@ -18,6 +18,7 @@ turn_on_good_pump:
   duration: 60
   ramp_estimate: 0
   parent: turn_on_no_rims_therm_sensor
+  trigger: on_started
 
 turn_on_heating_element_2pin:
   type: TurnOnTask
@@ -28,6 +29,7 @@ turn_on_heating_element_2pin:
   duration: 60
   ramp_estimate: 0
   parent: turn_on_good_pump
+  trigger: on_started
 
 turn_on_single_pump:
   type: TurnOnTask
@@ -48,6 +50,7 @@ turn_off_no_rims_therm_sensor:
   duration: 0
   ramp_estimate: 0
   parent: turn_off_good_pump
+  trigger: on_started
 
 turn_off_good_pump:
   type: TurnOffTask
@@ -58,6 +61,7 @@ turn_off_good_pump:
   duration: 0
   ramp_estimate: 0
   parent: turn_off_heating_element_2pin
+  trigger: on_started
 
 turn_off_heating_element_2pin:
   type: TurnOffTask
@@ -68,6 +72,7 @@ turn_off_heating_element_2pin:
   duration: 0
   ramp_estimate: 0
   parent: turn_on_heating_element_2pin
+  trigger: on_started
 
 turn_off_single_pump:
   type: TurnOffTask
@@ -88,9 +93,11 @@ run_thermostat_without_rims:
   duration: 10
   ramp_estimate: 10
   parent: turn_off_single_pump
+  trigger: on_started
 run_thermostat_invalid:
   type: RunThermostatTask
   status: 0
   update_data: '{"target_temperature": ""}'
   duration: 10
   ramp_estimate: 10
+  trigger: on_started

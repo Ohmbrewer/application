@@ -127,4 +127,20 @@ class RecipesControllerTest < ActionController::TestCase
     end
     assert_redirected_to recipes_path
   end
+
+  test 'should not destroy multiple recipes' do
+    assert_no_difference('Recipe.count') do
+      delete :destroy_multiple,
+             beer_recipes: []
+    end
+    assert_redirected_to recipes_path
+  end
+
+  test 'should duplicate recipe' do
+    assert_difference('Recipe.count') do
+      post :duplicate,
+           recipe_id: @recipe
+    end
+    assert_redirected_to beer_recipes_path
+  end
 end

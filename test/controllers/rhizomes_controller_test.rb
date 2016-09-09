@@ -92,4 +92,12 @@ class RhizomesControllerTest < ActionController::TestCase
     end
     assert_redirected_to rhizomes_path
   end
+
+  test 'should not destroy multiple rhizomes' do
+    assert_no_difference('Rhizome.count') do
+      delete :destroy_multiple,
+             rhizomes: []
+    end
+    assert_redirected_to rhizomes_path
+  end
 end

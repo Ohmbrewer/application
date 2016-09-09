@@ -24,7 +24,9 @@ class SchedulesController < ApplicationController
       msg = "Duplicated <strong>#{old_schedule.name}</strong>."
 
       if @schedule.save(validate: false)
-        # We'll assume that validation has passed before duplication.
+        @schedule.reload
+        @schedule.assign_root
+
         flash[:success] = msg
         redirect_to schedules_path
       else
@@ -88,17 +90,17 @@ class SchedulesController < ApplicationController
   end
 
   def destroy_multiple
-    pre = Schedule.where(id: params[:schedules])
+    pre = Schedule.where(id: params[:schedules]).length
     Schedule.destroy_all(id: params[:schedules])
-    post = pre.where(id: params[:schedules])
+    post = Schedule.where(id: params[:schedules]).length
 
-    case post.length
-    when pre.length
+    case post
+    when pre
       flash[:danger] = view_context.delete_multiple_schedules_fail_message
     when 0
       flash[:success] = view_context.delete_multiple_schedules_success_message
     else
-      flash[:warning] = view_context.delete_multiple_schedules_mix_message(pre.length, post.length)
+      flash[:warning] = view_context.delete_multiple_schedules_mix_message(pre, post)
     end
 
     redirect_to schedules_url

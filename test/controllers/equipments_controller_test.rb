@@ -106,4 +106,12 @@ class EquipmentsControllerTest < ActionController::TestCase
     end
     assert_redirected_to equipments_path
   end
+
+  test 'should not destroy multiple equipment' do
+    assert_no_difference('Equipment.count') do
+      delete :destroy_multiple,
+             temperature_sensors: []
+    end
+    assert_redirected_to equipment_profiles_path
+  end
 end
