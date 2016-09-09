@@ -25,9 +25,6 @@ class Recipe < ActiveRecord::Base
   def deep_dup
     new_recipe = super
     new_recipe.name = "#{new_recipe.name} (Copy)"
-
-    new_recipe.schedule = schedule.deep_dup
-
     new_recipe
   end
 

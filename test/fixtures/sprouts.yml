@@ -2,6 +2,15 @@
 ep1_to_heating_element_1pin:
   equipment_profile: equipment_profile_one
   sproutable: heating_element_1pin (HeatingElement)
+ep1_to_good_rims_therm_sensor:
+  equipment_profile: equipment_profile_one
+  sproutable: good_rims_therm_sensor (TemperatureSensor)
+ep1_to_good_rims_safety_sensor:
+  equipment_profile: equipment_profile_one
+  sproutable: good_rims_safety_sensor (TemperatureSensor)
+ep1_to_good_pump:
+  equipment_profile: equipment_profile_one
+  sproutable: good_pump (Pump)
 ep1_to_with_rims:
   equipment_profile: equipment_profile_one
   sproutable: with_rims (Thermostat)

@@ -84,4 +84,20 @@ class EquipmentProfilesControllerTest < ActionController::TestCase
     end
     assert_redirected_to equipment_profiles_path
   end
+
+  test 'should not destroy multiple equipment profiles' do
+    assert_no_difference('EquipmentProfile.count') do
+      delete :destroy_multiple,
+             thermostats: []
+    end
+    assert_redirected_to equipment_profiles_path
+  end
+
+  test 'should duplicate equipment profile' do
+    assert_difference('EquipmentProfile.count') do
+      post :duplicate,
+           equipment_profile_id: @equipment_profile
+    end
+    assert_redirected_to equipment_profiles_path
+  end
 end

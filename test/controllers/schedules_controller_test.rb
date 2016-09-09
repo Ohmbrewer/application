@@ -94,4 +94,20 @@ class SchedulesControllerTest < ActionController::TestCase
     end
     assert_redirected_to schedules_path
   end
+
+  test 'should not destroy multiple schedules' do
+    assert_no_difference('Schedule.count') do
+      delete :destroy_multiple,
+             schedules: []
+    end
+    assert_redirected_to schedules_path
+  end
+
+  test 'should duplicate schedule' do
+    assert_difference('Schedule.count') do
+      post :duplicate,
+           schedule_id: @schedule
+    end
+    assert_redirected_to schedules_url
+  end
 end

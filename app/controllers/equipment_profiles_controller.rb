@@ -79,17 +79,17 @@ class EquipmentProfilesController < ApplicationController
   end
 
   def destroy_multiple
-    pre = EquipmentProfile.where(id: params[:equipment_profiles])
+    pre = EquipmentProfile.where(id: params[:equipment_profiles]).length
     EquipmentProfile.destroy_all(id: params[:equipment_profiles])
-    post = pre.where(id: params[:equipment_profiles])
+    post = EquipmentProfile.where(id: params[:equipment_profiles]).length
 
-    case post.length
-    when pre.length
+    case post
+    when pre
       flash[:danger] = 'No Equipment Profiles were deleted. Did you select any?'
     when 0
       flash[:success] = 'Equipment Profiles deleted'
     else
-      flash[:warning] = "Something strange happened... #{pre.length - post.length} Equipment Profiles weren't deleted."
+      flash[:warning] = "Something strange happened... #{pre - post} Equipment Profiles weren't deleted."
     end
 
     redirect_to equipment_profiles_url
