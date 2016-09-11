@@ -4,7 +4,7 @@ module EquipmentsHelper
   end
 
   def format_sti(action, type, equipment)
-    action || equipment ? "#{format_action(action)}#{type.underscore}" : "#{type.underscore.pluralize}"
+    action || equipment ? "#{format_action(action)}#{type.underscore}" : type.underscore.pluralize.to_s
   end
 
   def format_action(action)
@@ -16,12 +16,12 @@ module EquipmentsHelper
       ''
     else
       case action
-        when :add
-          "to #{rhizome.name}"
-        when :edit
-          "on #{rhizome.name}"
-        else
-          ''
+      when :add
+        "to #{rhizome.name}"
+      when :edit
+        "on #{rhizome.name}"
+      else
+        ''
       end
     end
   end
@@ -32,9 +32,7 @@ module EquipmentsHelper
         content_tag(:li, 'Not Set')
       else
         equipment.pins.each do |k, v|
-          unless v.nil?
-            concat content_tag(:li, "#{k.titlecase}: #{v}")
-          end
+          concat content_tag(:li, "#{k.titlecase}: #{v}") unless v.nil?
         end
       end
     end
