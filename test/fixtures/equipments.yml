@@ -30,6 +30,9 @@ bad_pump:
 single_pump:
   type: Pump
   pins: '{"power_pin": "1", "control_pin": "2"}'
+no_pins_pump:
+  type: Pump
+  pins: '{}'
 
 # Heating Elements
 heating_element_2pin:
