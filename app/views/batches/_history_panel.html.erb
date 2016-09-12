@@ -1,0 +1,17 @@
+<div class="list-group panel">
+  <%= link_to '#history-section',
+              class: 'list-group-item list-group-item-success',
+              'data-toggle' => 'collapse',
+              'data-parent' => 'mainmenu-sidebar',
+              'aria-expanded' => 'true' do %>
+      <span class="glyphicon glyphicon-calendar"></span> Process History
+  <% end %>
+  <div class="collapse in" id="history-section">
+    <div class="list-group-item">
+      <div class="center bg-primary">[ Gauge 1 History ]</div>
+      <div class="center bg-info">[ Gauge 2 History ]</div>
+      <div class="center bg-primary">[ Gauge 3 History ]</div>
+      <div class="center bg-info">[ Gauge 4 History ]</div>
+    </div>
+  </div>
+</div>

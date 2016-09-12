@@ -1,0 +1,21 @@
+<% if schedule.runnable? %>
+  <span class="label label-sm label-success">
+    <span class="glyphicon glyphicon-ok-circle"></span>
+    Ready to Run
+  </span>
+<% else %>
+  <span class="label label-sm label-danger">
+    <span class="glyphicon glyphicon-ban-circle"></span>
+    Not Ready to Run
+  </span>
+<% end %>
+
+<%= render 'schedules/schedule_gantt_chart', schedule: schedule %>
+
+<h5><span class="label label-info">Note:</span>
+<% if schedule.chartable? %>
+  All times are based on starting the batch right now.
+<% else %>
+  This schedule cannot be charted! Either there is no root task or no task with a duration longer than 0 seconds.
+<% end %>
+</h5>

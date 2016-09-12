@@ -9,14 +9,12 @@ class Schedule < ActiveRecord::Base
 
   # == Scopes ==
   scope :non_batch_records, -> {
-                                 where.not(id: Recipe.where
-                                                     .not(batch_id: nil)
-                                                     .joins(:schedule)
-                                                     .pluck(:schedule_id))
+                                 where(id: Recipe.non_batch_records
+                                                 .joins(:schedule)
+                                                 .pluck(:schedule_id))
                                }
   scope :batch_records, -> {
-                             where(id: Recipe.where
-                                             .not(batch_id: nil)
+                             where(id: Recipe.batch_records
                                              .joins(:schedule)
                                              .pluck(:schedule_id))
                            }

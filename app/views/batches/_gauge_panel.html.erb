@@ -1,0 +1,13 @@
+<div class="center panel panel-<%= gauge[:notification].nil? ? 'primary' : gauge[:notification] %>">
+  <div class="panel-heading">
+    <%= gauge[:title] %>
+  </div>
+  <div class="panel-body">
+    <%= gauge[:display] %>
+  </div>
+  <div class="panel-footer">
+    <span class="label label-sm label-success">PUMP ON</span>
+    <span class="label label-sm label-danger">PUMP OFF</span>
+    <span class="label label-sm label-default">PUMP ???</span>
+  </div>
+</div>

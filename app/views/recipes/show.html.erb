@@ -5,16 +5,44 @@
       <h1>
         <%= @recipe.name %>
       </h1>
-      <h4>Schedule</h4>
-        <% if @recipe.schedule.nil? %>
-          <ul><li>Not specified yet...</li></ul>
-        <% else %>
-          <%= render partial: 'schedules/task_list', locals: {schedule: @recipe.schedule} %>
+
+      <div class="list-group panel">
+        <%= link_to '#schedule-section',
+                    class: 'list-group-item list-group-item-success',
+                    'data-toggle' => 'collapse',
+                    'data-parent' => 'mainmenu-sidebar',
+                    'aria-expanded' => 'true' do %>
+            <span class="glyphicon glyphicon-list"></span> Schedule
         <% end %>
-      <h4>Additions</h4>
-      <ul>
-        <li>Coming Soon!</li>
-      </ul>
+        <div class="collapse in" id="schedule-section">
+          <div class="list-group-item">
+            <% if @recipe.schedule.nil? %>
+                <ul><li>Not specified yet...</li></ul>
+            <% else %>
+                <%= render partial: 'schedules/schedule_chart_w_warnings',
+                           locals: { schedule: @recipe.schedule} %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-group panel">
+        <%= link_to '#additions-section',
+                    class: 'list-group-item list-group-item-success',
+                    'data-toggle' => 'collapse',
+                    'data-parent' => 'mainmenu-sidebar',
+                    'aria-expanded' => 'true' do %>
+            <span class="glyphicon glyphicon-scale"></span> Additions
+        <% end %>
+        <div class="collapse in" id="additions-section">
+          <div class="list-group-item">
+            <ul>
+              <li>Coming Soon!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </section>
     <%= link_to 'Edit',
                 sti_recipe_type_path(@type, @recipe, :edit),
