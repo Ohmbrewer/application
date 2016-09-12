@@ -28,9 +28,9 @@ class EquipmentStatus < ActiveRecord::Base
   # == Validations ==
   validates :state, presence: true
 
-  # # == SSE Triggers ==
-  # after_save   :notify_state_change
-  # after_create :notify_state_change
+  # == SSE Triggers ==
+  after_save   :notify_state_change
+  after_create :notify_state_change
 
   # == Instance Methods ==
 
@@ -48,14 +48,14 @@ class EquipmentStatus < ActiveRecord::Base
     JSON.generate(state: state)
   end
 
-  # def to_sse_json
-  #   JSON.generate({
-  #                     rhizome_name: equipment.rhizome.name,
-  #                     equipment_id: equipment.id,
-  #                     state:        state,
-  #                     stop_time:    stop_time
-  #                 })
-  # end
+  def to_sse_json
+    JSON.generate({
+                    rhizome_name: equipment.rhizome.name,
+                    equipment_id: equipment.id,
+                    state:        state,
+                    stop_time:    stop_time
+                  })
+  end
 
   # == Class Methods ==
   class << self
@@ -107,33 +107,33 @@ class EquipmentStatus < ActiveRecord::Base
       }
     end
 
-    # # == SSE Methods ==
-    #
-    # # Listens for a change in the EquipmentStatus table and reports the incoming rows
-    # def on_change
-    #   EquipmentStatus.connection.execute "LISTEN #{EquipmentStatus.table_name}"
-    #   loop do
-    #     EquipmentStatus.connection.raw_connection.wait_for_notify do |event, pid, equipment_status|
-    #       yield equipment_status
-    #     end
-    #   end
-    # ensure
-    #   EquipmentStatus.connection.execute "UNLISTEN #{EquipmentStatus.table_name}"
-    # end
-    #
-    # # Default event channel for broadcasting SSE's
-    # def event_channel
-    #   {event: 'equipment_status_update'}
-    # end
+    # == SSE Methods ==
+
+    # Listens for a change in the EquipmentStatus table and reports the incoming rows
+    def on_change
+      EquipmentStatus.connection.execute "LISTEN #{EquipmentStatus.table_name}"
+      loop do
+        EquipmentStatus.connection.raw_connection.wait_for_notify do |event, pid, equipment_status|
+          yield equipment_status
+        end
+      end
+    ensure
+      EquipmentStatus.connection.execute "UNLISTEN #{EquipmentStatus.table_name}"
+    end
+
+    # Default event channel for broadcasting SSE's
+    def event_channel
+      {event: 'equipment_status_update'}
+    end
   end
 
   private
 
-    # # == SSE Methods ==
-    #
-    # # Notifies any listeners that there has been a state change on the EquipmentStatus table
-    # # @abstract EquipmentStatus subclasses must override this to function
-    # def notify_state_change
-    #   EquipmentStatus.connection.execute "NOTIFY #{EquipmentStatus.table_name}, '#{to_sse_json}'"
-    # end
+    # == SSE Methods ==
+
+    # Notifies any listeners that there has been a state change on the EquipmentStatus table
+    # @abstract EquipmentStatus subclasses must override this to function
+    def notify_state_change
+      EquipmentStatus.connection.execute "NOTIFY #{EquipmentStatus.table_name}, '#{to_sse_json}'"
+    end
 end

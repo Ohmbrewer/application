@@ -13,11 +13,11 @@ class HeatingElementStatus < EquipmentStatus
       HeatingElement
     end
 
-    # # == SSE Methods ==
-    #
-    # # Event channel for broadcasting SSE's
-    # def event_channel
-    #   {event: 'heating_element_status_update'}
-    # end
+    # == SSE Methods ==
+
+    # Event channel for broadcasting SSE's
+    def event_channel
+      {event: 'heating_element_status_update'}
+    end
   end
 end

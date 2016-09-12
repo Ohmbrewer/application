@@ -3,7 +3,7 @@ class JobsController < ApplicationController
   # == Enabled Before Filters ==
 
   before_action :logged_in_user,
-                only: [:ping] #, :dashboard]
+                only: [:ping, :dashboard]
   before_action :set_rhizome,
                 only: [:ping, :add_sprouts, :clear_sprouts]
   before_action :set_schedule,
@@ -13,9 +13,11 @@ class JobsController < ApplicationController
 
   # == Routes ==
 
-  # def dashboard
-  #   @pump_statuses = PumpStatus.paginate(page: params[:page])
-  # end
+  def dashboard
+    @pump_statuses = PumpStatus.paginate(page: params[:page])
+    @temperature_sensor_statuses = TemperatureSensorStatus.paginate(page: params[:page])
+    @heating_element_statuses = HeatingElementStatus.paginate(page: params[:page])
+  end
 
   def ping
     result = RhizomePingJob.new(@rhizome).perform_now

@@ -1,6 +1,6 @@
-<tr id="temperature-sensor-status-<%= temperature_sensor_status.device_id %>-<%= temperature_sensor_status.temp_id %>">
-  <td><%= temperature_sensor_status.device_id %></td>
-  <td><%= temperature_sensor_status.temp_id %></td>
+<tr id="temperature-sensor-status-<%= temperature_sensor_status.equipment.rhizome.particle_device.device_id %>-<%= temperature_sensor_status.equipment.rhizome_eid %>">
+  <td><%= temperature_sensor_status.equipment.rhizome.name %></td>
+  <td><%= temperature_sensor_status.equipment.rhizome_eid %></td>
   <td><%= temperature_sensor_status.state %></td>
   <td><%= temperature_sensor_status.stop_time %></td>
   <td><%= temperature_sensor_status.temperature %></td>

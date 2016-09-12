@@ -1,7 +1,6 @@
 require 'json'
 
 module EventStreamer
-
   # A class of Objects that knows how to format messages as Server-Sent Events
   # and emits those messages to the live stream
   # @see http://tenderlovemaking.com/2012/07/30/is-it-live.html
@@ -26,5 +25,4 @@ module EventStreamer
       @io.close
     end
   end
-
 end

@@ -17,11 +17,11 @@ class TemperatureSensorStatus < EquipmentStatus
       TemperatureSensor
     end
 
-    # # == SSE Methods ==
-    #
-    # # Event channel for broadcasting SSE's
-    # def event_channel
-    #   {event: 'temperature_sensor_status_update'}
-    # end
+    # == SSE Methods ==
+
+    # Event channel for broadcasting SSE's
+    def event_channel
+      {event: 'temperature_sensor_status_update'}
+    end
   end
 end

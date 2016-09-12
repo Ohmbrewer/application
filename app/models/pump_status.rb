@@ -13,11 +13,11 @@ class PumpStatus < EquipmentStatus
       Pump
     end
 
-    # # == SSE Methods ==
-    #
-    # # Event channel for broadcasting SSE's
-    # def event_channel
-    #   {event: 'pump_status_update'}
-    # end
+    # == SSE Methods ==
+
+    # Event channel for broadcasting SSE's
+    def event_channel
+      {event: 'pump_status_update'}
+    end
   end
 end

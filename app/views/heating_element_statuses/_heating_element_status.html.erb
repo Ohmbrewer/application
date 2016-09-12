@@ -1,6 +1,6 @@
-<tr id="heating-element-status-<%= heating_element_status.device_id %>-<%= heating_element_status.pump_id %>">
-  <td><%= heating_element_status.device_id %></td>
-  <td><%= heating_element_status.heat_id %></td>
+<tr id="heating-element-status-<%= heating_element_status.equipment.rhizome.particle_device.device_id %>-<%= heating_element_status.equipment.rhizome_eid %>">
+  <td><%= heating_element_status.equipment.rhizome.name %></td>
+  <td><%= heating_element_status.equipment.rhizome_eid %></td>
   <td><%= heating_element_status.state %></td>
   <td><%= heating_element_status.voltage %></td>
   <td><%= heating_element_status.stop_time %></td>
