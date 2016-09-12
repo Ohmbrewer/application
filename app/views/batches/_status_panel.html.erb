@@ -1,0 +1,10 @@
+<div class="center panel panel-<%= equipment[:notification].nil? ? 'info' : equipment[:notification] %>">
+  <div class="panel-heading">
+    <%= equipment[:title] %>
+  </div>
+  <div class="panel-footer">
+    <span class="label label-sm label-<%= equipment[:label].nil? ? 'default' : equipment[:label] %>">
+      <%= equipment[:status].nil? ? '???' : equipment[:status] %>
+    </span>
+  </div>
+</div>

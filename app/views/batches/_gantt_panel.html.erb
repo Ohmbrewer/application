@@ -1,0 +1,21 @@
+<div class="list-group panel">
+  <%= link_to '#schedule-progress-section',
+              class: 'list-group-item list-group-item-success',
+              'data-toggle' => 'collapse',
+              'data-parent' => 'mainmenu-sidebar',
+              'aria-expanded' => 'true' do %>
+      <span class="glyphicon glyphicon-indent-left"></span> Schedule Progress
+  <% end %>
+  <div class="collapse in" id="schedule-progress-section">
+    <div class="list-group-item">
+      <% unless schedule.nil? %>
+        <%= render partial: 'schedules/schedule_gantt_chart',
+                   locals: { schedule: schedule } %>
+      <% end %>
+    </div>
+    <div class="list-group-item">
+      <span class="label label-sm label-info">Messages:</span>
+      No messages so far...
+    </div>
+  </div>
+</div>

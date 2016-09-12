@@ -1,0 +1,4 @@
+<div id='schedule_chart'></div>
+<% if schedule.chartable? %>
+  <%= render_chart(schedule.to_gantt, 'schedule_chart') %>
+<% end %>

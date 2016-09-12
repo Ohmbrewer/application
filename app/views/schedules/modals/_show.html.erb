@@ -16,7 +16,7 @@
         </h4>
       </div>
       <div class="modal-body schedule-info">
-        <%= render partial: 'schedules/task_list', locals: {schedule: schedule} %>
+        <%= render partial: 'schedules/schedule_chart_w_warnings', locals: { schedule: schedule} %>
       </div>
       <div class="modal-footer">
         <%= link_to 'Edit',

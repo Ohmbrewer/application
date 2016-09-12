@@ -5,18 +5,7 @@
       <h1>
         <%= @schedule.name %>
       </h1>
-      <% if @schedule.runnable? %>
-            <span class="label label-sm label-success">
-              <span class="glyphicon glyphicon-ok-circle"></span>
-              Ready to Run
-            </span>
-      <% else %>
-            <span class="label label-sm label-danger">
-              <span class="glyphicon glyphicon-ban-circle"></span>
-              Not Ready to Run
-            </span>
-      <% end %>
-      <%= render partial: 'task_list', locals: {schedule: @schedule} %>
+      <%= render partial: 'schedule_chart_w_warnings', locals: { schedule: @schedule} %>
     </section>
     <%= link_to 'Edit',
                 edit_schedule_path,

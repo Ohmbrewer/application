@@ -1,19 +1,28 @@
 <% provide(:title, @batch.name) %>
 <div class="row">
-  <aside class="col-md-4">
+  <aside class="col-md-12">
     <section class="batch_info">
       <h1>
         <%= @batch.name %>
         <%= render 'start_stop_buttons', batch: @batch %>
       </h1>
-      <div>
-        [ Dashboard goes here ]
-      </div>
+      <% if @batch.recipe&.schedule %>
+        <%= render 'batches/gantt_panel',
+                   schedule: @batch.recipe.schedule %>
+      <% else %>
+          <%= render 'batches/gantt_panel',
+                     schedule: nil %>
+      <% end %>
+
+      <%= render 'batches/gauges_panel' %>
+
+      <%= render 'batches/history_panel' %>
+
     </section>
     <% if @batch.not_ready? || @batch.ready? %>
       <%= link_to 'Rhizomes',
                   batch_assign_rhizomes_path(@batch),
-                  class: 'btn btn-sm btn-warning',
+                  class: "btn btn-sm btn-warning#{ @batch.not_ready? || @batch.ready? ? '' : ' disabled' }",
                   alt: "Update Rhizomes assigned to #{@batch.name}",
                   title: "Update Rhizomes assigned to #{@batch.name}" %>
     <% end %>
@@ -21,7 +30,7 @@
                 @batch,
                 method: :delete,
                 data: { confirm: 'You sure?' },
-                class: 'btn btn-sm btn-danger',
+                class: "btn btn-sm btn-danger#{ @batch.running? ? ' disabled' : '' }",
                 alt: 'Delete',
                 title: 'Delete' %>
     <%= link_to 'Back',
