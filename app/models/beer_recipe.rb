@@ -1,3 +1,2 @@
 class BeerRecipe < Recipe
-
 end

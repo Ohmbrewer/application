@@ -51,6 +51,10 @@ module RhizomeInterfaces
             'No Rhizome Equipment Type method provided!'
     end
 
+    def panel_title
+      "#{rhizome_type_name.titlecase} #{rhizome_eid}"
+    end
+
     # Uniquely identifies the Sprout on the Rhizome
     # @return [String] The unique identifier for the Sprout
     def rhizome_unique_id

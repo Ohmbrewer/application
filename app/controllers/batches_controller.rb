@@ -110,6 +110,7 @@ class BatchesController < ApplicationController
         @recipe.schedule.name.gsub!('Copy', "##{Recipe.count}")
         @recipe.name.gsub!('Copy', "##{Recipe.count}")
         @recipe.save(validate: false)
+        @recipe.schedule.copy_root_task_task_index(recipe_to_dup.schedule)
       end
     end
 

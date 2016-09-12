@@ -44,6 +44,26 @@ class Rhizome < ActiveRecord::Base
     [equipments, thermostats, recirculating_infusion_mash_systems].flatten
   end
 
+  def non_component_equipment
+    equipments.non_components
+  end
+
+  def non_component_temperature_sensors
+    temperature_sensors.non_components
+  end
+
+  def non_component_heating_elements
+    heating_elements.non_components
+  end
+
+  def non_component_pumps
+    pumps.non_components
+  end
+
+  def non_component_thermostats
+    thermostats.non_components
+  end
+
   # == Particle Device Shortcuts ==
 
   # Is the Rhizome's Particle device connected to the cloud?
@@ -74,7 +94,7 @@ class Rhizome < ActiveRecord::Base
     end
 
     def from_device_id(device_id)
-      pd = ParticleDevice.where(device_id: device_id).first
+      pd = ParticleDevice.find_by(device_id: device_id)
       Rhizome.find(pd.rhizome.id) unless pd.nil?
     end
   end

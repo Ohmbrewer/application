@@ -1,3 +1,2 @@
 class CiderRecipe < Recipe
-
 end

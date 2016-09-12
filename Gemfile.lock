@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/kyleoliveira/google_visualr.git
-  revision: 1e4122a6bab622d5c9295209ef8fc48c3999caa3
+  revision: 7d5f8e13d15de38d562ea43e6fefe831e0ab203d
   specs:
     google_visualr (2.5.1)
 

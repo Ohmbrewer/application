@@ -1,0 +1,18 @@
+<div class="list-group panel">
+  <%= link_to '#gauges-section',
+              class: 'list-group-item list-group-item-success',
+              'data-toggle' => 'collapse',
+              'data-parent' => 'mainmenu-sidebar',
+              'aria-expanded' => 'true' do %>
+      <span class="glyphicon glyphicon-dashboard"></span> Current System Status
+  <% end %>
+  <div class="collapse in" id="gauges-section">
+
+    <% batch.rhizomes.each do |rhizome| %>
+      <div class="list-group-item">
+        <%= render 'batches/rhizome', rhizome: rhizome %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

@@ -3,8 +3,11 @@ class PumpStatus < EquipmentStatus
              inverse_of: :pump_statuses
   store_accessor :data, :speed
 
-  class << self
+  def to_speed_json
+    JSON.generate(speed: speed)
+  end
 
+  class << self
     # Identifies which Equipment Type this status message applies to
     def equipment_class
       Pump
@@ -16,6 +19,5 @@ class PumpStatus < EquipmentStatus
     # def event_channel
     #   {event: 'pump_status_update'}
     # end
-
   end
 end
