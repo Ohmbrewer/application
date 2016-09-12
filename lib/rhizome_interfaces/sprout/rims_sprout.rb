@@ -18,6 +18,8 @@ module RhizomeInterfaces
       # @param rhizome_eid [Integer] The Rhizome Sprout ID / Equipment ID
       # @return [Equipment|Thermostat|Recirculating_Infusion_Mash_System] The sprout instance
       def find_by_rhizome_eid(rhizome, rhizome_eid)
+        raise ArgumentError, 'No Rhizome specified!' if rhizome.nil?
+        raise ArgumentError, 'No Rhizome Equipment ID specified!' if rhizome_eid.nil?
         rhizome.recirculating_infusion_mash_systems.select {|p| p.rhizome_eid.to_i == rhizome_eid }.first
       end
 

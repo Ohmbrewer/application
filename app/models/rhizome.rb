@@ -75,7 +75,7 @@ class Rhizome < ActiveRecord::Base
 
     def from_device_id(device_id)
       pd = ParticleDevice.where(device_id: device_id).first
-      Rhizome.find(pd.rhizome.id)
+      Rhizome.find(pd.rhizome.id) unless pd.nil?
     end
   end
 end

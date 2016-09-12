@@ -74,7 +74,7 @@ class EquipmentStatus < ActiveRecord::Base
     end
 
     def convert_state(state)
-      if state == '--'
+      if state == '--' || state.nil?
         :unknown
       else
          state.downcase.to_sym
@@ -90,7 +90,13 @@ class EquipmentStatus < ActiveRecord::Base
     # @return [Hash] A parsed parameter Hash for producing a PumpStatus
     def parse_incoming_status(params)
       r = Rhizome::from_device_id(params[:rhizome])
+      raise ArgumentError,
+            'Rhizome not found. Bad Rhizome Device ID.' if r.nil?
+
       e = equipment_class.find_by_rhizome_eid(r, params[:eid])
+      raise ArgumentError,
+            'Equipment not found. Bad Rhizome Equipment ID or the Sprout was not found on the Rhizome.' if e.nil?
+
       {
           state:        convert_state(params[:state]),
           stop_time:    convert_time(params[:stop_time].to_i),
