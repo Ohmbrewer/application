@@ -1,0 +1,15 @@
+<%= link_to batch_start_path(batch),
+            method: :post,
+            class: "btn btn-sm btn-success#{batch.may_start? ? '' : ' disabled'}",
+            alt: "Start #{batch.name}",
+            title: "Start #{batch.name}" do %>
+    <span class="glyphicon glyphicon-play"></span>
+<% end %>
+<%= link_to batch_stop_path(batch),
+            method: :post,
+            data: { confirm: "You sure you want to stop #{batch.name}? You will not be able to restart!" },
+            class: "btn btn-sm btn-danger#{batch.running? ? '' : ' disabled'}",
+            alt: "Stop #{batch.name}",
+            title: "Stop #{batch.name}" do %>
+    <span class="glyphicon glyphicon-stop"></span>
+<% end %>

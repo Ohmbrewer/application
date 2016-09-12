@@ -4,17 +4,19 @@
     <section class="batch_info">
       <h1>
         <%= @batch.name %>
+        <%= render 'start_stop_buttons', batch: @batch %>
       </h1>
       <div>
         [ Dashboard goes here ]
       </div>
     </section>
-    <%= link_to 'Edit',
-                edit_batch_path,
-                id: @batch.id,
-                class: 'btn btn-sm btn-primary',
-                alt: 'Edit',
-                title: 'Edit' %>
+    <% if @batch.not_ready? || @batch.ready? %>
+      <%= link_to 'Rhizomes',
+                  batch_assign_rhizomes_path(@batch),
+                  class: 'btn btn-sm btn-warning',
+                  alt: "Update Rhizomes assigned to #{@batch.name}",
+                  title: "Update Rhizomes assigned to #{@batch.name}" %>
+    <% end %>
     <%= link_to 'Delete',
                 @batch,
                 method: :delete,

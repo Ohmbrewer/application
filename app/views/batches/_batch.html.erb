@@ -37,24 +37,13 @@
                     title: "Assign Rhizomes to #{batch.name}" do %>
             <span class="glyphicon glyphicon-grain"></span>
         <% end %>
-        <%= link_to batch_start_path(batch),
-                    method: :post,
-                    class: "btn btn-sm btn-success#{batch.may_start? ? '' : ' disabled'}",
-                    alt: "Start #{batch.name}",
-                    title: "Start #{batch.name}" do %>
-            <span class="glyphicon glyphicon-play"></span>
-        <% end %>
-        <%= link_to batch_stop_path(batch),
-                    method: :post,
-                    data: { confirm: "You sure you want to stop #{batch.name}? You will not be able to restart!" },
-                    class: "btn btn-sm btn-danger#{batch.running? ? '' : ' disabled'}",
-                    alt: "Stop #{batch.name}",
-                    title: "Stop #{batch.name}" do %>
-            <span class="glyphicon glyphicon-stop"></span>
-        <% end %>
+        <%= render 'start_stop_buttons', batch: batch %>
         <%= link_to batch,
                     method: :delete,
-                    data: { confirm: "You sure you want to delete #{batch.name}? This will completely remove any records associated with the batch." },
+                    data: {
+                            confirm: "You sure you want to delete #{batch.name}? " \
+                                     'This will completely remove any records associated with the batch.'
+                          },
                     class: 'btn btn-sm btn-danger',
                     id: "batch-#{batch.id}-destroy",
                     alt: "Delete #{batch.name}",
