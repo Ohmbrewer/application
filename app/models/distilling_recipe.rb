@@ -1,3 +1,2 @@
 class DistillingRecipe < Recipe
-
 end

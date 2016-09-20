@@ -41,6 +41,14 @@ class Equipment < ActiveRecord::Base
     rhizome.nil?
   end
 
+  def component?
+    !thermostat.nil? || !recirculating_infusion_mash_system.nil?
+  end
+
+  def non_component?
+    !component?
+  end
+
   def basic_equipment?
     type == 'Equipment'
   end
@@ -50,6 +58,14 @@ class Equipment < ActiveRecord::Base
     # The list of supported Equipment types
     def equipment_types
       %w(Pump HeatingElement TemperatureSensor)
+    end
+
+    def components
+      all.select(&:component?)
+    end
+
+    def non_components
+      all.select(&:non_component?)
     end
   end
 end

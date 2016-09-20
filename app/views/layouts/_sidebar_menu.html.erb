@@ -22,22 +22,42 @@
         <span class="glyphicon glyphicon-dashboard"></span> Batches
     <% end %>
     <div class="collapse in" id="batches-section">
-      <%= link_to 'Start a new batch', new_batch_path, class: 'list-group-item'  %>
-      <%= link_to 'What\'s Brewing?', batches_path, class: 'list-group-item'  %>
-      <%= link_to 'What\'s Distilling?', '#', class: 'list-group-item'  %>
-      <%= link_to 'What\'s Fermenting?', '#', class: 'list-group-item'  %>
-      <%= link_to 'What\'s Kegged?', '#', class: 'list-group-item'  %>
+      <%= link_to 'Start a new batch',
+                  new_batch_path,
+                  class: 'list-group-item'  %>
+      <%= link_to 'What\'s Brewing?',
+                  batches_path,
+                  class: 'list-group-item'  %>
+      <%= link_to 'What\'s Distilling?',
+                  '#',
+                  class: 'list-group-item disabled',
+                  alt: 'Coming Soon!',
+                  title: 'Coming Soon!'  %>
+      <%= link_to 'What\'s Fermenting?',
+                  '#',
+                  class: 'list-group-item disabled',
+                  alt: 'Coming Soon!',
+                  title: 'Coming Soon!'  %>
+      <%= link_to 'What\'s Kegged?',
+                  '#',
+                  class: 'list-group-item disabled',
+                  alt: 'Coming Soon!',
+                  title: 'Coming Soon!'  %>
     </div>
 
     <%= link_to '#configuration-section',
                 class: 'list-group-item list-group-item-success',
                 'data-toggle' => 'collapse', 'data-parent' => 'mainmenu-sidebar', 'aria-expanded' => 'true' do %>
-        <span class="glyphicon glyphicon-list-alt"></span> Configuration
+        <span class="glyphicon glyphicon-cog"></span> Configuration
     <% end %>
     <div class="collapse in" id="configuration-section">
       <%= link_to 'Manage Rhizomes', rhizomes_path, class: 'list-group-item'  %>
       <%= link_to 'Manage Equipment Profiles', equipment_profiles_path, class: 'list-group-item'  %>
-      <%= link_to 'Manage Brewhouses', '#', class: 'list-group-item'  %>
+      <%= link_to 'Manage Brewhouses',
+                  '#',
+                  class: 'list-group-item disabled',
+                  alt: 'Coming Soon!',
+                  title: 'Coming Soon!'  %>
       <%= link_to 'Manage Users', users_path, class: 'list-group-item' %>
     </div>
     

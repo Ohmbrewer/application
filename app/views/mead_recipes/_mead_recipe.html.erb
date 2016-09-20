@@ -6,8 +6,7 @@
   <td><%= link_to mead_recipe.name, mead_recipe_path(mead_recipe.id) %></td>
   <td>
     <% unless mead_recipe.schedule.nil? %>
-        <%= link_to 'View', '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{mead_recipe.schedule.id}-show" %>
-        <%= render 'schedules/modals/show', schedule: mead_recipe.schedule %>
+        <%= link_to mead_recipe.schedule.name, schedule_path(mead_recipe.schedule) %>
     <% end %>
   </td>
   <td>Coming soon!</td>

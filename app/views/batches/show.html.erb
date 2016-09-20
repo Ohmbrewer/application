@@ -1,4 +1,5 @@
 <% provide(:title, @batch.name) %>
+<%= load_libraries(['gantt', 'gauge']) %>
 <div class="row">
   <aside class="col-md-12">
     <section class="batch_info">
@@ -7,14 +8,14 @@
         <%= render 'start_stop_buttons', batch: @batch %>
       </h1>
       <% if @batch.recipe&.schedule %>
-        <%= render 'batches/gantt_panel',
+        <%= render 'batches/schedule_progress_panel',
                    schedule: @batch.recipe.schedule %>
       <% else %>
-          <%= render 'batches/gantt_panel',
+          <%= render 'batches/schedule_progress_panel',
                      schedule: nil %>
       <% end %>
 
-      <%= render 'batches/gauges_panel' %>
+      <%= render 'batches/system_status_panel', batch: @batch %>
 
       <%= render 'batches/history_panel' %>
 

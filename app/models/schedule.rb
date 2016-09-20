@@ -1,29 +1,26 @@
 class Schedule < ActiveRecord::Base
-
   belongs_to :root_task, class_name: 'Task'
   has_many :tasks, -> { order(created_at: :asc) }, dependent: :destroy
   has_many :schedule_profiles, dependent: :destroy
   has_many :equipment_profiles, through: :schedule_profiles
+  has_many :recipes
 
   accepts_nested_attributes_for :tasks, reject_if: :all_blank, allow_destroy: true
 
   # == Scopes ==
-  scope :non_batch_records, -> {
-                                 where(id: Recipe.non_batch_records
-                                                 .joins(:schedule)
-                                                 .pluck(:schedule_id))
-                               }
-  scope :batch_records, -> {
-                             where(id: Recipe.batch_records
-                                             .joins(:schedule)
-                                             .pluck(:schedule_id))
-                           }
+  scope :non_recipe_records, -> { includes(:recipes).where(recipes: { id: nil }) }
+  scope :recipe_records, -> { includes(:recipes).where.not(recipes: { id: nil }) }
+  scope :non_batch_records, -> { includes(:recipes).where(recipes: { batch: nil }) }
+  scope :batch_records, -> { includes(:recipes).where.not(recipes: { batch: nil }) }
+  scope :displayable_records, -> { where(id: (non_recipe_records.ids + non_batch_records.ids).uniq) }
 
   # == Validators ==
-  validates_presence_of :name
+  validates :name, presence: true
   validates :root_task, presence: true,
                         on: :update,
                         unless: 'tasks.empty? || tasks.none?{ |t| !t.id.nil? }'
+
+  after_create :auto_assign_root, if: Proc.new { |schedule| schedule.root_task.nil? }
 
   # == Instance Methods ==
 
@@ -34,7 +31,7 @@ class Schedule < ActiveRecord::Base
   # @return [TrueFalse] True if the Schedule can be run
   def runnable?
     !root_task.nil? &&
-    tasks.all? { |t| t == root_task ? true : (!t.parent.nil?) }
+      tasks.all? { |t| t == root_task ? true : !t.parent.nil? }
   end
 
   # Whether the Schedule is in a state where it can be charted as a Gantt Chart via Google Charts.
@@ -124,7 +121,7 @@ class Schedule < ActiveRecord::Base
   # Finds the Batch associated with this Schedule (since we don't actually supply the association)
   # @return [Batch] The Batch that owns the Recipe that owns this Schedule
   def batch
-    r = Recipe.where(schedule: self).first
+    r = Recipe.find_by(schedule: self)
     r.nil? ? nil : Batch.find(r.batch_id)
   end
 
@@ -153,9 +150,7 @@ class Schedule < ActiveRecord::Base
   def to_gantt_data
     timeline = []
     unless self.root_task.nil?
-      timeline = self.root_task.self_and_descendants.collect do |task|
-        task.to_gantt_data
-      end
+      timeline = self.root_task.self_and_descendants.collect(&:to_gantt_data)
       timeline.flatten!(1)
     end
 
@@ -175,11 +170,11 @@ class Schedule < ActiveRecord::Base
   # Provides a Google Chart object that can be inserted into the page
   # @param [Hash] options Override of default options passed to the chart
   # @return [GoogleVisualr::Interactive::Gantt] The Gantt chart
-  def to_gantt(options={})
+  def to_gantt(options = {})
     data = self.to_gantt_data
     track_height = 50
     options = {
-                height: data.rows.length * (track_height + 5),
+                height: [data.rows.length * (track_height + 5), 220].max,
                 gantt: {
                   percentEnabled: false,
                   defaultStartDate: Date.new,
@@ -190,11 +185,23 @@ class Schedule < ActiveRecord::Base
     GoogleVisualr::Interactive::Gantt.new(data, options)
   end
 
-  def assign_root
+  def auto_assign_root
     if self.root_task.nil?
       self.root_task = self.tasks.first
       self.save
     end
   end
-end
 
+  def root_task_task_index
+    tasks.ids.find_index { |a| a == root_task.id }
+  end
+
+  def copy_root_task_task_index(schedule_to_copy)
+    unless schedule_to_copy.nil? ||
+           schedule_to_copy.root_task_id.nil? ||
+           self.tasks.length < schedule_to_copy.tasks.length
+      self.root_task_id = tasks[schedule_to_copy.root_task_task_index].id
+      self.save
+    end
+  end
+end

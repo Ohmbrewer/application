@@ -44,6 +44,10 @@ class EquipmentStatus < ActiveRecord::Base
     super self.class.parse_incoming_status(attributes), options
   end
 
+  def to_state_json
+    JSON.generate(state: state)
+  end
+
   # def to_sse_json
   #   JSON.generate({
   #                     rhizome_name: equipment.rhizome.name,
@@ -53,10 +57,8 @@ class EquipmentStatus < ActiveRecord::Base
   #                 })
   # end
 
-
   # == Class Methods ==
   class << self
-
     # == STI Helpers ==
 
     # The list of supported Equipment Status types
@@ -77,7 +79,7 @@ class EquipmentStatus < ActiveRecord::Base
       if state == '--' || state.nil?
         :unknown
       else
-         state.downcase.to_sym
+        state.downcase.to_sym
       end
     end
 
@@ -123,7 +125,6 @@ class EquipmentStatus < ActiveRecord::Base
     # def event_channel
     #   {event: 'equipment_status_update'}
     # end
-
   end
 
   private

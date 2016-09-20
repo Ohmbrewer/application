@@ -64,6 +64,14 @@ class Thermostat < ActiveRecord::Base
     !rims.nil?
   end
 
+  def component?
+    !recirculating_infusion_mash_system.nil?
+  end
+
+  def non_component?
+    !component?
+  end
+
   def deep_dup
     new_thermostat = super
     new_thermostat.sensor = sensor.deep_dup
@@ -71,4 +79,20 @@ class Thermostat < ActiveRecord::Base
     new_thermostat
   end
 
+  # Provides a Google Chart object that can be inserted into the page
+  # @param [Hash] options Override of default options passed to the chart
+  # @return [GoogleVisualr::Interactive::Gauge] The Gauge chart
+  def to_gauge(options = {})
+    sensor.to_gauge(options)
+  end
+
+  class << self
+    def components
+      all.select(&:component?)
+    end
+
+    def non_components
+      all.select(&:non_component?)
+    end
+  end
 end

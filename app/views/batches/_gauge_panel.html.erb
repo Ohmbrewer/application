@@ -3,11 +3,28 @@
     <%= gauge[:title] %>
   </div>
   <div class="panel-body">
-    <%= gauge[:display] %>
+    <% if gauge[:display].nil? || gauge[:display].is_a?(String) %>
+      <%= gauge[:display] %>
+    <% elsif gauge[:display].is_a?(RecirculatingInfusionMashSystem) %>
+        <div id="gauge-<%= gauge[:display].rhizome.id %>-<%= gauge[:display].rhizome_eid %>"></div>
+        <%= add_chart(gauge[:display].to_gauges[:tube], "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }") %>
+        <div id="gauge-<%= gauge[:display].rhizome.id %>-<%= gauge[:display].rhizome_eid %>"></div>
+        <%= add_chart(gauge[:display].to_gauges[:safety_sensor], "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }") %>
+  <% else %>
+      <div id="gauge-<%= gauge[:display].rhizome.id %>-<%= gauge[:display].rhizome_eid %>"></div>
+      <%= add_chart(gauge[:display].to_gauge, "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }") %>
+    <% end %>
   </div>
-  <div class="panel-footer">
-    <span class="label label-sm label-success">PUMP ON</span>
-    <span class="label label-sm label-danger">PUMP OFF</span>
-    <span class="label label-sm label-default">PUMP ???</span>
-  </div>
+  <% if gauge[:display].is_a?(Thermostat) || gauge[:display].is_a?(RecirculatingInfusionMashSystem) %>
+    <div class="panel-footer">
+      <span class="label label-sm label-<%= status_indicator_label_type(gauge[:element].statuses.last) %>">
+        ELEMENT <%= status_indicator_label_text(gauge[:element].statuses.last) %>
+      </span>
+      <% if gauge[:display].is_a?(RecirculatingInfusionMashSystem) %>
+        <span class="label label-sm label-<%= status_indicator_label_type(gauge[:recirculation_pump].statuses.last) %>">
+          PUMP <%= status_indicator_label_text(gauge[:recirculation_pump].statuses.last) %>
+        </span>
+      <% end %>
+    </div>
+  <% end %>
 </div>

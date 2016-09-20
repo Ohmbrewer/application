@@ -5,7 +5,8 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
 
   def index
-    @schedules = Schedule.non_batch_records.paginate(page: params[:page])
+    @schedules = Schedule.displayable_records
+                         .paginate(page: params[:page])
   end
 
   def show; end
@@ -25,7 +26,7 @@ class SchedulesController < ApplicationController
 
       if @schedule.save(validate: false)
         @schedule.reload
-        @schedule.assign_root
+        @schedule.auto_assign_root
 
         flash[:success] = msg
         redirect_to schedules_path
@@ -62,7 +63,7 @@ class SchedulesController < ApplicationController
     if @schedule.valid?
       msg = view_context.add_schedule_message(@schedule)
       if @schedule.save
-        @schedule.assign_root
+        @schedule.auto_assign_root
 
         flash[:success] = msg
         redirect_to schedules_path

@@ -10,7 +10,7 @@ class ScheduleTest < ActiveSupport::TestCase
     duplicate_schedule = @small_schedule.deep_dup
     duplicate_schedule.save(validate: false)
     duplicate_schedule.reload
-    duplicate_schedule.assign_root
+    duplicate_schedule.auto_assign_root
 
     assert_equal "#{@small_schedule.name} (Copy)", duplicate_schedule.name
 

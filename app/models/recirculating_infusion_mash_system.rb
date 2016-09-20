@@ -78,4 +78,14 @@ class RecirculatingInfusionMashSystem < ActiveRecord::Base
     new_rims
   end
 
+  # Provides Google Chart objects that can be inserted into the page
+  # @param [Hash] tube_options Override of default options passed to the charts
+  # @param [Hash] safety_sensor_options Override of default options passed to the charts
+  # @return [Array[GoogleVisualr::Interactive::Gauge] The Gauge charts
+  def to_gauges(tube_options = {}, safety_sensor_options = {})
+    {
+      tube: tube.to_gauge(tube_options),
+      safety_sensor: safety_sensor.to_gauge(safety_sensor_options)
+    }
+  end
 end

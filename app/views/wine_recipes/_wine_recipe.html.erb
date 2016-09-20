@@ -6,8 +6,7 @@
   <td><%= link_to wine_recipe.name, wine_recipe_path(wine_recipe.id) %></td>
   <td>
     <% unless wine_recipe.schedule.nil? %>
-        <%= link_to 'View', '', 'data-toggle' => 'modal', 'data-target' => "#schedule-#{wine_recipe.schedule.id}-show" %>
-        <%= render 'schedules/modals/show', schedule: wine_recipe.schedule %>
+        <%= link_to wine_recipe.schedule.name, schedule_path(wine_recipe.schedule) %>
     <% end %>
   </td>
   <td>Coming soon!</td>

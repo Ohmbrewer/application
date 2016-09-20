@@ -3,8 +3,11 @@ class HeatingElementStatus < EquipmentStatus
              inverse_of: :heating_element_statuses
   store_accessor :data, :voltage
 
-  class << self
+  def to_voltage_json
+    JSON.generate(voltage: voltage)
+  end
 
+  class << self
     # Identifies which Equipment Type this status message applies to
     def equipment_class
       HeatingElement
@@ -16,6 +19,5 @@ class HeatingElementStatus < EquipmentStatus
     # def event_channel
     #   {event: 'heating_element_status_update'}
     # end
-
   end
 end

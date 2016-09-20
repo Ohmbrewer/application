@@ -49,4 +49,28 @@ module EquipmentsHelper
       link_to "RIMS #{rims.rhizome_eid}", rims
     end
   end
+
+  # Renders a status panel for a piece of equipment
+  # @param [Equipment] equipment The equipment to render
+  # @param [String] notification_level The notification level color css to use for the panel
+  def status_panel(equipment, notification_level = 'primary')
+    last_status = equipment.statuses.last
+    render 'batches/equipment_status_panel',
+           equipment: {
+             title: equipment.panel_title,
+             status: status_indicator_label_text(last_status),
+             label: status_indicator_label_type(last_status),
+             notification: notification_level
+           }
+  end
+
+  # Renders a gauge panel for a piece of equipment
+  # @param [Equipment] equipment The equipment to render
+  def equipment_gauge_panel(equipment)
+    render 'batches/gauge_panel',
+           gauge: {
+             title: equipment.panel_title,
+             display: equipment
+           }
+  end
 end
