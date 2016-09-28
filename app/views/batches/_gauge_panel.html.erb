@@ -6,15 +6,24 @@
     <% if gauge[:display].nil? || gauge[:display].is_a?(String) %>
       <%= gauge[:display] %>
     <% elsif gauge[:display].is_a?(RecirculatingInfusionMashSystem) %>
-        <div id="gauge-<%= gauge[:display].rhizome.id %>-<%= gauge[:display].rhizome_eid %>"></div>
-        <%= add_chart(gauge[:display].to_gauges[:tube], "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }") %>
-        <div id="gauge-<%= gauge[:display].rhizome.id %>-<%= gauge[:display].rhizome_eid %>"></div>
-        <%= add_chart(gauge[:display].to_gauges[:safety_sensor], "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }") %>
-  <% else %>
+      <div class="row">
+        <div class="col-md-6">
+          <div id="gauge-<%= gauge[:display].rhizome.id %>-<%= gauge[:display].rhizome_eid %>-tube"></div>
+          Tube
+        </div>
+        <%= add_chart(gauge[:display].to_gauges[:tube], "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }-tube", remote: gauge[:display].remote_urls[:tube]) %>
+        <div class="col-md-6">
+          <div id="gauge-<%= gauge[:display].rhizome.id %>-<%= gauge[:display].rhizome_eid %>-safety-sensor"></div>
+          Safety Sensor
+        </div>
+        <%= add_chart(gauge[:display].to_gauges[:safety_sensor], "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }-safety-sensor", remote: gauge[:display].remote_urls[:safety_sensor]) %>
+      </div>
+    <% else %>
       <div id="gauge-<%= gauge[:display].rhizome.id %>-<%= gauge[:display].rhizome_eid %>"></div>
-      <%= add_chart(gauge[:display].to_gauge, "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }") %>
+      <%= add_chart(gauge[:display].to_gauge, "gauge-#{ gauge[:display].rhizome.id }-#{ gauge[:display].rhizome_eid }", remote: gauge[:display].remote_url) %>
     <% end %>
   </div>
+
   <% if gauge[:display].is_a?(Thermostat) || gauge[:display].is_a?(RecirculatingInfusionMashSystem) %>
     <div class="panel-footer">
       <span class="label label-sm label-<%= status_indicator_label_type(gauge[:element].statuses.last) %>">

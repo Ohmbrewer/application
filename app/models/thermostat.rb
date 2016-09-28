@@ -12,6 +12,7 @@ class Thermostat < ActiveRecord::Base
   has_one :sensor, class_name: 'TemperatureSensor',
                    validate: true,
                    dependent: :destroy
+  delegate :remote_url, to: :sensor
 
   belongs_to :recirculating_infusion_mash_system, validate: true,
                                                   touch: true,

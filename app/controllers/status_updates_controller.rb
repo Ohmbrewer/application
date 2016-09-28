@@ -56,6 +56,7 @@ class StatusUpdatesController < ApplicationController
     # end
     #
     # render nothing: true
+    render json: TemperatureSensor.find(params[:id]).to_gauge_data.to_controller_js
   end
 
   def heats
