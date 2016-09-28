@@ -104,10 +104,10 @@ Rails.application.routes.draw do
     post :heat
   end
 
-  # # Paths under this controller are used with SSE to stream status updates
-  # scope :status_updates, controller: :status_updates, shallow: true do
-  #   get :pumps
-  #   get :temps
-  # end
-
+  # Paths under this controller are used with SSE to stream status updates
+  scope :status_updates, controller: :status_updates, shallow: true do
+    get :pumps
+    get :temps
+    get :heats
+  end
 end

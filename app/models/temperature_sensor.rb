@@ -64,4 +64,8 @@ class TemperatureSensor < Equipment
     }.merge!(options)
     GoogleVisualr::Interactive::Gauge.new(data, options)
   end
+
+  def remote_url
+    "/status_updates/temps?id=#{id}"
+  end
 end

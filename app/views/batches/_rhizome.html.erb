@@ -7,31 +7,31 @@
   <div class="collapse in" id="rhizome-status-panel-<%= rhizome.id %>">
     <div class="row">
       <% rhizome.recirculating_infusion_mash_systems.each do |rims| %>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <%= rims_gauge_panel(rims) %>
         </div>
       <% end %>
 
       <% rhizome.non_component_thermostats.each do |thermostat| %>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <%= thermostat_gauge_panel(thermostat) %>
         </div>
       <% end %>
 
       <% rhizome.non_component_temperature_sensors.each do |sensor| %>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <%= equipment_gauge_panel(sensor) %>
         </div>
       <% end %>
 
       <% rhizome.non_component_heating_elements.each do |element| %>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <%= status_panel(element) %>
         </div>
       <% end %>
 
       <% rhizome.non_component_pumps.each do |pump| %>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <%= status_panel(pump) %>
         </div>
       <% end %>

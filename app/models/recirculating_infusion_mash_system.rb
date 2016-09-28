@@ -88,4 +88,11 @@ class RecirculatingInfusionMashSystem < ActiveRecord::Base
       safety_sensor: safety_sensor.to_gauge(safety_sensor_options)
     }
   end
+
+  def remote_urls
+    {
+      tube: tube.remote_url,
+      safety_sensor: safety_sensor.remote_url
+    }
+  end
 end
