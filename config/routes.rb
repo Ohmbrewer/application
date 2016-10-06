@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     post 'duplicate' => 'schedules#duplicate'
     post 'run'       => 'jobs#schedule'
     post 'run_task'  => 'jobs#task'
+    get :chart
     collection do
       post :destroy_multiple
     end

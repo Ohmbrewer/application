@@ -1,6 +1,8 @@
-require 'rhizome_interfaces/sprout/sprout'
+require 'scheduler/task_types/holding_task'
+require 'scheduler/task_types/on_off_task'
 class TurnOffTask < Task
-  # == Instance Methods ==
+  include Scheduler::TaskTypes::HoldingTask
+  include Scheduler::TaskTypes::OnOffTask
 
   # We always want this Task to try to turn the Equipment off
   def initialize(attributes = nil, options = {})
@@ -10,18 +12,7 @@ class TurnOffTask < Task
 
   # We always want this Task to try to turn the Equipment off
   def state=(s)
-    super 'OFF'
-  end
-
-  def holds?
-    true
-  end
-
-  def on?
-    state == 'ON'
-  end
-
-  def off?
-    state == 'OFF'
+    raise ArgumentError, 'The state of TurnOffTasks is always \'OFF\'' unless s.casecmp('OFF').zero?
+    super
   end
 end

@@ -9,14 +9,23 @@ class TurnOnTaskTest < ActiveSupport::TestCase
   end
 
   test 'should start on' do
-    task = TurnOnTask.new tasks(:turn_on_no_rims_therm_sensor).attributes.merge(state: 'OFF')
+    assert_raise ArgumentError do
+      TurnOnTask.new tasks(:turn_on_no_rims_therm_sensor).attributes.merge(state: 'OFF')
+    end
+
+    task = TurnOnTask.new tasks(:turn_on_no_rims_therm_sensor).attributes
+
     assert task.on?
     assert_not task.off?
   end
 
   test 'should stay on' do
     task = tasks(:turn_on_no_rims_therm_sensor)
-    task.state = 'OFF'
+
+    assert_raise ArgumentError do
+      task.state = 'OFF'
+    end
+
     assert task.on?
     assert_not task.off?
   end

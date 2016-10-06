@@ -173,11 +173,12 @@ class Schedule < ActiveRecord::Base
   def to_gantt(options = {})
     data = self.to_gantt_data
     track_height = 50
+    start_date = root_task.start_time.nil? ? Date.new : Time.new(root_task.start_time).to_date
     options = {
                 height: [data.rows.length * (track_height + 5), 220].max,
                 gantt: {
                   percentEnabled: false,
-                  defaultStartDate: Date.new,
+                  defaultStartDate: start_date,
                   trackHeight: track_height
                 },
                 version: 'current'

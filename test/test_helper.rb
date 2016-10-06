@@ -7,42 +7,46 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 
 require 'shared/shared_mailer_tests'
-class ActionMailer::TestCase
-  include SharedMailerTests
+module ActionMailer
+  class TestCase
+    include SharedMailerTests
+  end
 end
 
-class ActiveSupport::TestCase
-  include ActiveJob::TestHelper # Needed to support ActiveJob testing
+module ActiveSupport
+  class TestCase
+    include ActiveJob::TestHelper # Needed to support ActiveJob testing
 
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
+    # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+    fixtures :all
 
-  # Returns true if a test user is logged in.
-  def logged_in?
-    !session[:user_id].nil?
-  end
-
-  # Logs in a test user.
-  def log_in_as(user, options = {})
-    password    = options[:password]    || 'password'
-    remember_me = options[:remember_me] || '1'
-    if integration_test?
-      post login_path, session: { email:       user.email,
-                                  password:    password,
-                                  remember_me: remember_me }
-    else
-      session[:user_id] = user.id
+    # Returns true if a test user is logged in.
+    def logged_in?
+      !session[:user_id].nil?
     end
-  end
 
-  # Add more helper methods to be used by all tests here...
-
-  private
-
-    # Returns true inside an integration test.
-    def integration_test?
-      defined?(post_via_redirect)
+    # Logs in a test user.
+    def log_in_as(user, options = {})
+      password    = options[:password]    || 'password'
+      remember_me = options[:remember_me] || '1'
+      if integration_test?
+        post login_path, session: { email:       user.email,
+                                    password:    password,
+                                    remember_me: remember_me }
+      else
+        session[:user_id] = user.id
+      end
     end
+
+    # Add more helper methods to be used by all tests here...
+
+    private
+
+      # Returns true inside an integration test.
+      def integration_test?
+        defined?(post_via_redirect)
+      end
+  end
 end
 
 require 'knapsack'
