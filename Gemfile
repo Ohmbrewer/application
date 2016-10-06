@@ -2,10 +2,10 @@ source 'https://rubygems.org'
 
 ruby '2.3.0'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.7'
+
 # Use PostgreSQL as the database for Active Record
-gem 'pg'
+gem 'pg', '0.19.0'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -16,9 +16,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '4.2.1'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '5.0.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -27,36 +27,36 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'yard', group: :doc
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.11'
 
 # Use attr_encrypted for things that need to be encrypted in the db, but can be displayed to the user
 gem 'attr_encrypted'
 
 # Use Puma as the app server
-gem 'puma'
+gem 'puma', '3.6.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
 # Twitter Bootstrap
-gem 'bootstrap-sass', '3.3.3'
+gem 'bootstrap-sass', '3.3.7'
 
 # Includes Google Charts via google_visualr
 gem 'google_visualr', git: 'https://github.com/kyleoliveira/google_visualr.git' # , '~> 2.5', # '>= 2.5.1'
 
 # Form fancification
-gem 'cocoon', '1.2.6'
+gem 'cocoon', '1.2.9'
 
 # Adds pagination capabilities
-gem 'will_paginate',           '3.0.7'
+gem 'will_paginate',           '3.1.3'
 gem 'bootstrap-will_paginate', '0.0.10'
 
 # Jobs
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'particlerb'
-gem 'aasm', '4.4.0'
-gem 'closure_tree', '6.0.0'
+gem 'aasm', '4.11.1'
+gem 'closure_tree', '6.1.0'
 
 group :development, :test do
   gem 'binding_of_caller', '0.7.3.pre1'
