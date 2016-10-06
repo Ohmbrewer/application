@@ -1,4 +1,8 @@
 <div id='schedule_chart'></div>
 <% if schedule.chartable? %>
-  <%= add_chart(schedule.to_gantt, 'schedule_chart') %>
+  <% if local_assigns[:ajax] %>
+    <%= add_chart(schedule.to_gantt, 'schedule_chart', remote: schedule_chart_path(schedule)) %>
+  <% else %>
+    <%= add_chart(schedule.to_gantt, 'schedule_chart') %>
+  <% end %>
 <% end %>

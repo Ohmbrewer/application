@@ -2,7 +2,7 @@ class SchedulesController < ApplicationController
   # == Enabled Before Filters ==
 
   before_action :logged_in_user
-  before_action :set_schedule, only: [:show, :edit, :update, :destroy]
+  before_action :set_schedule, only: [:show, :edit, :update, :destroy, :chart]
 
   def index
     @schedules = Schedule.displayable_records
@@ -105,6 +105,10 @@ class SchedulesController < ApplicationController
     end
 
     redirect_to schedules_url
+  end
+
+  def chart
+    render json: Schedule.find(params[:schedule_id]).to_gantt_data.to_controller_js
   end
 
   private

@@ -1,5 +1,6 @@
-require 'rhizome_interfaces/sprout/thermostat_sprout'
+require 'scheduler/task_types/ramping_task'
 class RunThermostatTask < Task
+  include Scheduler::TaskTypes::RampingTask
 
   store_accessor :update_data, :target_temperature
 
@@ -7,28 +8,15 @@ class RunThermostatTask < Task
   validate :thermostat_sprout_validation
   validates :thermostat, presence: true
   validates :ramp_estimate, presence: true
-  validates_numericality_of :ramp_estimate, { greater_than_or_equal_to: 0 }
-  validates_numericality_of :target_temperature, {
-                                                   greater_than_or_equal_to: -69,
-                                                   less_than_or_equal_to: 200
-                                                 }
+  validates :ramp_estimate, numericality: { greater_than_or_equal_to: 0 }
+  validates :target_temperature, numericality: { greater_than_or_equal_to: -69, less_than_or_equal_to: 200 }
 
   # Ensures that the provided Sprout is a Thermostat
   def thermostat_sprout_validation
-    if sprout_name.nil? || !sprout_name.start_with?('Thermostat')
-      errors.add(:sprout, 'must be a Thermostat.')
-    end
+    errors.add(:sprout, 'must be a Thermostat.') if sprout_name.nil? || !sprout_name.start_with?('Thermostat')
   end
 
   # == Instance Methods ==
-
-  def holds?
-    true
-  end
-
-  def ramps?
-    true
-  end
 
   # Performs the appropriate holding action for the Task
   # @abstract This should be overridden by the subclass
@@ -48,9 +36,6 @@ class RunThermostatTask < Task
   # something the Rhizome will understand
   # @abstract Task subclasses *might* need to override this to function
   def to_particle_args
-    super.merge({
-      target: target_temperature.to_f
-    })
+    super.merge target: target_temperature.to_f
   end
-
 end

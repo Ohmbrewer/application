@@ -315,29 +315,37 @@ class Task < ActiveRecord::Base
     if ramps?
       ramping_dependency = on_ramping? ? "#{dependency}_ramping" : dependency
       data << [
-          "#{id}_ramping",
-          "Ramp up #{resource_id}",
-          resource_id,
-          nil,
-          nil,
-          duration*1000, # convert to milliseconds
-          nil,
-          ramping_dependency
+        "#{id}_ramping",
+        "Ramp up #{resource_id}",
+        resource_id,
+        nil,
+        nil,
+        duration * 1000, # convert to milliseconds
+        percent_ramp_complete,
+        ramping_dependency
       ]
     end
 
     data << [
-      "#{id}",
+      id.to_s,
       "#{type_name_display} #{resource_id}",
       resource_id,
       nil,
       nil,
       (holds? ? duration : 0) * 1000, # convert to milliseconds
-      nil,
+      percent_complete,
       ramps? ? "#{id}_ramping" : dependency
     ]
 
     data
+  end
+
+  def percent_ramp_complete
+    100
+  end
+
+  def percent_complete
+    100
   end
 
   # == Class Methods ==

@@ -10,7 +10,7 @@
     <div class="list-group-item">
       <% unless schedule.nil? %>
         <%= render partial: 'schedules/schedule_gantt_chart',
-                   locals: { schedule: schedule } %>
+                   locals: { schedule: schedule, ajax: true } %>
       <% end %>
     </div>
     <div class="list-group-item">

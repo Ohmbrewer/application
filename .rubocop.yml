@@ -20,7 +20,7 @@ Style/IndentationConsistency:
   EnforcedStyle: rails
 
 Style/ClassAndModuleChildren:
-  EnforcedStyle: compact
+  EnforcedStyle: nested
 
 Metrics/MethodLength:
   Max: 20

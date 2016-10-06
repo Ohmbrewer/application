@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151201030515) do
+ActiveRecord::Schema.define(version: 20161005231815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,12 @@ ActiveRecord::Schema.define(version: 20151201030515) do
     t.integer  "thermostat_id"
     t.integer  "ramp_estimate",                         default: 0
     t.integer  "recirculating_infusion_mash_system_id"
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "ramp_start_time"
+    t.integer  "ramp_end_time"
+    t.integer  "hold_start_time"
+    t.integer  "hold_end_time"
   end
 
   add_index "tasks", ["schedule_id"], name: "index_tasks_on_schedule_id", using: :btree
